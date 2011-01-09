@@ -1,8 +1,8 @@
-#ifndef __CORE_CHASH_H__
-#define	__CORE_CHASH_H__
+#ifndef __XHASH_CHASH_H__
+#define	__XHASH_CHASH_H__
 
-#include "CHash\Hash.h"
-#include "CHash\HashCRC.h"
-#include "CHash\HashMD5.h"
+#include "xhash\hash.h"
+#include "xhash\crc.h"
+#include "xhash\md5.h"
 
-#endif	///< __CORE_HASH_H__
+#endif	///< __XHASH_HASH_H__

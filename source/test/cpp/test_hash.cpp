@@ -1,18 +1,34 @@
 #include "xbase\x_target.h"
+#include "xbase\x_string_std.h"
 #include "xhash\xhash.h"
 
+#include "xunittest\xunittest.h"
+
 using namespace xcore;
+
+
+UNITTEST_SUITE_BEGIN(xhash)
+{
+	UNITTEST_FIXTURE(main)
+	{
+		UNITTEST_FIXTURE_SETUP() {}
+		UNITTEST_FIXTURE_TEARDOWN() {}
+
+		UNITTEST_TEST(hash)
+		{
+		}
+	}
+}
+UNITTEST_SUITE_END
 
 
 /* used for timings */
 void driver1()
 {
-	uint8 buf[256];
-	uint32 i;
-	uint32 h=0;
-	time_t a,z;
+	u8 buf[256];
+	u32 i;
+	u32 h=0;
 
-	time(&a);
 	for (i=0; i<256; ++i)
 		buf[i] = 'x';
 
@@ -20,9 +36,6 @@ void driver1()
 	{
 		h = Hashing::Hash2((const void*)&buf[0],1,h);
 	}
-	time(&z);
-	if (z-a > 0)
-		Tracer::Trace("time %d %.8x\n", xva_list(xva(z-a), xva(h)));
 }
 
 /* check that every input bit changes every output bit half the time */
@@ -32,13 +45,13 @@ void driver1()
 #define MAXLEN  70
 void driver2()
 {
-	uint8 qa[MAXLEN+1], qb[MAXLEN+2], *a = &qa[0], *b = &qb[1];
-	uint32 c[HASHSTATE], d[HASHSTATE], i=0, j=0, k, l, m=0, z;
-	uint32 e[HASHSTATE],f[HASHSTATE],g[HASHSTATE],h[HASHSTATE];
-	uint32 x[HASHSTATE],y[HASHSTATE];
-	uint32 hlen;
+	u8 qa[MAXLEN+1], qb[MAXLEN+2], *a = &qa[0], *b = &qb[1];
+	u32 c[HASHSTATE], d[HASHSTATE], i=0, j=0, k, l, m=0, z;
+	u32 e[HASHSTATE],f[HASHSTATE],g[HASHSTATE],h[HASHSTATE];
+	u32 x[HASHSTATE],y[HASHSTATE];
+	u32 hlen;
 
-	printf("No more than %d trials should ever be needed \n",MAXPAIR/2);
+	x_printf("No more than %d trials should ever be needed \n", x_va(MAXPAIR/2));
 	for (hlen=0; hlen < MAXLEN; ++hlen)
 	{
 		z=0;
@@ -49,14 +62,14 @@ void driver2()
 				for (m=1; m<8; ++m) /*------------ for serveral possible initvals, */
 				{
 					for (l=0; l<HASHSTATE; ++l)
-						e[l]=f[l]=g[l]=h[l]=x[l]=y[l]=~((uint32)0);
+						e[l]=f[l]=g[l]=h[l]=x[l]=y[l]=~((u32)0);
 
 					/*---- check that every output bit is affected by that input bit */
 					for (k=0; k<MAXPAIR; k+=2)
 					{ 
-						uint32 finished=1;
+						u32 finished=1;
 						/* keys have one bit different */
-						for (l=0; l<hlen+1; ++l) {a[l] = b[l] = (uint8)0;}
+						for (l=0; l<hlen+1; ++l) {a[l] = b[l] = (u8)0;}
 						/* have a and b be two keys differing in only one bit */
 						a[i] ^= (k<<j);
 						a[i] ^= (k>>(8-j));
@@ -80,10 +93,9 @@ void driver2()
 					if (k>z) z=k;
 					if (k==MAXPAIR) 
 					{
-						printf("Some bit didn't change: ");
-						printf("%.8x %.8x %.8x %.8x %.8x %.8x  ",
-							e[0],f[0],g[0],h[0],x[0],y[0]);
-						printf("i %d j %d m %d len %d\n", i, j, m, hlen);
+						x_printf("Some bit didn't change: ");
+						x_printf("%.8x %.8x %.8x %.8x %.8x %.8x  ", x_va_list(x_va(e[0]), x_va(f[0]), x_va(g[0]), x_va(h[0]), x_va(x[0]), x_va(y[0])));
+						x_printf("i %d j %d m %d len %d\n", x_va_list(x_va(i), x_va(j), x_va(m), x_va(hlen)));
 					}
 					if (z==MAXPAIR) goto done;
 				}
@@ -92,87 +104,87 @@ void driver2()
 done:
 		if (z < MAXPAIR)
 		{
-			printf("Mix success  %2d bytes  %2d initvals  ",i,m);
-			printf("required  %d  trials\n", z/2);
+			x_printf("Mix success  %2d bytes  %2d initvals  ", x_va_list(x_va(i),x_va(m)));
+			x_printf("required  %d  trials\n", x_va_list(x_va(z/2)));
 		}
 	}
-	printf("\n");
+	x_printf("\n");
 }
 
 /* Check for reading beyond the end of the buffer and alignment problems */
 void driver3()
 {
-	uint8 buf[MAXLEN+20], *b;
-	uint32 len;
-	uint8 q[] = "This is the time for all good men to come to the aid of their country...";
-	uint32 h;
-	uint8 qq[] = "xThis is the time for all good men to come to the aid of their country...";
-	uint32 i;
-	uint8 qqq[] = "xxThis is the time for all good men to come to the aid of their country...";
-	uint32 j;
-	uint8 qqqq[] = "xxxThis is the time for all good men to come to the aid of their country...";
-	uint32 ref,x,y;
-	uint8 *p;
+	u8 buf[MAXLEN+20], *b;
+	u32 len;
+	u8 q[] = "This is the time for all good men to come to the aid of their country...";
+	u32 h;
+	u8 qq[] = "xThis is the time for all good men to come to the aid of their country...";
+	u32 i;
+	u8 qqq[] = "xxThis is the time for all good men to come to the aid of their country...";
+	u32 j;
+	u8 qqqq[] = "xxxThis is the time for all good men to come to the aid of their country...";
+	u32 ref,x,y;
+	u8 *p;
 
-	printf("%.8x     %.8x     %.8x     %.8x\n",
-		Hashing::Hash2(q, (sizeof(q)-1), 13),
-		Hashing::Hash2(qq, (sizeof(qq)-1), 13),
-		Hashing::Hash2(qqq, (sizeof(qqq)-1), 13),
-		Hashing::Hash2(qqqq, (sizeof(qqqq)-1), 13));
+	x_printf("%.8x     %.8x     %.8x     %.8x\n", x_va_list(
+		x_va(Hashing::Hash2(q, (sizeof(q)-1), 13)),
+		x_va(Hashing::Hash2(qq, (sizeof(qq)-1), 13)),
+		x_va(Hashing::Hash2(qqq, (sizeof(qqq)-1), 13)),
+		x_va(Hashing::Hash2(qqqq, (sizeof(qqqq)-1), 13))));
 
-	printf("Endianness.  These lines should all be the same (for values filled in):\n");
-	printf("%.8x                            %.8x                            %.8x\n",
-		Hashing::Hash2((const uint32 *)q, (sizeof(q)-1)/4, 13),
-		Hashing::Hash2((const uint32 *)q, (sizeof(q)-5)/4, 13),
-		Hashing::Hash2((const uint32 *)q, (sizeof(q)-9)/4, 13));
+	x_printf("Endianness.  These lines should all be the same (for values filled in):\n");
+	x_printf("%.8x                            %.8x                            %.8x\n", x_va_list(
+		x_va(Hashing::Hash2((const u32 *)q, (sizeof(q)-1)/4, 13)),
+		x_va(Hashing::Hash2((const u32 *)q, (sizeof(q)-5)/4, 13)),
+		x_va(Hashing::Hash2((const u32 *)q, (sizeof(q)-9)/4, 13))));
 	p = q;
-	printf("%.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x\n",
-		Hashing::Hash2(p, sizeof(q)-1, 13), Hashing::Hash2(p, sizeof(q)-2, 13),
-		Hashing::Hash2(p, sizeof(q)-3, 13), Hashing::Hash2(p, sizeof(q)-4, 13),
-		Hashing::Hash2(p, sizeof(q)-5, 13), Hashing::Hash2(p, sizeof(q)-6, 13),
-		Hashing::Hash2(p, sizeof(q)-7, 13), Hashing::Hash2(p, sizeof(q)-8, 13),
-		Hashing::Hash2(p, sizeof(q)-9, 13), Hashing::Hash2(p, sizeof(q)-10, 13),
-		Hashing::Hash2(p, sizeof(q)-11, 13), Hashing::Hash2(p, sizeof(q)-12, 13));
+	x_printf("%.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x\n", x_va_list(
+		x_va(Hashing::Hash2(p, sizeof(q)-1 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-2, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-3 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-4, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-5 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-6, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-7 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-8, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-9 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-10, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-11, 13)), x_va(Hashing::Hash2(p, sizeof(q)-12, 13))));
 	p = &qq[1];
-	printf("%.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x\n",
-		Hashing::Hash2(p, sizeof(q)-1, 13), Hashing::Hash2(p, sizeof(q)-2, 13),
-		Hashing::Hash2(p, sizeof(q)-3, 13), Hashing::Hash2(p, sizeof(q)-4, 13),
-		Hashing::Hash2(p, sizeof(q)-5, 13), Hashing::Hash2(p, sizeof(q)-6, 13),
-		Hashing::Hash2(p, sizeof(q)-7, 13), Hashing::Hash2(p, sizeof(q)-8, 13),
-		Hashing::Hash2(p, sizeof(q)-9, 13), Hashing::Hash2(p, sizeof(q)-10, 13),
-		Hashing::Hash2(p, sizeof(q)-11, 13), Hashing::Hash2(p, sizeof(q)-12, 13));
+	x_printf("%.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x\n", x_va_list(
+		x_va(Hashing::Hash2(p, sizeof(q)-1 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-2, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-3 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-4, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-5 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-6, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-7 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-8, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-9 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-10, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-11, 13)), x_va(Hashing::Hash2(p, sizeof(q)-12, 13))));
 	p = &qqq[2];
-	printf("%.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x\n",
-		Hashing::Hash2(p, sizeof(q)-1, 13), Hashing::Hash2(p, sizeof(q)-2, 13),
-		Hashing::Hash2(p, sizeof(q)-3, 13), Hashing::Hash2(p, sizeof(q)-4, 13),
-		Hashing::Hash2(p, sizeof(q)-5, 13), Hashing::Hash2(p, sizeof(q)-6, 13),
-		Hashing::Hash2(p, sizeof(q)-7, 13), Hashing::Hash2(p, sizeof(q)-8, 13),
-		Hashing::Hash2(p, sizeof(q)-9, 13), Hashing::Hash2(p, sizeof(q)-10, 13),
-		Hashing::Hash2(p, sizeof(q)-11, 13), Hashing::Hash2(p, sizeof(q)-12, 13));
+	x_printf("%.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x\n", x_va_list(
+		x_va(Hashing::Hash2(p, sizeof(q)-1 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-2, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-3 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-4, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-5 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-6, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-7 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-8, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-9 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-10, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-11, 13)), x_va(Hashing::Hash2(p, sizeof(q)-12, 13))));
 	p = &qqqq[3];
-	printf("%.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x\n",
-		Hashing::Hash2(p, sizeof(q)-1, 13), Hashing::Hash2(p, sizeof(q)-2, 13),
-		Hashing::Hash2(p, sizeof(q)-3, 13), Hashing::Hash2(p, sizeof(q)-4, 13),
-		Hashing::Hash2(p, sizeof(q)-5, 13), Hashing::Hash2(p, sizeof(q)-6, 13),
-		Hashing::Hash2(p, sizeof(q)-7, 13), Hashing::Hash2(p, sizeof(q)-8, 13),
-		Hashing::Hash2(p, sizeof(q)-9, 13), Hashing::Hash2(p, sizeof(q)-10, 13),
-		Hashing::Hash2(p, sizeof(q)-11, 13), Hashing::Hash2(p, sizeof(q)-12, 13));
-	printf("\n");
+	x_printf("%.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x %.8x\n", x_va_list(
+		x_va(Hashing::Hash2(p, sizeof(q)-1 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-2, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-3 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-4, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-5 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-6, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-7 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-8, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-9 , 13)), x_va(Hashing::Hash2(p, sizeof(q)-10, 13)),
+		x_va(Hashing::Hash2(p, sizeof(q)-11, 13)), x_va(Hashing::Hash2(p, sizeof(q)-12, 13))));
+	x_printf("\n");
 
 	/* check that hashlittle2 and hashlittle produce the same results */
 	i=47; j=0;
-	uint32 l=sizeof(q);
-	pcVoid d=q;
+	u32 l=sizeof(q);
+	void const* d=q;
 	Hashing::Hash2(d, l, i, j);
 	if (Hashing::Hash2(q, sizeof(q), 47) != i)
-		printf("hashlittle2 and hashlittle mismatch\n");
+		x_printf("hashlittle2 and hashlittle mismatch\n");
 
 	/* check that hashword2 and hashword produce the same results */
 	len = 0xdeadbeef;
 	i=47, j=0;
 	Hashing::Hash2(&len, 1, i, j);
 	if (Hashing::Hash2(&len, 1, 47) != i)
-		printf("hashword2 and hashword mismatch %x %x\n", i, Hashing::Hash2(&len, 1, 47));
+		x_printf("hashword2 and hashword mismatch %x %x\n", x_va_list(x_va(i), x_va(Hashing::Hash2(&len, 1, 47))));
 
 	/* check hashlittle doesn't read before or after the ends of the string */
 	for (h=0, b=buf+1; h<8; ++h, ++b)
@@ -184,14 +196,14 @@ void driver3()
 				*(b+j)=0;
 
 			/* these should all be equal */
-			ref = Hashing::Hash2(b, len, (uint32)1);
-			*(b+i)=(uint8)~0;
-			*(b-1)=(uint8)~0;
-			x = Hashing::Hash2(b, len, (uint32)1);
-			y = Hashing::Hash2(b, len, (uint32)1);
+			ref = Hashing::Hash2(b, len, (u32)1);
+			*(b+i)=(u8)~0;
+			*(b-1)=(u8)~0;
+			x = Hashing::Hash2(b, len, (u32)1);
+			y = Hashing::Hash2(b, len, (u32)1);
 			if ((ref != x) || (ref != y)) 
 			{
-				printf("alignment error: %.8x %.8x %.8x %d %d\n",ref,x,y,h,i);
+				x_printf("alignment error: %.8x %.8x %.8x %d %d\n",x_va_list(x_va(ref),x_va(x),x_va(y),x_va(h),x_va(i)));
 			}
 		}
 	}
@@ -200,16 +212,16 @@ void driver3()
 /* check for problems with nulls */
 void driver4()
 {
-	uint8 buf[1];
-	uint32 h,i,state[HASHSTATE];
+	u8 buf[1];
+	u32 h,i,state[HASHSTATE];
 
 	buf[0] = ~0;
 	for (i=0; i<HASHSTATE; ++i) state[i] = 1;
-	printf("These should all be different\n");
+	x_printf("These should all be different\n");
 	for (i=0, h=0; i<8; ++i)
 	{
 		h = Hashing::Hash2(buf, 0, h);
-		printf("%2ld  0-byte strings, hash is  %.8x\n", i, h);
+		x_printf("%2ld  0-byte strings, hash is  %.8x\n", x_va_list(x_va(i), x_va(h)));
 	}
 }
 

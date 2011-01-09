@@ -29,7 +29,7 @@
     <Item Src="target\xhash\outdir\xhash_*\xhash_*_${Platform}.lib" Dst="libs\" />
   </Content>
   
-  <Dependency Package="example_package_name">
+  <Dependency Package="xbase">
     <Group>com.virtuos.tnt</Group>
     <Version>[1.0,)</Version>
     <Type>Package</Type>
@@ -100,18 +100,30 @@
 			      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			      <AdditionalIncludeDirectories>$(SolutionDir)source\test\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
+			    <Link>
+			      <AdditionalDependencies>xhash_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+			      <AdditionalLibraryDirectories>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</AdditionalLibraryDirectories>
+			    </Link>					
 				</ItemDefinitionGroup>
 			  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'">
 			    <ClCompile>
 			      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			      <AdditionalIncludeDirectories>$(SolutionDir)source\test\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
+			    <Link>
+			      <AdditionalDependencies>xhash_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+			      <AdditionalLibraryDirectories>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</AdditionalLibraryDirectories>
+			    </Link>					
 				</ItemDefinitionGroup>
 			  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevFinal|Win32'">
 			    <ClCompile>
 			      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			      <AdditionalIncludeDirectories>$(SolutionDir)source\test\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
+			    <Link>
+			      <AdditionalDependencies>xhash_$(Configuration)_$(Platform).lib</AdditionalDependencies>
+			      <AdditionalLibraryDirectories>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</AdditionalLibraryDirectories>
+			    </Link>					
 				</ItemDefinitionGroup>
 			  <ItemGroup>
 			    <ClCompile Include="source\test\cpp\**\*.cpp" />
