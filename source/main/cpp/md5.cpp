@@ -3,6 +3,8 @@
 #include "xbase\x_va_list.h"
 #include "xbase\x_string_std.h"
 #include "xbase\x_memory_std.h"
+#include "xbase\x_endian.h"
+
 #include "xhash\md5.h"
 
 namespace xcore
@@ -172,7 +174,7 @@ namespace xcore
 	{
 #if !defined(X_LITTLE_ENDIAN)
 		for (int i=0; i<inLength; i++)
-			ioBuffer[i] = Endian::Swap(ioBuffer[i]);
+			ioBuffer[i] = x_endian_swap::swap(ioBuffer[i]);
 #endif
 	}
 
