@@ -5,7 +5,7 @@
 #include "xunittest\xunittest.h"
 
 UNITTEST_SUITE_LIST(xHashUnitTest);
-UNITTEST_SUITE_DECLARE(xHashUnitTest, xhash);
+UNITTEST_SUITE_DECLARE(xHashUnitTest, xhash_generator);
 
 class UnitTestAllocator : public UnitTest::Allocator
 {
