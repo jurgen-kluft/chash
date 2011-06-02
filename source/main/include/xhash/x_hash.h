@@ -13,75 +13,18 @@ namespace xcore
 	//---------------------------------------------------------------------------------------------------------------------
 	//	Hash Utility functions
 	//---------------------------------------------------------------------------------------------------------------------
-	class Hashing
+	typedef		u32			xhash32;
+
+	class xhash_generator
 	{
 	public:
-		// Hashing functions, uses
-		static u32			Hash(void const* inData, u32 inLength, u32 pc = 0);
+		// FNV hash
+		static xhash32			fnv_32a_buf(void const* inData, u32 inLength);
+		static xhash32			fnv_32a_buf(void const* inData, u32 inLength, xhash32 inPrevious);
+		static xhash32			fnv_32a_str(char const* inStr);
+		static xhash32			fnv_32a_str(char const* inStr, xhash32 inPrevious);
 
-		static void			Hash2(void const* inData, u32 inLength, u32& pc, u32& pb);
-		static u32			Hash2(void const* inData, u32 inLength, u32 pc = 0);
-
-		static void			Hash2(u32 const* inData, u32 inLength, u32& pc, u32& pb);
-		static u32			Hash2(u32 const* inData, u32 inLength, u32 pc = 0);
-
-		/**
-		@group		xhash
-		@brief		Fast general hash function for u32
-		@desc		This is a fast general hash function for u32 data types.
-		http://www.concentric.net/~ttwang/tech/inthash.htm
-		**/
-		static inline u32	Hash(const u32 inUInt32)
-		{
-			u32 key = inUInt32;
-			key += ~(key << 16);
-			key ^=  (key >>  5);
-			key +=  (key <<  3);
-			key ^=  (key >> 13);
-			key += ~(key <<  9);
-			key ^=  (key >> 17);
-			return key;
-		}
-
-		static inline u32	Hash(s32 inInt32)									{ return Hash((u32)inInt32); }
-
-		/**
-		@group		xhash
-		@brief		Fast general hash function for u64
-		@desc		This is a fast general hash function for u64 data types.
-		General hash function for u64
-		**/
-		static inline u32	Hash(const u64 inData)
-		{
-			u32 a = 0x9e3779b9;
-			u32 b = 0x9e3779b9;
-			u32 c = 8;
-			u8  *p_in = (u8 *)&inData;
-
-			// Handle 8 bytes
-			b+=((u32)p_in[7]<<24);
-			b+=((u32)p_in[6]<<16);
-			b+=((u32)p_in[5]<<8);
-			b+=p_in[4];
-
-			a+=((u32)p_in[3]<<24);
-			a+=((u32)p_in[2]<<16);
-			a+=((u32)p_in[1]<<8);
-			a+=p_in[0];
-
-			a -= b; a -= c; a ^= (c>>13);
-			b -= c; b -= a; b ^= (a<<8);
-			c -= a; c -= b; c ^= (b>>13);
-			a -= b; a -= c; a ^= (c>>12);
-			b -= c; b -= a; b ^= (a<<16);
-			c -= a; c -= b; c ^= (b>>5);
-			a -= b; a -= c; a ^= (c>>3);
-			b -= c; b -= a; b ^= (a<<10);
-			c -= a; c -= b; c ^= (b>>15);
-			return c;
-		}
-
-		static inline u32	Hash(s64 inInt64)									{ return Hash((u64)inInt64); }
+		// Murmur
 	};
 
 
@@ -95,18 +38,18 @@ namespace xcore
 	@group		xhash
 	@brief		hashable template class
 
-	The hashable<T> template creates a hashable version of <T>,
-	by using the standard Hashing::Hash() function on the memory block occupied by
-	<mData>. taTYPEhis is a simple - though not so efficient - solution to
-	make most structures and internal types hashable.
+				The hashable<T> template creates a hashable version of <T>,
+				by using the standard Hashing::Hash() function on the memory block occupied by
+				<mData>. taTYPEhis is a simple - though not so efficient - solution to
+				make most structures and internal types hashable.
 
-	You should not try to use the hashable class on structures and classes that
-	have pointer members, because the hash value is calculated on the memory
-	block occupied by the type and will most likely not return valid hash
-	values for the data pointer to by members.
+				You should not try to use the hashable class on structures and classes that
+				have pointer members, because the hash value is calculated on the memory
+				block occupied by the type and will most likely not return valid hash
+				values for the data pointer to by members.
 
-	Because the hashable template stores the hash value of the type it embeds,
-	changing the value also requires updating the update() function.
+				Because the hashable template stores the hash value of the type it embeds,
+				changing the value also requires updating the update() function.
 	**/
 	template <typename T>
 	class hashable
@@ -204,18 +147,18 @@ namespace xcore
 	@group		xhash
 	@brief		Hashed void pointer
 
-	Hashed void pointer. This is a concrete implementation of hashed_ptr, it's specified
-	because hashed_ptr<void> cannot be instantiated due to the dereference on void.
+				Hashed void pointer. This is a concrete implementation of hashed_ptr, it's specified
+				because hashed_ptr<void> cannot be instantiated due to the dereference on void.
 	**/
 	struct hashed_void_ptr
 	{
 		///@name Construction/Destruction
 		inline				hashed_void_ptr()										: mPtr(NULL),  mHash(0) { }
-		inline				hashed_void_ptr(void* inPtr)							: mPtr(inPtr), mHash(Hashing::Hash((u32)inPtr)) { }
+		inline				hashed_void_ptr(void* inPtr)							: mPtr(inPtr), mHash(xhash_generator::fnv_32a_buf(&inPtr, 4)) { }
 
 		///@name Assignment
 		inline void			operator=(const hashed_void_ptr& inRHS)					{ mPtr=inRHS.mPtr; mHash=inRHS.mHash; }
-		inline void			operator=(void* inPtr)									{ mPtr=inPtr; mHash=Hashing::Hash((u32)inPtr); }
+		inline void			operator=(void* inPtr)									{ mPtr=inPtr; mHash=xhash_generator::fnv_32a_buf(&inPtr, 4); }
 
 		///@name Comparing operators
 		inline bool			operator==(const hashed_void_ptr& inRHS) const			{ return mPtr == inRHS.mPtr; }

@@ -5,22 +5,22 @@
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif
+
 #include "xbase\x_types.h"
 
 namespace xcore
 {
-
 	/**
 	@group		xhash
 	@brief		CRC implementations
 	**/
-	class CRC
+	class xcrc
 	{
 	public:
-		static u32			CRC32(void const* inBuffer, int inLength, u32 inInitVal = 0);
+		static u32			crc32(void const* inBuffer, int inLength, u32 inInitVal = 0);
 
-		static u16			Adler16(void const* inBuffer, int inLength, u16 inInitVal = 1);
-		static u32			Adler32(void const* inBuffer, int inLength, u32 inInitVal = 1);
+		static u16			adler16(void const* inBuffer, int inLength, u16 inInitVal = 1);
+		static u32			adler32(void const* inBuffer, int inLength, u32 inInitVal = 1);
 	};
 
 

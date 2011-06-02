@@ -1,7 +1,7 @@
-// crc.cpp - Core CRC functions 
+// x_crc.cpp - Core CRC functions 
 #include "xbase\x_target.h"
 #include "xbase\x_debug.h"
-#include "xhash\crc.h"
+#include "xhash\x_crc.h"
 
 namespace xcore
 {
@@ -20,7 +20,7 @@ namespace xcore
 		};
 
 		static bool		mIsEmpty;
-		static u32	mTable[TABLE_SIZE];
+		static u32		mTable[TABLE_SIZE];
 
 		static void		CDO1(u8 const*& ioDataPtr, u32& ioCRC)						{ ioCRC = mTable[(ioCRC ^ (*ioDataPtr++)) & 0xff] ^ (ioCRC >> 8); }
 		static void		CDO4(u8 const*& ioDataPtr, u32& ioCRC)						{ CDO1(ioDataPtr, ioCRC); CDO1(ioDataPtr, ioCRC); CDO1(ioDataPtr, ioCRC); CDO1(ioDataPtr, ioCRC); }
@@ -34,7 +34,7 @@ namespace xcore
 	@group		xhash
 	Calculate running CRC of <inInitVal> over <inBuffer> with length <inLength>
 	**/
-	u32	CRC::CRC32(void const* inBuffer, int inLength, u32 inInitVal)
+	u32	xcrc::crc32(void const* inBuffer, int inLength, u32 inInitVal)
 	{
 		u8 const* p_in = (u8 const*)inBuffer;
 		u32	crc  = ~inInitVal;
@@ -86,7 +86,7 @@ namespace xcore
 	@group		xhash
 	Calculate running Adler32 of <inInitVal> over <inBuffer> with length <inLength>
 	**/
-	u32 CRC::Adler32(void const* inBuffer, int inLength, u32 inInitVal)
+	u32 xcrc::adler32(void const* inBuffer, int inLength, u32 inInitVal)
 	{
 		u32 a1 = inInitVal & 0xFFFF;							// Adler sum parts
 		u32 a2 = inInitVal >> 16;
@@ -115,7 +115,7 @@ namespace xcore
 	@group		xhash
 	Calculate running Adler16 of <inInitVal> over <inBuffer> with length <inLength>
 	**/
-	u16	CRC::Adler16(void const* inBuffer, int inLength, u16 inInitVal)
+	u16	xcrc::adler16(void const* inBuffer, int inLength, u16 inInitVal)
 	{
 		u32 a1 = inInitVal & 0xFF;								// Adler sum parts
 		u32 a2 = inInitVal >> 8;
