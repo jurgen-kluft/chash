@@ -41,6 +41,32 @@
 		<Type>Package</Type>
 	</Dependency>
 
+	<ProjectProperties>
+		<Properties DependencyType="Root" Platform="*">
+			<PropertyGroup Label="xhash_TargetDirs">
+				<xhash_RootDir>$(SolutionDir)</xhash_RootDir> 
+				<xhash_LibraryDir>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</xhash_LibraryDir>
+				<xhash_IncludeDir>$(SolutionDir)source\main\include\</xhash_IncludeDir>
+			</PropertyGroup>
+		</Properties>
+				
+		<Properties DependencyType="Package" Platform="*">
+			<PropertyGroup Label="xhash_TargetDirs">
+				<xhash_RootDir>${Location}</xhash_RootDir> 
+				<xhash_LibraryDir>${Location}libs\</xhash_LibraryDir>
+				<xhash_IncludeDir>${Location}source\main\include\</xhash_IncludeDir>
+			</PropertyGroup>
+		</Properties>
+	
+		<Properties DependencyType="Source" Platform="*">
+			<PropertyGroup Label="xhash_TargetDirs">
+				<xhash_RootDir>$(SolutionDir)target\xhash\</xhash_RootDir> 
+				<xhash_LibraryDir>$(SolutionDir)target\xhash\target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</xhash_LibraryDir>
+				<xhash_IncludeDir>$(SolutionDir)target\xhash\source\main\include\</xhash_IncludeDir>
+			</PropertyGroup>
+		</Properties>
+	</ProjectProperties>
+	
 	<Project Name="xhash" Language="C++" Location="source\main\cpp" Scope="Public" DependsOn="xbase:xbase">
 		<ProjectFile>
 			<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
@@ -52,181 +78,181 @@
 				</ImportGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Win32'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_DevDebug_Win32.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Win32'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_DevRelease_Win32.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevFinal|Win32'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_DevFinal_Win32.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestDebug|Win32'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_TestDebug_Win32.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestRelease|Win32'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_TestRelease_Win32.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|PS3'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_DevDebug_PS3.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|PS3'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_DevRelease_PS3.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevFinal|PS3'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_DevFinal_PS3.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestDebug|PS3'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_TestDebug_PS3.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestRelease|PS3'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_TestRelease_PS3.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|Xbox 360'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_DevDebug_Xbox 360.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|Xbox 360'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_DevRelease_Xbox 360.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevFinal|Xbox 360'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_DevFinal_Xbox 360.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestDebug|Xbox 360'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_TestDebug_Xbox 360.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestRelease|Xbox 360'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_TestRelease_Xbox 360.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevDebug|WII'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_DevDebug_WII.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevRelease|WII'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_DevRelease_WII.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DevFinal|WII'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_DevFinal_WII.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestDebug|WII'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_TestDebug_WII.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestRelease|WII'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>#$(xhash_TargetDir)source\main\include;@$(SolutionDir)source\main\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(xhash_IncludeDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>#$(xhash_TargetDir)libs</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>#xhash_TestRelease_WII.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>	
@@ -283,73 +309,73 @@
 				</PropertyGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestDebug|Win32'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>$(SolutionDir)source\test\include</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(${Name}_TargetDir)\source\test\include</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>xhash_$(Configuration)_$(Platform).lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestRelease|Win32'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>$(SolutionDir)source\test\include</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(${Name}_TargetDir)\source\test\include</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>xhash_$(Configuration)_$(Platform).lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestDebug|PS3'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>$(SolutionDir)source\test\include</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(${Name}_TargetDir)\source\test\include</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>xhash_$(Configuration)_PS3.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestRelease|PS3'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>$(SolutionDir)source\test\include</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(${Name}_TargetDir)\source\test\include</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>xhash_$(Configuration)_PS3.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestDebug|Xbox 360'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>$(SolutionDir)source\test\include</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(${Name}_TargetDir)\source\test\include</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>xhash_$(Configuration)_Xbox 360.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestRelease|Xbox 360'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>$(SolutionDir)source\test\include</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(${Name}_TargetDir)\source\test\include</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>xhash_$(Configuration)_Xbox 360.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestDebug|WII'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>$(SolutionDir)source\test\include</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(${Name}_TargetDir)\source\test\include</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>xhash_$(Configuration)_WII.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
 				<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TestRelease|WII'">
 					<ClCompile>
-						<AdditionalIncludeDirectories>$(SolutionDir)source\test\include</AdditionalIncludeDirectories>
+						<AdditionalIncludeDirectories>$(${Name}_TargetDir)\source\test\include</AdditionalIncludeDirectories>
 					</ClCompile>
 					<Link>
-						<AdditionalLibraryDirectories>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</AdditionalLibraryDirectories>
+						<AdditionalLibraryDirectories>$(xhash_LibraryDir)</AdditionalLibraryDirectories>
 						<AdditionalDependencies>xhash_$(Configuration)_WII.lib</AdditionalDependencies>
 					</Link>
 				</ItemDefinitionGroup>
