@@ -9,12 +9,12 @@ using namespace xcore;
 
 UNITTEST_SUITE_BEGIN(xhash_generator)
 {
-	UNITTEST_FIXTURE(main)
+	UNITTEST_FIXTURE(fnv)
 	{
 		UNITTEST_FIXTURE_SETUP() {}
 		UNITTEST_FIXTURE_TEARDOWN() {}
 
-		UNITTEST_TEST(fnv_1a_buf_1)
+		UNITTEST_TEST(buf1)
 		{
 		}
 	}

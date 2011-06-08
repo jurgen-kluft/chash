@@ -1,5 +1,6 @@
 // x_hash.cpp - Core Hash functions 
 #include "xbase\x_types.h"
+#include "xbase\x_string_std.h"
 #include "xhash\x_hash.h"
 
 namespace xcore
@@ -24,12 +25,12 @@ namespace xcore
 	* NOTE: To use the recommended 32 bit FNV-1a hash, use FNV1_32A_INIT as the
 	* 	 hval arg on the first call to either fnv_32a_buf() or fnv_32a_str().
 	*/
-	xhash32 xhash_generator::fnv_32a_buf(void const* inData, u32 inLength)
+	xhash32 xhash_generator_fnv::buf(void const* inData, u32 inLength)
 	{
-		return fnv_32a_buf(inData, inLength, FNV_32_PRIME);
+		return buf(inData, inLength, FNV_32_PRIME);
 	}
 
-	xhash32	xhash_generator::fnv_32a_buf(void const *buf, u32 len, xhash32 hval)
+	xhash32	xhash_generator_fnv::buf(void const *buf, u32 len, xhash32 hval)
 	{
 		unsigned char *bp = (unsigned char *)buf;	/* start of buffer */
 		unsigned char *be = bp + len;		/* beyond end of buffer */
@@ -37,7 +38,8 @@ namespace xcore
 		/*
 		* FNV-1a hash each octet in the buffer
 		*/
-		while (bp < be) {
+		while (bp < be) 
+		{
 
 			/* xor the bottom with the current octet */
 			hval ^= (xhash32)*bp++;
@@ -68,19 +70,20 @@ namespace xcore
 	* NOTE: To use the recommended 32 bit FNV-1a hash, use FNV1_32A_INIT as the
 	*  	 hval arg on the first call to either fnv_32a_buf() or fnv_32a_str().
 	*/
-	xhash32	xhash_generator::fnv_32a_str(char const *str)
+	xhash32	xhash_generator_fnv::str(char const *inStr)
 	{
-		return fnv_32a_str(str, FNV_32_PRIME);
+		return str(inStr, FNV_32_PRIME);
 	}
 
-	xhash32	xhash_generator::fnv_32a_str(char const *str, xhash32 hval)
+	xhash32	xhash_generator_fnv::str(char const *inStr, xhash32 hval)
 	{
-		unsigned char *s = (unsigned char *)str;	/* unsigned string */
+		unsigned char *s = (unsigned char *)inStr;	/* unsigned string */
 
 		/*
 		* FNV-1a hash each octet in the buffer
 		*/
-		while (*s) {
+		while (*s) 
+		{
 
 			/* xor the bottom with the current octet */
 			hval ^= (xhash32)*s++;
@@ -96,4 +99,80 @@ namespace xcore
 		/* return our new hash value */
 		return hval;
 	}
+
+
+
+	xcore::u32 gGetMurmurHash32(const char* str, u32 len, u32 seed)
+	{
+		// 'm' and 'r' are mixing constants generated offline.
+		// They're not really 'magic', they just happen to work well.
+
+		const xcore::u32 m = 0x5bd1e995;
+		const xcore::s32 r = 24;
+		xcore::u32 length = len;
+
+		// Initialize the hash to a 'random' value
+
+		xcore::u32 h = seed ^ length;
+
+		// Mix 4 bytes at a time into the hash
+
+		const xcore::u8* data = (const xcore::u8*)str;
+		while( length >= 4 )
+		{
+			xcore::u32 k;
+
+			k  = xcore::u32( data[0] );
+			k |= xcore::u32( data[1] ) << 8;
+			k |= xcore::u32( data[2] ) << 16;
+			k |= xcore::u32( data[3] ) << 24;
+
+			k *= m; 
+			k ^= k >> r; 
+			k *= m; 
+
+			h *= m; 
+			h ^= k;
+
+			data += 4;
+			length -= 4;
+
+		}
+
+		switch( length )
+		{
+		case 3: h ^= xcore::u32( data[2] ) << 16;
+		case 2: h ^= xcore::u32( data[1] ) << 8;
+		case 1: h ^= xcore::u32( data[0] );
+			h *= m;
+		};
+
+		h ^= h >> 13;
+		h *= m;
+		h ^= h >> 15;
+
+		return h;
+	}
+
+
+	xhash32			xhash_generator_murmur::buf(void const* inData, u32 inLength)
+	{
+		return gGetMurmurHash32((const char*)inData, inLength, 0);
+	}
+
+	xhash32			xhash_generator_murmur::buf(void const* inData, u32 inLength, xhash32 inPrevious)
+	{
+		return gGetMurmurHash32((const char*)inData, inLength, inPrevious);
+	}
+
+	xhash32			xhash_generator_murmur::str(char const* inStr)
+	{
+		return gGetMurmurHash32((const char*)inStr, x_strlen(inStr), 0);
+	}
+
+	xhash32			xhash_generator_murmur::str(char const* inStr, xhash32 inPrevious)
+	{
+		return gGetMurmurHash32((const char*)inStr, x_strlen(inStr), inPrevious);
+	}
+
 }

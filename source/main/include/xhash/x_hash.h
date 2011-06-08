@@ -15,18 +15,30 @@ namespace xcore
 	//---------------------------------------------------------------------------------------------------------------------
 	typedef		u32			xhash32;
 
-	class xhash_generator
+	class xhash_generator_fnv
 	{
 	public:
-		// FNV hash
-		static xhash32			fnv_32a_buf(void const* inData, u32 inLength);
-		static xhash32			fnv_32a_buf(void const* inData, u32 inLength, xhash32 inPrevious);
-		static xhash32			fnv_32a_str(char const* inStr);
-		static xhash32			fnv_32a_str(char const* inStr, xhash32 inPrevious);
-
-		// Murmur
+		// FNV 32a hash
+		static xhash32			buf(void const* inData, u32 inLength);
+		static xhash32			buf(void const* inData, u32 inLength, xhash32 inPrevious);
+		static xhash32			str(char const* inStr);
+		static xhash32			str(char const* inStr, xhash32 inPrevious);
 	};
 
+	class xhash_generator_murmur
+	{
+	public:
+		// Murmur hash
+		static xhash32			buf(void const* inData, u32 inLength);
+		static xhash32			buf(void const* inData, u32 inLength, xhash32 inPrevious);
+		static xhash32			str(char const* inStr);
+		static xhash32			str(char const* inStr, xhash32 inPrevious);
+	};
+
+	class xhash_generator : public xhash_generator_murmur
+	{
+
+	};
 
 	//---------------------------------------------------------------------------------------------------------------------
 	// Template class to make types hashable
@@ -51,7 +63,7 @@ namespace xcore
 				Because the hashable template stores the hash value of the type it embeds,
 				changing the value also requires updating the update() function.
 	**/
-	template <typename T>
+	template <typename T, typename HG = xhash_generator>
 	class hashable
 	{
 	public:
@@ -62,7 +74,7 @@ namespace xcore
 		inline hashable<T>& 	operator=(const T& inRHS)							{ mData = inRHS; update(mData); return *this; }
 
 		///@name Conversion to type <T>
-		operator const T&() const							{ return mData; }
+		inline					operator const T&() const							{ return mData; }
 
 		///@name Relational operators
 		inline bool				operator< (const T& inRHS) const					{ return mData <  inRHS; }
@@ -93,13 +105,13 @@ namespace xcore
 
 	private:
 		///@name Actions
-		template<typename T>
-		inline void				update(const T& data)								{ mCachedHash = Hashing::Hash(&data, sizeof(T)); } // Update the hash value from the value of <T>
+		template<typename D>
+		inline void				update(const D& data)								{ mCachedHash = HG::buf(&data, sizeof(D)); } // Update the hash value from the value of <T>
 
-		inline void 			update(const s32& data)								{ mCachedHash = Hashing::Hash((u32)data); }
-		inline void 			update(const u32& data)								{ mCachedHash = Hashing::Hash((u32)data); }
-		inline void 			update(const s64& data)								{ mCachedHash = Hashing::Hash((u64)mData); }
-		inline void 			update(const u64& data)								{ mCachedHash = Hashing::Hash((u64)mData); }
+		inline void 			update(const s32& data)								{ mCachedHash = HG::buf((u32)data, 4); }
+		inline void 			update(const u32& data)								{ mCachedHash = HG::buf((u32)data, 4); }
+		inline void 			update(const s64& data)								{ mCachedHash = HG::buf((u64)data, 8); }
+		inline void 			update(const u64& data)								{ mCachedHash = HG::buf((u64)data, 8); }
 
 		T						mData;
 		u32						mCachedHash;
@@ -111,18 +123,18 @@ namespace xcore
 	@group		xhash
 	@brief		Hashed pointer template
 	**/
-	template <typename T>
+	template <typename T, typename HG = xhash_generator>
 	struct hashed_ptr
 	{
 		///@name Construction/Destruction
 		inline				hashed_ptr()											: mPtr(NULL),  mHash(0) { }
-		inline				hashed_ptr(T *inPtr)									: mPtr(inPtr), mHash(Hashing::Hash((u32)inPtr)) { }
+		inline				hashed_ptr(T *inPtr)									: mPtr(inPtr), mHash(HG::buf(&inPtr, sizeof(T))) { }
 
 		///@name Operators
 		inline bool			operator==(const hashed_ptr<T>& inRHS) const			{ return mPtr == inRHS.mPtr; }
 		inline bool			operator!=(const hashed_ptr<T>& inRHS) const			{ return mPtr != inRHS.mPtr; }
 		inline void			operator=(const hashed_ptr<T>& inRHS)					{ mPtr=inRHS.mPtr; mHash=inRHS.mHash; }
-		inline void			operator=(T *inPtr)										{ mPtr=inPtr; mHash=Hashing::Hash((u32)inPtr); }
+		inline void			operator=(T *inPtr)										{ set(inPtr); }
 
 		///@name Hashing
 		inline T*			ptr() const												{ return mPtr; }
@@ -136,6 +148,8 @@ namespace xcore
 		inline				operator T *()											{ return mPtr; }
 		inline				operator const T *() const								{ return mPtr; }
 
+	protected:
+		inline void			set(T* ptr)												{ mPtr = ptr; mHash = (HG::buf(&ptr, sizeof(T))); }
 		///@name Data
 		T*					mPtr;
 		u32					mHash;
@@ -150,15 +164,15 @@ namespace xcore
 				Hashed void pointer. This is a concrete implementation of hashed_ptr, it's specified
 				because hashed_ptr<void> cannot be instantiated due to the dereference on void.
 	**/
-	struct hashed_void_ptr
+	struct hashed_void_ptr : protected hashed_ptr<u32>
 	{
 		///@name Construction/Destruction
-		inline				hashed_void_ptr()										: mPtr(NULL),  mHash(0) { }
-		inline				hashed_void_ptr(void* inPtr)							: mPtr(inPtr), mHash(xhash_generator::fnv_32a_buf(&inPtr, 4)) { }
+		inline				hashed_void_ptr() : hashed_ptr<u32>()						{ }
+		inline				hashed_void_ptr(void* inPtr) : hashed_ptr<u32>((u32*)inPtr)	{ }
 
 		///@name Assignment
 		inline void			operator=(const hashed_void_ptr& inRHS)					{ mPtr=inRHS.mPtr; mHash=inRHS.mHash; }
-		inline void			operator=(void* inPtr)									{ mPtr=inPtr; mHash=xhash_generator::fnv_32a_buf(&inPtr, 4); }
+		inline void			operator=(void* inPtr)									{ set((u32*)inPtr); }
 
 		///@name Comparing operators
 		inline bool			operator==(const hashed_void_ptr& inRHS) const			{ return mPtr == inRHS.mPtr; }
@@ -169,6 +183,7 @@ namespace xcore
 		inline bool			operator>=(const hashed_void_ptr& inRHS) const			{ return mPtr >= inRHS.mPtr; }
 
 		///@name Hashing
+		inline void*		ptr() const												{ return mPtr; }
 		inline u32			hash() const											{ return mHash; }
 
 		///@name Accessors
@@ -176,10 +191,6 @@ namespace xcore
 		inline void const*	operator->() const										{ return mPtr; }
 		inline				operator void*()										{ return mPtr; }
 		inline				operator void const*() const							{ return mPtr; }
-
-		///@name Data
-		void*				mPtr;
-		u32					mHash;
 	};
 
 

@@ -208,7 +208,7 @@ namespace xcore
 	@param inData	Buffer to update hash with
 	@param inLength	Length of buffer in bytes
 	**/
-	void					xmd5_generator::compute(void const* inData, int inLength)
+	void					xmd5_generator::compute(void const* inData, s32 inLength)
 	{
 		ASSERTS(mState==OPEN, "Can't compute hash value before Open() has been called!");
 
@@ -419,7 +419,7 @@ namespace xcore
 
 	@see	xmd5 xmd5_generator
 	**/
-	xmd5					x_MD5Hash(void const* inBuffer, int inLength)
+	xmd5					x_MD5Hash(void const* inBuffer, s32 inLength)
 	{
 		xmd5_generator md5;
 		md5.open();

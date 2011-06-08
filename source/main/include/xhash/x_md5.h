@@ -81,7 +81,7 @@ namespace xcore
 
 		///@name Updating
 		void				open();
-		void				compute(void const* inBuffer, int inLength);
+		void				compute(void const* inBuffer, s32 inLength);
 		xmd5				close();
 
 	private:
@@ -91,18 +91,18 @@ namespace xcore
 		u32					mMD5[4];											///< 128 bits MD5 hash value
 		u64					mLength;
 
-		X_ALIGN_BEGIN(16)
-		struct
+		struct buffer_t
 		{
 			u32			mInput[16];												///< 64 byte input buffer
 			u8			mSlack[7];												///< Slack space because internal memcopy copies gready (i.e. up to 7 bytes past mInput)
-		} mBuffer X_ALIGN_END(16);
+		};
+		buffer_t			mBuffer;
 	};
 
 	//---------------------------------------------------------------------------------------------------------------------
 	//	Utilities
 	//---------------------------------------------------------------------------------------------------------------------
-	extern xmd5			x_MD5Hash(void const* inBuffer, int inLength);			///< Get MD5 hash value of a block of data
+	extern xmd5			x_MD5Hash(void const* inBuffer, s32 inLength);			///< Get MD5 hash value of a block of data
 }
 
 
