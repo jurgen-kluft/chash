@@ -108,10 +108,10 @@ namespace xcore
 		template<typename D>
 		inline void				update(const D& data)								{ mCachedHash = HG::buf(&data, sizeof(D)); } // Update the hash value from the value of <T>
 
-		inline void 			update(const s32& data)								{ mCachedHash = HG::buf((u32)data, 4); }
-		inline void 			update(const u32& data)								{ mCachedHash = HG::buf((u32)data, 4); }
-		inline void 			update(const s64& data)								{ mCachedHash = HG::buf((u64)data, 8); }
-		inline void 			update(const u64& data)								{ mCachedHash = HG::buf((u64)data, 8); }
+		inline void 			update(const s32& data)								{ mCachedHash = HG::buf((u32*)&data, sizeof(u32)); }
+		inline void 			update(const u32& data)								{ mCachedHash = HG::buf((u32*)&data, sizeof(u32)); }
+		inline void 			update(const s64& data)								{ mCachedHash = HG::buf((u64*)&data, sizeof(u64)); }
+		inline void 			update(const u64& data)								{ mCachedHash = HG::buf((u64*)&data, sizeof(u64)); }
 
 		T						mData;
 		u32						mCachedHash;
@@ -128,7 +128,7 @@ namespace xcore
 	{
 		///@name Construction/Destruction
 		inline				hashed_ptr()											: mPtr(NULL),  mHash(0) { }
-		inline				hashed_ptr(T *inPtr)									: mPtr(inPtr), mHash(HG::buf(&inPtr, sizeof(T))) { }
+		inline				hashed_ptr(T *inPtr)									: mPtr(inPtr), mHash(HG::buf(&inPtr, sizeof(T*))) { }
 
 		///@name Operators
 		inline bool			operator==(const hashed_ptr<T>& inRHS) const			{ return mPtr == inRHS.mPtr; }
@@ -139,6 +139,7 @@ namespace xcore
 		///@name Hashing
 		inline T*			ptr() const												{ return mPtr; }
 		inline u32			hash() const											{ return mHash; }
+		inline void			hash(u32 val)											{ mHash = val; }
 
 		///@name Accessors
 		inline T*			operator->()											{ return mPtr; }
@@ -149,7 +150,7 @@ namespace xcore
 		inline				operator const T *() const								{ return mPtr; }
 
 	protected:
-		inline void			set(T* ptr)												{ mPtr = ptr; mHash = (HG::buf(&ptr, sizeof(T))); }
+		inline void			set(T* ptr)												{ mPtr = ptr; mHash = (HG::buf(&ptr, sizeof(T*))); }
 		///@name Data
 		T*					mPtr;
 		u32					mHash;
@@ -185,6 +186,7 @@ namespace xcore
 		///@name Hashing
 		inline void*		ptr() const												{ return mPtr; }
 		inline u32			hash() const											{ return mHash; }
+		inline void			hash(u32 val)											{ mHash = val; }
 
 		///@name Accessors
 		inline void*		operator->()											{ return mPtr; }

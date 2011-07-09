@@ -1,6 +1,12 @@
 syntax: glob
 
 ; VS files
+*.sln
+*.sln.docstates
+*.vcxproj
+*.filters
+*.ldscript
+*.user
 *.ncb
 *.suo
 *.user
