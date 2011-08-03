@@ -60,6 +60,29 @@ namespace xcore
 		u32					mHash;													///<  32-bit UID hash value (always cached, because UIDs are often used for lookup and/or comparison purposes)
 	};
 
+
+	/**
+	@ingroup	xhash
+	@brief		UUID generator (data-time, mac-addresse, process-id based UUID)
+	// TODO
+	//extern xuuid			gGenerateUUID(u16 year, u8 day_of_year, u8 hour, u8 minute, u8 second, u8 milli_second, u16 process_id, u64 mac_addresse);
+
+	/**
+	@ingroup	xhash
+	@brief		UUID generator (name based UUID, see RFC 4122(http://www.ietf.org/rfc/rfc4122.txt))
+
+				Generates the UUID from a domain and name.
+
+				The requirements for these types of UUIDs are as follows:
+
+					The UUIDs generated at different times from the same name in the same namespace MUST be equal.
+					The UUIDs generated from two different names in the same namespace should be different (with very high probability).
+					The UUIDs generated from the same name in two different namespaces should be different with (very high probability).
+					If two UUIDs that were generated from names are equal, then they were generated from the same name in the same namespace (with very high probability).
+
+	**/
+	// TODO
+	//extern xuuid			gGenerateUUID(const char* domain, const char* name);
 }
 
 #endif	///< __XHASH_UUID_H__

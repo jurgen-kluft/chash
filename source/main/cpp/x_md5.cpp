@@ -14,103 +14,6 @@ namespace xcore
 	//	MD5HashValue
 	//---------------------------------------------------------------------------------------------------------------------
 
-	/**
-	@brief Check if one hash value is smaller than another hash value
-
-	This function implements operator< so that the ToString() of the hash
-	value results in the same result when done with a dictionary compare.
-	**/
-	bool					xmd5::operator<(xmd5 const& inRHS) const
-	{
-		for (int i=0; i<16; i++)
-		{
-			u8 lhs=mData8[i], rhs=inRHS.mData8[i];
-
-			if (lhs < rhs) return true;
-			else if (lhs > rhs) return false;
-		}
-
-		return true;
-	}
-
-
-
-	/**
-	@brief Check if one hash value is larger than another hash value 
-
-	This function implements operator> so that the ToString() of the hash
-	value results in the same result when done with a dictionary compare.
-	**/
-	bool					xmd5::operator>(xmd5 const& inRHS) const
-	{
-		for (int i=0; i<16; i++)
-		{
-			u8 lhs=mData8[i], rhs=inRHS.mData8[i];
-			if (lhs > rhs) return true;
-			else if (lhs < rhs) return false;
-		}
-
-		return false;
-	}
-
-
-	void					xmd5::setMD5(u32 inR1, u32 inR2, u32 inR3, u32 inR4)
-	{
-		mData32[0] = inR1;
-		mData32[1] = inR2;
-		mData32[2] = inR3;
-		mData32[3] = inR4;
-	}
-
-
-	void					xmd5::getMD5(u32& outR1, u32& outR2, u32& outR3, u32& outR4) const
-	{
-		outR1 = mData32[0];
-		outR2 = mData32[1];
-		outR3 = mData32[2];
-		outR4 = mData32[3];
-	}
-
-
-	/**
-	@brief Convert MD5 hash value to String
-	**/
-	bool					xmd5::toString(char* ioStr, u32& ioStrLength) const
-	{
-		if (ioStrLength < 32)
-			return false;
-
-		const char* _format = "%02x%02x%02x%02";
-
-		char* s = ioStr;
-		s = s + x_sprintf(s, 8, _format, x_va(mData8[0]),  x_va(mData8[1]),  x_va( mData8[2]), x_va(mData8[3]));
-		s = s + x_sprintf(s, 8, _format, x_va(mData8[4]),  x_va(mData8[5]),  x_va( mData8[6]), x_va(mData8[7]));
-		s = s + x_sprintf(s, 8, _format, x_va(mData8[8]),  x_va(mData8[9]),  x_va( mData8[10]), x_va(mData8[11]));
-		s = s + x_sprintf(s, 8, _format, x_va(mData8[12]),  x_va(mData8[13]),  x_va( mData8[14]), x_va(mData8[15]));
-
-		ioStrLength = (u32)(s - ioStr);
-		return true;
-	}
-
-
-
-	/**
-	@brief Set MD5 hash value from String
-	**/
-	bool					xmd5::fromString(const char* inString)
-	{
-		u32 d[16];
-		const char* format = "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x";
-		if (x_sscanf(inString, format, x_va_r(&d[0]), x_va_r(&d[1]), x_va_r(&d[2]), x_va_r(&d[3]), x_va_r(&d[4]), x_va_r(&d[5]), x_va_r(&d[6]), x_va_r(&d[7]), x_va_r(&d[8]), x_va_r(&d[9]), x_va_r(&d[10]), x_va_r(&d[11]), x_va_r(&d[12]), x_va_r(&d[13]), x_va_r(&d[14]), x_va_r(&d[15])) == 16)
-		{
-			for (int i=0; i<16; i++)
-				mData8[i] = d[i];
-			return true;
-		}
-		else
-			return false;
-	}
-
 
 
 	//---------------------------------------------------------------------------------------------------------------------
@@ -254,7 +157,7 @@ namespace xcore
 	/**
 	@brief Get final hash value
 	**/
-	xmd5					xmd5_generator::close()
+	bool				xmd5_generator::close(xhash128& hash)
 	{
 		// If this is the first time we call GetHash(), finish the last transform
 		if (mState == OPEN)
@@ -293,9 +196,8 @@ namespace xcore
 		}
 
 		// Return hash value
-		xmd5 ret;
-		ret.setMD5(mMD5[0], mMD5[1], mMD5[2], mMD5[3]);
-		return ret;
+		hash.set(mMD5[0], mMD5[1], mMD5[2], mMD5[3]);
+		return true;
 	}
 
 
@@ -419,12 +321,18 @@ namespace xcore
 
 	@see	xmd5 xmd5_generator
 	**/
-	xmd5					x_MD5Hash(void const* inBuffer, s32 inLength)
+	xmd5		x_MD5Hash(void const* inBuffer, s32 inLength)
 	{
 		xmd5_generator md5;
 		md5.open();
 		md5.compute(inBuffer, inLength);
-		return md5.close();
+
+		xmd5 hash;
+		if (md5.close(hash))
+			return hash;
+
+		hash.clear();
+		return hash;
 	}
 
 

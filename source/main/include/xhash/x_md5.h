@@ -1,4 +1,4 @@
-// MD5.h - Core MD5 Hash value 
+// x_md5.h - xCore MD5 Hash value 
 #ifndef __XHASH_MD5HASH_H__
 #define __XHASH_MD5HASH_H__
 #include "xbase\x_target.h"
@@ -8,6 +8,9 @@
 
 #include "xbase\x_types.h"
 
+#include "xhash\x_hash128.h"
+#include "xhash\x_hash128_generator.h"
+
 namespace xcore
 {
 	/**
@@ -16,41 +19,12 @@ namespace xcore
 	@desc		This struct represents the MD5 hash value ("message digest"). It contains a
 				16-byte (128 bits) value, returned by the MD5Hash class.
 	**/
-	class xmd5
+	class xmd5 : public xhash128
 	{
 	public:
-							xmd5()													{ clear(); }
-							xmd5(const char* inString)								{ fromString(inString); }
-
-		///@name Equality
-		bool				operator==(xmd5 const& inRHS) const						{ return mData32[0] == inRHS.mData32[0] && mData32[1] == inRHS.mData32[1] && mData32[2] == inRHS.mData32[2] && mData32[3] == inRHS.mData32[3]; }
-		bool				operator!=(xmd5 const& inRHS) const						{ return !(*this == inRHS); }
-		bool				operator<(xmd5 const& inRHS) const;
-		bool				operator>(xmd5 const& inRHS) const;
-
-		///@name The MD5 hash value
-		void				setMD5(u32 inR1, u32 inR2, u32 inR3, u32 inR4);
-		void				getMD5(u32& outR1, u32& outR2, u32& outR3, u32& outR4) const;
-
-		///@name Hashing
-		inline u32			getHash() const											{ return mData32[0]; } ///< Get hash value (when MD5Hash is used as a key in a hash set or map)
-
-		///@name To/From String
-		bool				toString(char* ioStr, u32& ioStrLength) const;			///< Convert MD5 hash value to String (incoming length > 16)
-		bool				fromString(const char* inStr);							///< Set MD5 hash value from String
-
-	protected:
-		void				clear()													{ setMD5(0,0,0,0); }
-
-		///@name Data
-		union
-		{
-			u8				mData8[16];												///< MD5 Message digest as sixteen bytes
-			u32				mData32[4];												///< MD5 Message digest as four 32-bit integers
-		};
+							xmd5()													{ }
+							xmd5(const char* inString) : xhash128(inString)			{ }
 	};
-
-
 
 	/**
 	@group		xhash
@@ -68,7 +42,7 @@ namespace xcore
 				MD5Hash object, call Update() on all of the data that needs to be hashed
 				and call the GetHash() function to retrieve the MD5Hash.
 	**/
-	class xmd5_generator
+	class xmd5_generator : public xihash128_generator
 	{
 		enum EState
 		{
@@ -82,7 +56,7 @@ namespace xcore
 		///@name Updating
 		void				open();
 		void				compute(void const* inBuffer, s32 inLength);
-		xmd5				close();
+		bool				close(xhash128& hash);
 
 	private:
 		void				transform();
@@ -102,7 +76,7 @@ namespace xcore
 	//---------------------------------------------------------------------------------------------------------------------
 	//	Utilities
 	//---------------------------------------------------------------------------------------------------------------------
-	extern xmd5			x_MD5Hash(void const* inBuffer, s32 inLength);			///< Get MD5 hash value of a block of data
+	extern xmd5		x_MD5Hash(void const* inBuffer, s32 inLength);			///< Get MD5 hash value of a block of data
 }
 
 

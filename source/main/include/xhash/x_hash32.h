@@ -1,12 +1,13 @@
 // Hash.h - Core Hash functions - 
-#ifndef __XHASH_HASHING_H__
-#define __XHASH_HASHING_H__
+#ifndef __XHASH_HASHABLE_H__
+#define __XHASH_HASHABLE_H__
 #include "xbase\x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif
 
 #include "xbase\x_types.h"
+#include "xhash\private\x_hash32_generator_murmur.h"
 
 namespace xcore
 {
@@ -14,26 +15,6 @@ namespace xcore
 	//	Hash Utility functions
 	//---------------------------------------------------------------------------------------------------------------------
 	typedef		u32			xhash32;
-
-	class xhash_generator_fnv
-	{
-	public:
-		// FNV 32a hash
-		static xhash32			buf(void const* inData, u32 inLength);
-		static xhash32			buf(void const* inData, u32 inLength, xhash32 inPrevious);
-		static xhash32			str(char const* inStr);
-		static xhash32			str(char const* inStr, xhash32 inPrevious);
-	};
-
-	class xhash_generator_murmur
-	{
-	public:
-		// Murmur hash
-		static xhash32			buf(void const* inData, u32 inLength);
-		static xhash32			buf(void const* inData, u32 inLength, xhash32 inPrevious);
-		static xhash32			str(char const* inStr);
-		static xhash32			str(char const* inStr, xhash32 inPrevious);
-	};
 
 	class xhash_generator : public xhash_generator_murmur
 	{
@@ -197,4 +178,4 @@ namespace xcore
 
 
 }
-#endif	///< __XHASH_HASHING_H__
+#endif	///< __XHASH_HASHABLE_H__

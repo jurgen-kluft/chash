@@ -1,6 +1,7 @@
 #include "xbase\x_target.h"
 #include "xbase\x_string_std.h"
-#include "xhash\x_hash.h"
+#include "xhash\x_hash32.h"
+#include "xhash\private\x_hash32_generator_murmur.h"
 
 #include "xunittest\xunittest.h"
 
