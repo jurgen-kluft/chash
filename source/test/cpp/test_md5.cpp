@@ -137,12 +137,12 @@ UNITTEST_SUITE_BEGIN(xmd5)
 			CHECK_EQUAL(sFromStr,true);
 		}
 	}
-	UNITTEST_FIXTURE(MD5)
+	UNITTEST_FIXTURE(generator)
 	{
 		UNITTEST_FIXTURE_SETUP() {}
 		UNITTEST_FIXTURE_TEARDOWN() {}
 
-		UNITTEST_TEST(MD5_Open)
+		UNITTEST_TEST(Open)
 		{
 			xmd5_generator smd5,smd52;
 			u32 ru,ru2,ru3,ru4;
@@ -158,15 +158,15 @@ UNITTEST_SUITE_BEGIN(xmd5)
 			smd5h2.get(ruu,ruu2,ruu3,ruu4);
 			CHECK_EQUAL(smd5h==smd5h2,true);
 		}
-		UNITTEST_TEST(MD5_Compute)
+		UNITTEST_TEST(Compute)
 		{
-			int inBuffer[10]={1,1,2,3,5,8,13,21,34,55};
-			int	inLength=10;
+			s32 inBuffer[10]={1,1,2,3,5,8,13,21,34,55};
+			s32	inLength=10;
 			xmd5_generator smd5;
 			smd5.open();
 			smd5.compute(inBuffer,inLength);
 		}
-		UNITTEST_TEST(MD5_Close)
+		UNITTEST_TEST(Close)
 		{
 			xmd5_generator smd5,smd52;
 			u32 ru,ru2,ru3,ru4;

@@ -17,7 +17,7 @@ namespace xcore
 	public:
 		///@name Updating
 		virtual void		open() = 0;
-		virtual void		compute(void const* inBuffer, s32 inLength) = 0;
+		virtual void		compute(void const* inBuffer, u32 inLength) = 0;
 		virtual bool		close(xhash160& hash) = 0;
 	};
 
@@ -35,7 +35,7 @@ namespace xcore
 
 		///@name Updating
 		void				open();
-		void				compute(void const* inBuffer, s32 inLength);
+		void				compute(void const* inBuffer, u32 inLength);
 		bool				close(xhash160& hash);
 
 	private:

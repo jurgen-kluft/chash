@@ -73,7 +73,7 @@ namespace xcore
 		if (ioStrLength < 40)
 			return false;
 
-		const char* _format = "%02x%02x%02x%02";
+		const char* _format = "%02x%02x%02x%02x";
 
 		char* s = ioStr;
 		s = s + x_sprintf(s, 8, _format, x_va(mData8[0]),  x_va(mData8[1]),  x_va( mData8[2]), x_va(mData8[3]));
@@ -135,7 +135,7 @@ namespace xcore
 		mGenerator->open();
 	}
 
-	void			xhash160_generator::compute(void const* inBuffer, s32 inLength)
+	void			xhash160_generator::compute(void const* inBuffer, u32 inLength)
 	{
 		mGenerator->compute(inBuffer, inLength);
 	}

@@ -42,20 +42,17 @@ namespace xcore
 
 		///@name Updating
 		void		open();
-		void		compute(void const* inBuffer, s32 inLength);
+		void		compute(void const* inBuffer, u32 inLength);
 		bool		close(xhash160& hash);
 
 	private:
 		void		reset();
-		void		processMessageBlock();						// Process the next 512 bits of the message
-		void		padMessage();								// Pads the current message block to 512 bits
 
 		u32			mH[5];										// Message digest buffers
 
-		u32			mLength_Low;								// Message length in bits
-		u32			mLength_High;								// Message length in bits
+		u64			mMessage_Length;							// Message length in bits
 
-		xbyte		mMessage_Block[64];							// 512-bit message blocks
+		xbyte		mMessage_Block[320];						// 512-bit message blocks
 		s32			mMessage_Block_Index;						// Index into message block array
 
 		bool		mComputed;									// Is the digest computed?

@@ -1,6 +1,7 @@
 // x_md5.cpp - Core MD5 hash value 
 #include "xbase\x_target.h"
 #include "xbase\x_va_list.h"
+#include "xbase\x_integer.h"
 #include "xbase\x_string_std.h"
 #include "xbase\x_memory_std.h"
 #include "xbase\x_endian.h"
@@ -9,7 +10,9 @@
 
 namespace xcore
 {
-
+	// URL:
+	//     http://en.wikipedia.org/wiki/SHA-1
+	//
 	// Description:
 	//     This class implements the Secure Hashing Standard as defined
 	//     in FIPS PUB 180-1 published April 17, 1995.
@@ -36,7 +39,81 @@ namespace xcore
 	//     only works with messages with a length that is a multiple of 8
 	//     bits.
 	//
-	//
+	inline const u32 sha1_rol(const u32 num, const u32 cnt)
+	{
+		return((num << cnt) | (num >> (32-cnt)));
+	}
+
+	static void sha1_compute(u32 *result, u32 *w)
+	{
+#ifdef X_LITTLE_ENDIAN
+		u8* cw = (u8*)w;
+		for (s32 i=0; i<64; i+=4, cw+=4)
+		{
+			u8 t = cw[0];
+			cw[0] = cw[3];
+			cw[3] = t;
+			t = cw[1];
+			cw[1] = cw[2];
+			cw[2] = t;
+		}
+#endif
+
+		u32 a = result[0];
+		u32 b = result[1];
+		u32 c = result[2];
+		u32 d = result[3];
+		u32 e = result[4];
+
+		#define sha1macro(func,val)			\
+				{							\
+					const u32 t = sha1_rol(a, 5)+(func)+e+val+w[j]; \
+					e = d; d = c;			\
+					c = sha1_rol(b, 30);	\
+					b = a; a = t;			\
+				}
+
+		int j=0;
+		while(j<16)
+		{
+			sha1macro((b&c)|(~b&d),0x5A827999)
+			j++;
+		}
+		while(j<20)
+		{
+			w[j] = sha1_rol((w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]), 1);
+			sha1macro((b&c)|(~b&d),0x5A827999)
+			j++;
+		}
+		while(j<40)
+		{
+			w[j] = sha1_rol((w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]), 1);
+			sha1macro(b^c^d,0x6ED9EBA1)
+			j++;
+		}
+		while(j<60)
+		{
+			w[j] = sha1_rol((w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]), 1);
+			sha1macro((b&c)|(b&d)|(c&d),0x8F1BBCDC)
+			j++;
+		}
+		while(j<80)
+		{
+			w[j] = sha1_rol((w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]), 1);
+			sha1macro(b^c^d,0xCA62C1D6)
+			j++;
+		}
+
+		#undef sha1macro
+
+		result[0] += a;
+		result[1] += b;
+		result[2] += c;
+		result[3] += d;
+		result[4] += e;
+	}
+
+
 
 	xsha1_generator::xsha1_generator()
 	{
@@ -61,15 +138,14 @@ namespace xcore
 	 */
 	void xsha1_generator::open()
 	{
-		mLength_Low          = 0;
-		mLength_High         = 0;
+		mMessage_Length      = 0;
 		mMessage_Block_Index = 0;
 
-		mH[0]        = 0x67452301;
-		mH[1]        = 0xEFCDAB89;
-		mH[2]        = 0x98BADCFE;
-		mH[3]        = 0x10325476;
-		mH[4]        = 0xC3D2E1F0;
+		mH[0] = 0x67452301;
+		mH[1] = 0xEFCDAB89;
+		mH[2] = 0x98BADCFE;
+		mH[3] = 0x10325476;
+		mH[4] = 0xC3D2E1F0;
 
 		mComputed    = false;
 		mCorrupted   = false;
@@ -102,9 +178,47 @@ namespace xcore
 
 		if (!mComputed)
 		{
-			padMessage();
+			// We need to add 1 '1' bit to the end of the message 
+			// Plus the length of the message in bits as a 64 bits value
+			u64 const final_message_length = ((mMessage_Length + 1 + 64 + 511) & X_CONSTANT_U64(0xfffffffffffffe00));
+
+			// How many bytes do we have to add ?
+			u64 bytes_to_add = (final_message_length - mMessage_Length) / 8;
+
+			// The remainder
+			u8 remainder[128];
+			x_memset(remainder, 0, 128);
+			remainder[0] = 0x80;	// The '1' bit
+			xmem_utils::writeunaligned64((u64*)&remainder[bytes_to_add - 8], mMessage_Length);
+
+			u8 const* premainder = remainder;
+			while (bytes_to_add!=0)
+			{
+				while (mMessage_Block_Index!=64)
+				{
+					mMessage_Block[mMessage_Block_Index++] = *premainder++;
+					--bytes_to_add;
+				}
+				mMessage_Block_Index = 0;
+				sha1_compute(mH,(u32*)mMessage_Block);
+			}
+
 			mComputed = true;
 		}
+
+		// On little endian we need to convert the hash
+#ifdef X_LITTLE_ENDIAN
+		u8* cw = (u8*)mH;
+		for (s32 i=0; i<80; i+=4, cw+=4)
+		{
+			u8 t = cw[0];
+			cw[0] = cw[3];
+			cw[3] = t;
+			t = cw[1];
+			cw[1] = cw[2];
+			cw[2] = t;
+		}
+#endif
 
 		hash.set(mH[0], mH[1], mH[2], mH[3], mH[4]);
 		return true;
@@ -128,241 +242,44 @@ namespace xcore
 	 *  Comments:
 	 *
 	 */
-	void xsha1_generator::compute(void const* inBuffer, s32 inLength)
+	void xsha1_generator::compute(void const* inBuffer, u32 inLength)
 	{
-		if (!inLength)
-		{
-			return;
-		}
+		const u8 *src = (const u8*)inBuffer;
 
-		if (mComputed || mCorrupted)
+		u32 len = inLength;
+		while (len!=0)
 		{
-			mCorrupted = true;
-			return;
-		}
-
-		xbyte const* buffer = (xbyte const*)inBuffer;
-		while(inLength-- && !mCorrupted)
-		{
-			mMessage_Block[mMessage_Block_Index++] = (*buffer & 0xFF);
-
-			mLength_Low += 8;
-			mLength_Low &= 0xFFFFFFFF;               // Force it to 32 bits
-			if (mLength_Low == 0)
+			while (mMessage_Block_Index<64 && len!=0)
 			{
-				mLength_High++;
-				mLength_High &= 0xFFFFFFFF;          // Force it to 32 bits
-				if (mLength_High == 0)
-				{
-					mCorrupted = true;               // Message is too long
-				}
+				// This line will swap endian on big endian and keep endian on little endian.
+				mMessage_Block[mMessage_Block_Index++]=*src++;
+				--len;
 			}
 
 			if (mMessage_Block_Index == 64)
 			{
-				processMessageBlock();
+				sha1_compute(mH, (u32*)mMessage_Block);
+				mMessage_Block_Index = 0;
 			}
-
-			buffer++;
 		}
+
+		mMessage_Length += inLength * 8;
 	}
 
-	/*  
-	 *  sCircularShift
-	 *
-	 *  Description:
-	 *      This member function will perform a circular shifting operation.
-	 *
-	 *  Parameters:
-	 *      bits: [in]
-	 *          The number of bits to shift (1-31)
-	 *      word: [in]
-	 *          The value to shift (assumes a 32-bit integer)
-	 *
-	 *  Returns:
-	 *      The shifted value.
-	 *
-	 *  Comments:
-	 *
-	 */
-	inline static 
-	u32 sCircularShift(s32 bits, u32 word) 
+
+
+
+	xsha1	x_Sha1Hash(void const* inBuffer, s32 inLength)
 	{
-		return ((word << bits) & 0xFFFFFFFF) | ((word & 0xFFFFFFFF) >> (32-bits));
+		xsha1_generator g;
+		g.open();
+		g.compute(inBuffer, inLength);
+		xsha1 h;
+		if (g.close(h))
+			return h;
+
+		h.clear();
+		return h;
 	}
 
-	/*  
-	 *  ProcessMessageBlock
-	 *
-	 *  Description:
-	 *      This function will process the next 512 bits of the message
-	 *      stored in the Message_Block array.
-	 *
-	 *  Parameters:
-	 *      None.
-	 *
-	 *  Returns:
-	 *      Nothing.
-	 *
-	 *  Comments:
-	 *      Many of the variable names in this function, especially the single
-	 *      character names, were used because those were the names used
-	 *      in the publication.
-	 *
-	 */
-	void xsha1_generator::processMessageBlock()
-	{
-		const unsigned K[] =    {               // Constants defined for SHA-1
-									0x5A827999,
-									0x6ED9EBA1,
-									0x8F1BBCDC,
-									0xCA62C1D6
-								};
-		int         t;                          // Loop counter
-		unsigned    temp;                       // Temporary word value
-		unsigned    W[80];                      // Word sequence
-		unsigned    A, B, C, D, E;              // Word buffers
-
-		/*
-		 *  Initialize the first 16 words in the array W
-		 */
-		for(t = 0; t < 16; t++)
-		{
-			W[t]  = ((u32) mMessage_Block[t * 4]) << 24;
-			W[t] |= ((u32) mMessage_Block[t * 4 + 1]) << 16;
-			W[t] |= ((u32) mMessage_Block[t * 4 + 2]) << 8;
-			W[t] |= ((u32) mMessage_Block[t * 4 + 3]);
-		}
-
-		for(t = 16; t < 80; t++)
-		{
-		   W[t] = sCircularShift(1,W[t-3] ^ W[t-8] ^ W[t-14] ^ W[t-16]);
-		}
-
-		A = mH[0];
-		B = mH[1];
-		C = mH[2];
-		D = mH[3];
-		E = mH[4];
-
-		for(t = 0; t < 20; t++)
-		{
-			temp = sCircularShift(5,A) + ((B & C) | ((~B) & D)) + E + W[t] + K[0];
-			temp &= 0xFFFFFFFF;
-			E = D;
-			D = C;
-			C = sCircularShift(30,B);
-			B = A;
-			A = temp;
-		}
-
-		for(t = 20; t < 40; t++)
-		{
-			temp = sCircularShift(5,A) + (B ^ C ^ D) + E + W[t] + K[1];
-			temp &= 0xFFFFFFFF;
-			E = D;
-			D = C;
-			C = sCircularShift(30,B);
-			B = A;
-			A = temp;
-		}
-
-		for(t = 40; t < 60; t++)
-		{
-			temp = sCircularShift(5,A) + ((B & C) | (B & D) | (C & D)) + E + W[t] + K[2];
-			temp &= 0xFFFFFFFF;
-			E = D;
-			D = C;
-			C = sCircularShift(30,B);
-			B = A;
-			A = temp;
-		}
-
-		for(t = 60; t < 80; t++)
-		{
-			temp = sCircularShift(5,A) + (B ^ C ^ D) + E + W[t] + K[3];
-			temp &= 0xFFFFFFFF;
-			E = D;
-			D = C;
-			C = sCircularShift(30,B);
-			B = A;
-			A = temp;
-		}
-
-		mH[0] = (mH[0] + A) & 0xFFFFFFFF;
-		mH[1] = (mH[1] + B) & 0xFFFFFFFF;
-		mH[2] = (mH[2] + C) & 0xFFFFFFFF;
-		mH[3] = (mH[3] + D) & 0xFFFFFFFF;
-		mH[4] = (mH[4] + E) & 0xFFFFFFFF;
-
-		mMessage_Block_Index = 0;
-	}
-
-	/*  
-	 *  PadMessage
-	 *
-	 *  Description:
-	 *      According to the standard, the message must be padded to an even
-	 *      512 bits.  The first padding bit must be a '1'.  The last 64 bits
-	 *      represent the length of the original message.  All bits in between
-	 *      should be 0.  This function will pad the message according to those
-	 *      rules by filling the message_block array accordingly.  It will also
-	 *      call ProcessMessageBlock() appropriately.  When it returns, it
-	 *      can be assumed that the message digest has been computed.
-	 *
-	 *  Parameters:
-	 *      None.
-	 *
-	 *  Returns:
-	 *      Nothing.
-	 *
-	 *  Comments:
-	 *
-	 */
-	void xsha1_generator::padMessage()
-	{
-		/*
-		 *  Check to see if the current message block is too small to hold
-		 *  the initial padding bits and length.  If so, we will pad the
-		 *  block, process it, and then continue padding into a second block.
-		 */
-		if (mMessage_Block_Index > 55)
-		{
-			mMessage_Block[mMessage_Block_Index++] = 0x80;
-			while(mMessage_Block_Index < 64)
-			{
-				mMessage_Block[mMessage_Block_Index++] = 0;
-			}
-
-			processMessageBlock();
-
-			while(mMessage_Block_Index < 56)
-			{
-				mMessage_Block[mMessage_Block_Index++] = 0;
-			}
-		}
-		else
-		{
-			mMessage_Block[mMessage_Block_Index++] = 0x80;
-			while(mMessage_Block_Index < 56)
-			{
-				mMessage_Block[mMessage_Block_Index++] = 0;
-			}
-
-		}
-
-		/*
-		 *  Store the message length as the last 8 octets
-		 */
-		mMessage_Block[56] = (mLength_High >> 24) & 0xFF;
-		mMessage_Block[57] = (mLength_High >> 16) & 0xFF;
-		mMessage_Block[58] = (mLength_High >> 8) & 0xFF;
-		mMessage_Block[59] = (mLength_High) & 0xFF;
-		mMessage_Block[60] = (mLength_Low >> 24) & 0xFF;
-		mMessage_Block[61] = (mLength_Low >> 16) & 0xFF;
-		mMessage_Block[62] = (mLength_Low >> 8) & 0xFF;
-		mMessage_Block[63] = (mLength_Low) & 0xFF;
-
-		processMessageBlock();
-	}
 }

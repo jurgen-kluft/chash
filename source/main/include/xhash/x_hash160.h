@@ -35,7 +35,6 @@ namespace xcore
 		bool				toString(char* ioStr, u32& ioStrLength) const;			///< Convert hash value to String (incoming length > 16)
 		bool				fromString(const char* inStr);							///< Set hash value from String
 
-	protected:
 		void				clear()													{ set(0,0,0,0,0); }
 
 	private:
