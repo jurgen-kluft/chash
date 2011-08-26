@@ -25,6 +25,14 @@ namespace xcore
 							xsha1(const char* inString) : xhash160(inString)		{ }
 	};
 
+	struct xsha1_ctx
+	{
+		u64		size;
+		u32		H[5];
+		u32		W[16];
+	};
+
+
 	/**
 	@group		xhash
 	@brief		SHA1 hash value
@@ -41,23 +49,15 @@ namespace xcore
 					xsha1_generator();
 
 		///@name Updating
-		void		open();
-		void		compute(void const* inBuffer, u32 inLength);
-		bool		close(xhash160& hash);
+		virtual void open();
+		virtual void compute(void const* inBuffer, u32 inLength);
+		virtual bool close(xhash160& hash);
 
 	private:
 		void		reset();
 
-		u32			mH[5];										// Message digest buffers
-
-		u64			mMessage_Length;							// Message length in bits
-
-		xbyte		mMessage_Block[320];						// 512-bit message blocks
-		s32			mMessage_Block_Index;						// Index into message block array
-
 		bool		mComputed;									// Is the digest computed?
-		bool		mCorrupted;									// Is the message digest corrupted?
-    
+		xsha1_ctx	mCtx;
 	};
 
 	//---------------------------------------------------------------------------------------------------------------------

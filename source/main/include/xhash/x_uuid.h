@@ -66,6 +66,7 @@ namespace xcore
 	@brief		UUID generator (data-time, mac-addresse, process-id based UUID)
 	// TODO
 	//extern xuuid			gGenerateUUID(u16 year, u8 day_of_year, u8 hour, u8 minute, u8 second, u8 milli_second, u16 process_id, u64 mac_addresse);
+	**/
 
 	/**
 	@ingroup	xhash

@@ -54,9 +54,9 @@ namespace xcore
 							xmd5_generator();
 
 		///@name Updating
-		void				open();
-		void				compute(void const* inBuffer, s32 inLength);
-		bool				close(xhash128& hash);
+		virtual void		open();
+		virtual void		compute(void const* inBuffer, s32 inLength);
+		virtual bool		close(xhash128& hash);
 
 	private:
 		void				transform();
