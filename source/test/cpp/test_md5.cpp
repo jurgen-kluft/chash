@@ -145,17 +145,22 @@ UNITTEST_SUITE_BEGIN(xmd5)
 		UNITTEST_TEST(Open)
 		{
 			xmd5_generator smd5,smd52;
-			u32 ru,ru2,ru3,ru4;
-			u32 ruu,ruu2,ruu3,ruu4;
+			u32 ru[4];
+			u32 ruu[4];
 			smd5.open();
 			xmd5 smd5h; smd5.close(smd5h);
 			xmd5 smd5h2; smd52.close(smd5h2);
-			smd5h.get(ru,ru2,ru3,ru4);
-			smd5h2.get(ruu,ruu2,ruu3,ruu4);
+			
+			
+			smd5h.get(ru[0], ru[1], ru[2], ru[3]);
+			smd5h2.get(ruu[0], ruu[1],ruu[2],ruu[3]);
+			
+			CHECK_TRUE( ru[0] != ruu[0] || ru[1] != ruu[1] || ru[2] != ruu[2] || ru[3] != ruu[3]);
+
 			CHECK_EQUAL(smd5h==smd5h2,false);
 			smd52.open();
 			smd52.close(smd5h2);
-			smd5h2.get(ruu,ruu2,ruu3,ruu4);
+			smd5h2.get(ruu[0], ruu[1],ruu[2],ruu[3]);
 			CHECK_EQUAL(smd5h==smd5h2,true);
 		}
 		UNITTEST_TEST(Compute)
@@ -172,8 +177,10 @@ UNITTEST_SUITE_BEGIN(xmd5)
 			u32 ru,ru2,ru3,ru4;
 			u32 ruu,ruu2,ruu3,ruu4;
 			smd5.open();
-			xmd5 smd5h;  smd5.close(smd5h);
-			xmd5 smd5h2; smd52.close(smd5h2);
+			xmd5 smd5h("a unique string");  
+			smd5.close(smd5h);
+			xmd5 smd5h2("a different string"); 
+			smd52.close(smd5h2);
 			smd5h.get(ru,ru2,ru3,ru4);
 			smd5h2.get(ruu,ruu2,ruu3,ruu4);
 			CHECK_NOT_EQUAL(ru,ruu);

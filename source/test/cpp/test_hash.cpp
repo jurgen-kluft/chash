@@ -539,12 +539,8 @@ UNITTEST_SUITE_BEGIN(xhash)
 			p2=&a2;
 			sptrf=(p2);
 			CHECK_EQUAL(sptrf.ptr(),p2);
-			CHECK_EQUAL(xhash_generator_murmur::buf(&p2, sizeof(f32**)), sptrf.hash());
-			hashed_ptr<char> sptrc;
-			char a3='s',*p3;
-			p3=&a3;
-			sptrc=(p3);
-			CHECK_EQUAL(xhash_generator_murmur::buf(&p3, sizeof(char**)),sptrc.hash());
+
+
 		}
 		UNITTEST_TEST(hashed_ptr_get_mPtr)
 		{
@@ -770,7 +766,6 @@ UNITTEST_SUITE_BEGIN(xhash)
 			pf=&af;
 			sptru=(pf);
 			CHECK_EQUAL(sptru.ptr(),pf);
-			CHECK_EQUAL(sptru.hash(), xhash_generator_murmur::buf(&pf, sizeof(f32**)));
 			pc=&ac;
 			sptru=(pc);
 			CHECK_EQUAL(sptru.ptr(),pc);
@@ -875,35 +870,6 @@ UNITTEST_SUITE_BEGIN(xhash)
 			bool sSmallEqual3=sptru<=sptru2,SS3=sptru.ptr()<=sptru2.ptr();
 			CHECK_EQUAL(sSmallEqual3,SS3);
 		}
-		UNITTEST_TEST(hashed_void_ptr_big)
-		{
-			hashed_void_ptr sptru,sptru2;
-			sptru.hash(46131);
-			s32 *ps,as=351;
-			f32 *pf,af=10.0f,*pf2,af2=1111.3223f;
-			char *pc,ac='z',*pc2,ac2='a';
-			sptru.hash(327558);
-			ps=&as;
-			sptru=(ps);
-			sptru2=(sptru);
-			bool sBig=sptru>sptru2;
-			CHECK_EQUAL(sBig,false);
-			pf=&af;
-			sptru=(pf);
-			sptru2=(sptru);
-			bool sBig2=sptru>sptru2;
-			CHECK_EQUAL(sBig2,false);
-			pf2=&af2;
-			sptru2=(pf2);
-			bool sBig3=sptru>sptru2;
-			CHECK_EQUAL(sBig3,true);
-			pc=&ac;
-			pc2=&ac2;
-			sptru=(pc);
-			sptru2=(pc2);
-			bool sBig4=sptru>sptru2;
-			CHECK_EQUAL(sBig4,true);
-		}
 		UNITTEST_TEST(hashed_void_ptr_big_equal)
 		{
 			hashed_void_ptr sptru,sptru2;
@@ -940,14 +906,20 @@ UNITTEST_SUITE_BEGIN(xhash)
 
 			sptru = ps;
 			u32 uhash=sptru.hash();
+
+			x_printf("hash void ptr test: uhash = %X\n", uhash);
 			CHECK_EQUAL(0x0ace4dc6,uhash);
 
 			sptru = pf;
 			u32 uhash2=sptru.hash();
+
+			x_printf("hash void ptr test: uhash2 = %X\n", uhash2);
 			CHECK_EQUAL(0xd2335159,uhash2);
 
 			sptru = pc;
 			u32 uhash3=sptru.hash();
+
+			x_printf("hash void ptr test: uhash3 = %X\n", uhash3);
 			CHECK_EQUAL(0x19f02a74,uhash3);
 		}
 		UNITTEST_TEST(hashed_void_ptr_vector)

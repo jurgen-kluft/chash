@@ -8,6 +8,7 @@
 
 #include "xbase\x_types.h"
 #include "xhash\private\x_hash32_generator_murmur.h"
+#include "xbase\x_endian.h"
 
 namespace xcore
 {
@@ -131,7 +132,19 @@ namespace xcore
 		inline				operator const T *() const								{ return mPtr; }
 
 	protected:
-		inline void			set(T* ptr)												{ mPtr = ptr; mHash = (HG::buf(&ptr, sizeof(T*))); }
+		inline void			set(T* ptr)												
+		{ 
+			mPtr = ptr; 
+
+			#ifdef X_BIG_ENDIAN
+			ASSERT(sizeof(ptr) == sizeof(u32)); // this will not work on 64 bit systems!!
+			u32 endianPtrVal = (u32)ptr;
+			ptr = (T*)xcore::x_endian_swap::swap(endianPtrVal);
+			#endif
+
+			mHash = (HG::buf(&ptr, sizeof(T*))); 
+		
+		}
 		///@name Data
 		T*					mPtr;
 		u32					mHash;

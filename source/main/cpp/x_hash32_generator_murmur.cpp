@@ -2,6 +2,8 @@
 #include "xbase\x_types.h"
 #include "xbase\x_string_std.h"
 #include "xhash\private\x_hash32_generator_murmur.h"
+#include "xbase\x_endian.h"
+#include "xbase\x_string.h"
 
 namespace xcore
 {
@@ -57,14 +59,31 @@ namespace xcore
 		return h;
 	}
 
+	static void reverseEndianIfNeeded(const char* inData, char* outData, u32 len)
+	{
+		#ifdef X_BIG_ENDIAN
+		
+		for(xcore::u32 i = 0; i < len; i++)
+		{
+			outData[len - i - 1] = inData[i];
+		}
+
+		#else
+
+		x_memcopy(outData, inData, len);
+		#endif
+	}
+
 
 	xhash32			xhash_generator_murmur::buf(void const* inData, u32 inLength)
 	{
+
 		return gGetMurmurHash32((const char*)inData, inLength, 0);
 	}
 
 	xhash32			xhash_generator_murmur::buf(void const* inData, u32 inLength, xhash32 inPrevious)
 	{
+
 		return gGetMurmurHash32((const char*)inData, inLength, inPrevious);
 	}
 

@@ -3,6 +3,7 @@
 #include "xbase\x_allocator.h"
 
 #include "xunittest\xunittest.h"
+#include "xbase\x_console.h"
 
 UNITTEST_SUITE_LIST(xHashUnitTest);
 UNITTEST_SUITE_DECLARE(xHashUnitTest, xcrc);
@@ -43,6 +44,8 @@ bool gRunUnitTest(UnitTest::TestReporter& reporter)
 {
 	UnitTestAllocator unittestAllocator( xcore::gCreateSystemAllocator() );
 	UnitTest::SetAllocator(&unittestAllocator);
+
+	xcore::xconsole::addDefault();
 
 	int r = UNITTEST_SUITE_RUN(reporter, xHashUnitTest);
 	if (unittestAllocator.mNumAllocations!=0)

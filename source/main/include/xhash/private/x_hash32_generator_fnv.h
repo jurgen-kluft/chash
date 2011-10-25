@@ -34,7 +34,7 @@ namespace xcore
 
 		virtual void		open()												{ mHash = 0; }
 		virtual void		compute(void const* inBuffer, s32 inLength)			{ xhash_generator_fnv::buf(inBuffer, inLength, mHash); }
-		virtual bool		close(xhash32& hash)								{ hash = mHash; }
+		virtual bool		close(xhash32& hash)								{ hash = mHash; return true; }
 	};
 
 }
