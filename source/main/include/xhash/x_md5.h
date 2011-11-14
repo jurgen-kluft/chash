@@ -1,3 +1,9 @@
+/**
+ * @file x_md5.h
+ *
+ * xCore MD5 Hash value
+ */
+
 // x_md5.h - xCore MD5 Hash value 
 #ifndef __XHASH_MD5HASH_H__
 #define __XHASH_MD5HASH_H__
@@ -14,11 +20,11 @@
 namespace xcore
 {
 	/**
-	@group		xhash
-	@brief		MD5 hash value
-	@desc		This struct represents the MD5 hash value ("message digest"). It contains a
-				16-byte (128 bits) value, returned by the MD5Hash class.
-	**/
+	 * @group		xhash
+	 * @brief		MD5 hash value
+	 * @desc		This struct represents the MD5 hash value ("message digest"). It contains a
+	 *			16-byte (128 bits) value, returned by the MD5Hash class.
+	 */
 	class xmd5 : public xhash128
 	{
 	public:
@@ -27,21 +33,21 @@ namespace xcore
 	};
 
 	/**
-	@group		xhash
-	@brief		MD5 hash function
-	@desc		This class represents the MD5 hash function. This code is a modification from
-				the implementation by Colin Plumb. He placed this code in the public domain,
-				no copyright is claimed.
+	 * @group		xhash
+	 * @brief		MD5 hash function
+	 * @desc		This class represents the MD5 hash function. This code is a modification from
+	 * 			the implementation by Colin Plumb. He placed this code in the public domain,
+	 * 			no copyright is claimed.
 
-				The original algorithm was developed by Ron Rivest (the 'R' in RSA Security).
+	 * 			The original algorithm was developed by Ron Rivest (the 'R' in RSA Security).
 
-				The MD5 hash algorithm calculates a hash value ("message digest") of a set of
-				bytes (the "message"). MD5 hash is performed over chunks of 64 bytes.
+	 * 			The MD5 hash algorithm calculates a hash value ("message digest") of a set of
+	 * 			bytes (the "message"). MD5 hash is performed over chunks of 64 bytes.
 
-				To retrieve the MD5 hash value of an arbitrary set of bytes, construct an
-				MD5Hash object, call Update() on all of the data that needs to be hashed
-				and call the GetHash() function to retrieve the MD5Hash.
-	**/
+	 * 			To retrieve the MD5 hash value of an arbitrary set of bytes, construct an
+	 * 			MD5Hash object, call Update() on all of the data that needs to be hashed
+	 * 			and call the GetHash() function to retrieve the MD5Hash.
+	 */
 	class xmd5_generator : public xihash128_generator
 	{
 		enum EState
@@ -73,9 +79,9 @@ namespace xcore
 		buffer_t			mBuffer;
 	};
 
-	//---------------------------------------------------------------------------------------------------------------------
-	//	Utilities
-	//---------------------------------------------------------------------------------------------------------------------
+	/**
+	 *	Utilities
+	 */
 	extern xmd5		x_MD5Hash(void const* inBuffer, s32 inLength);			///< Get MD5 hash value of a block of data
 }
 

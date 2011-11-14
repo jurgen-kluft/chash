@@ -1,3 +1,9 @@
+/**
+ * @file x_uuid.h
+ *
+ * Universally Unique Identifier implementation
+ */
+
 // x_uuid.h - Universally Unique Identifier implementation - 
 #ifndef __XHASH_UUID_H__
 #define __XHASH_UUID_H__
@@ -16,22 +22,22 @@ namespace xcore
 
 
 	/**
-	@ingroup	xhash
-	@brief		Universally Unique Identifier
+	 * @ingroup	xhash
+	 * @brief		Universally Unique Identifier
 
-				The UUID class is the Core implementation of the distributed computing environment (DCE) universally
-				unique identifier (UUID). A UID is a 128-bit number which can be used to identify classes, versions,
-				interfaces and so on. UIDs are often used for safe-casting (asking a class if it can be casted to
-				a certain other class, if the other class's interface has been tagged with a UID). This is the
-				standard way in which COM's QueryInterface method works, but it doesn't only apply to COM, you can
-				also use it in your own classes.
+	 * 			The UUID class is the Core implementation of the distributed computing environment (DCE) universally
+	 * 			unique identifier (UUID). A UID is a 128-bit number which can be used to identify classes, versions,
+	 * 			interfaces and so on. UIDs are often used for safe-casting (asking a class if it can be casted to
+	 * 			a certain other class, if the other class's interface has been tagged with a UID). This is the
+	 * 			standard way in which COM's QueryInterface method works, but it doesn't only apply to COM, you can
+	 * 			also use it in your own classes.
 
-				More information on UUIDs, DCE and RPC (UUIDs are extensively used in distributed computing and
-				remote procedure calls) can be found at:
+	 * 			More information on UUIDs, DCE and RPC (UUIDs are extensively used in distributed computing and
+	 * 			remote procedure calls) can be found at:
 
-		- http://www.opengroup.org/publications/catalog/c706.htm 
-		- http://www.opengroup.org/dce/info/draft-leach-uuids-guids-01.txt		
-	**/
+	 * 	- http: * www.opengroup.org/publications/catalog/c706.htm 
+	 * 	- http: * www.opengroup.org/dce/info/draft-leach-uuids-guids-01.txt		
+	 */
 	class xuuid
 	{
 	public:
@@ -69,19 +75,19 @@ namespace xcore
 	**/
 
 	/**
-	@ingroup	xhash
-	@brief		UUID generator (name based UUID, see RFC 4122(http://www.ietf.org/rfc/rfc4122.txt))
+	 * @ingroup	xhash
+	 * @brief		UUID generator (name based UUID, see RFC 4122(http: * www.ietf.org/rfc/rfc4122.txt))
 
-				Generates the UUID from a domain and name.
+	 * 			Generates the UUID from a domain and name.
 
-				The requirements for these types of UUIDs are as follows:
+	 * 			The requirements for these types of UUIDs are as follows:
 
-					The UUIDs generated at different times from the same name in the same namespace MUST be equal.
-					The UUIDs generated from two different names in the same namespace should be different (with very high probability).
-					The UUIDs generated from the same name in two different namespaces should be different with (very high probability).
-					If two UUIDs that were generated from names are equal, then they were generated from the same name in the same namespace (with very high probability).
+	 * 				The UUIDs generated at different times from the same name in the same namespace MUST be equal.
+	 * 				The UUIDs generated from two different names in the same namespace should be different (with very high probability).
+	 * 				The UUIDs generated from the same name in two different namespaces should be different with (very high probability).
+	 * 				If two UUIDs that were generated from names are equal, then they were generated from the same name in the same namespace (with very high probability).
 
-	**/
+	 */
 	// TODO
 	//extern xuuid			gGenerateUUID(const char* domain, const char* name);
 }

@@ -1,3 +1,9 @@
+/**
+ * @file x_hash160_generator.h
+ *
+ * Core Hash160 Generator
+ */
+
 // x_hash160_generator.h - Core Hash160 Generator - 
 #ifndef __XHASH_HASH160_GENERATOR_H__
 #define __XHASH_HASH160_GENERATOR_H__
@@ -23,10 +29,10 @@ namespace xcore
 
 	
 	/**
-	@group		xhash
-	@brief		hash160 generator interface
-	@desc		This class represents the hash160 generator.
-	**/
+	 * @group		xhash
+	 * @brief		hash160 generator interface
+	 * @desc		This class represents the hash160 generator.
+	 */
 	class xhash160_generator
 	{
 	public:

@@ -1,3 +1,9 @@
+/**
+ * @file x_crc.cpp
+ *
+ * Core CRC functions 
+ */
+
 // x_crc.cpp - Core CRC functions 
 #include "xbase\x_target.h"
 #include "xbase\x_debug.h"
@@ -6,9 +12,9 @@
 namespace xcore
 {
 
-	//---------------------------------------------------------------------------------------------------------------------
-	//	CRC32 check
-	//---------------------------------------------------------------------------------------------------------------------
+	/**
+	 *	CRC32 check
+	 */
 
 	class CRC32
 	{
@@ -31,9 +37,9 @@ namespace xcore
 	u32			CRC32::mTable[256];
 
 	/**
-	@group		xhash
-	Calculate running CRC of <inInitVal> over <inBuffer> with length <inLength>
-	**/
+	 * @group		xhash
+	 * Calculate running CRC of <inInitVal> over <inBuffer> with length <inLength>
+	 */
 	u32	xcrc::crc32(void const* inBuffer, int inLength, u32 inInitVal)
 	{
 		u8 const* p_in = (u8 const*)inBuffer;
@@ -62,19 +68,19 @@ namespace xcore
 
 
 
-	//---------------------------------------------------------------------------------------------------------------------
-	//	Adler16 & Adler32 checksums
-	//---------------------------------------------------------------------------------------------------------------------
+	/**
+	 *	Adler16 & Adler32 checksums
+	 */
 	class CRCAdler
 	{
 	public:
 		enum EAdlerSettings
 		{
-			BASE16		= 251,															// Largest prime smaller than 256
-			NMAX16		= 5802,															// Largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1
+			BASE16		= 251,															///< Largest prime smaller than 256
+			NMAX16		= 5802,															///< Largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1
 
-			BASE32		= 65521,														// Largest prime smaller than 65536
-			NMAX32		= 5552,															// Largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1
+			BASE32		= 65521,														///< Largest prime smaller than 65536
+			NMAX32		= 5552,															///< Largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1
 		};
 
 		static void		ADO1(u8 const*& ioDataPtr, u32& ioA1, u32& ioA2)			{ ioA1 += *ioDataPtr++; ioA2 += ioA1; }
@@ -83,12 +89,12 @@ namespace xcore
 	};
 
 	/**
-	@group		xhash
-	Calculate running Adler32 of <inInitVal> over <inBuffer> with length <inLength>
-	**/
+	 * @group		xhash
+	 * Calculate running Adler32 of <inInitVal> over <inBuffer> with length <inLength>
+	 */
 	u32 xcrc::adler32(void const* inBuffer, int inLength, u32 inInitVal)
 	{
-		u32 a1 = inInitVal & 0xFFFF;							// Adler sum parts
+		u32 a1 = inInitVal & 0xFFFF;							///< Adler sum parts
 		u32 a2 = inInitVal >> 16;
 
 		u8 const* p_in = (u8 const*)inBuffer;
@@ -112,9 +118,9 @@ namespace xcore
 
 
 	/**
-	@group		xhash
-	Calculate running Adler16 of <inInitVal> over <inBuffer> with length <inLength>
-	**/
+	 * @group		xhash
+	 * Calculate running Adler16 of <inInitVal> over <inBuffer> with length <inLength>
+	 */
 	u16	xcrc::adler16(void const* inBuffer, int inLength, u16 inInitVal)
 	{
 		u32 a1 = inInitVal & 0xFF;								// Adler sum parts

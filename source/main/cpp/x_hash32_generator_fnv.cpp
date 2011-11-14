@@ -1,3 +1,9 @@
+/**
+ * @file x_hash.cpp
+ *
+ * Core Hash functions
+ */
+
 // x_hash.cpp - Core Hash functions 
 #include "xbase\x_types.h"
 #include "xbase\x_string_std.h"
@@ -5,26 +11,26 @@
 
 namespace xcore
 {
-	/*
-	* 32 bit magic FNV-1a prime
-	*/
+	/**
+	 * 32 bit magic FNV-1a prime
+	 */
 	#define FNV_32_PRIME ((xhash32)0x01000193)
 
 
-	/*
-	* fnv_32a_buf - perform a 32 bit Fowler/Noll/Vo FNV-1a hash on a buffer
-	*
-	* input:
-	*	buf	- start of buffer to hash
-	*	len	- length of buffer in octets
-	*	hval	- previous hash value or 0 if first call
-	*
-	* returns:
-	*	32 bit hash as a static hash type
-	*
-	* NOTE: To use the recommended 32 bit FNV-1a hash, use FNV1_32A_INIT as the
-	* 	 hval arg on the first call to either fnv_32a_buf() or fnv_32a_str().
-	*/
+	/**
+	 * fnv_32a_buf - perform a 32 bit Fowler/Noll/Vo FNV-1a hash on a buffer
+	 *
+	 * input:
+	 *	buf	- start of buffer to hash
+	 *	len	- length of buffer in octets
+	 *	hval	- previous hash value or 0 if first call
+	 *
+	 * returns:
+	 *	32 bit hash as a static hash type
+	 *
+	 * NOTE: To use the recommended 32 bit FNV-1a hash, use FNV1_32A_INIT as the
+	 * 	 hval arg on the first call to either fnv_32a_buf() or fnv_32a_str().
+	 */
 	xhash32 xhash_generator_fnv::buf(void const* inData, u32 inLength)
 	{
 		return buf(inData, inLength, FNV_32_PRIME);
@@ -57,19 +63,19 @@ namespace xcore
 	}
 
 
-	/*
-	* fnv_32a_str - perform a 32 bit Fowler/Noll/Vo FNV-1a hash on a string
-	*
-	* input:
-	*	str	- string to hash
-	*	hval	- previous hash value or 0 if first call
-	*
-	* returns:
-	*	32 bit hash as a static hash type
-	*
-	* NOTE: To use the recommended 32 bit FNV-1a hash, use FNV1_32A_INIT as the
-	*  	 hval arg on the first call to either fnv_32a_buf() or fnv_32a_str().
-	*/
+	/**
+	 * fnv_32a_str - perform a 32 bit Fowler/Noll/Vo FNV-1a hash on a string
+	 *
+	 * input:
+	 *	str	- string to hash
+	 *	hval	- previous hash value or 0 if first call
+	 *
+	 * returns:
+	 *	32 bit hash as a static hash type
+	 *
+	 * NOTE: To use the recommended 32 bit FNV-1a hash, use FNV1_32A_INIT as the
+	 *  	 hval arg on the first call to either fnv_32a_buf() or fnv_32a_str().
+	 */
 	xhash32	xhash_generator_fnv::str(char const *inStr)
 	{
 		return str(inStr, FNV_32_PRIME);

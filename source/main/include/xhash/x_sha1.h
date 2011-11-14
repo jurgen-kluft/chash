@@ -1,3 +1,9 @@
+/**
+ * @file x_sha1.h
+ *
+ * Core Hash128 Generator
+ */
+
 // MD5.h - Core MD5 Hash value 
 #ifndef __XHASH_MD5HASH_H__
 #define __XHASH_MD5HASH_H__
@@ -14,10 +20,10 @@
 namespace xcore
 {
 	/**
-	@group		xhash
-	@brief		SHA1 hash value
-	@desc		This struct represents the SHA1 hash value ("message digest"). 
-	**/
+	 * @group		xhash
+	 * @brief		SHA1 hash value
+	 * @desc		This struct represents the SHA1 hash value ("message digest"). 
+	 */
 	class xsha1 : public xhash160
 	{
 	public:
@@ -34,10 +40,10 @@ namespace xcore
 
 
 	/**
-	@group		xhash
-	@brief		SHA1 hash value
-	@desc		This is a SHA1 hash generator
-	**/
+	 * @group		xhash
+	 * @brief		SHA1 hash value
+	 * @desc		This is a SHA1 hash generator
+	 */
 	class xsha1_generator : public xihash160_generator
 	{
 		enum EState
@@ -60,9 +66,9 @@ namespace xcore
 		xsha1_ctx	mCtx;
 	};
 
-	//---------------------------------------------------------------------------------------------------------------------
-	//	Utilities
-	//---------------------------------------------------------------------------------------------------------------------
+	/**
+	 *	Utilities
+	 */
 	extern xsha1	x_Sha1Hash(void const* inBuffer, s32 inLength);			///< Get sha1 value of a block of data
 
 }

@@ -1,3 +1,9 @@
+/**
+ * @file x_hash32_generator_murmur.h
+ *
+ * Core Hash functions
+ */
+
 // Hash.h - Core Hash functions - 
 #ifndef __XHASH_HASHING_H__
 #define __XHASH_HASHING_H__
@@ -11,15 +17,15 @@
 
 namespace xcore
 {
-	//---------------------------------------------------------------------------------------------------------------------
-	//	Murmur 32 Hash
-	//---------------------------------------------------------------------------------------------------------------------
+	/**
+	 *	Murmur 32 Hash
+	 */
 	typedef		u32			xhash32;
 
 	class xhash_generator_murmur
 	{
 	public:
-		// Murmur hash
+		/// Murmur hash
 		static xhash32			buf(void const* inData, u32 inLength);
 		static xhash32			buf(void const* inData, u32 inLength, xhash32 inPrevious);
 		static xhash32			str(char const* inStr);

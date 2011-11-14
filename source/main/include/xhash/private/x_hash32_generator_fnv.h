@@ -1,3 +1,9 @@
+/**
+* @file x_hash32_generator_fnv.h
+*
+* xCore Hash
+*/
+
 // x_hash32_generator_fnv.h - xCore Hash - 
 #ifndef __XHASH_HASH32_GENERATOR_FNV_H__
 #define __XHASH_HASH32_GENERATOR_FNV_H__
@@ -11,9 +17,9 @@
 
 namespace xcore
 {
-	//---------------------------------------------------------------------------------------------------------------------
-	//	FNV 32a Hash
-	//---------------------------------------------------------------------------------------------------------------------
+	/**
+	 *	FNV 32a Hash
+	 */
 	typedef		u32			xhash32;
 
 	class xhash_generator_fnv

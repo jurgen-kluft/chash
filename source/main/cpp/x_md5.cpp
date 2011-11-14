@@ -1,3 +1,9 @@
+/**
+ * @file x_md5.cpp
+ *
+ * Core MD5 hash value 
+ */
+
 // x_md5.cpp - Core MD5 hash value 
 #include "xbase\x_target.h"
 #include "xbase\x_va_list.h"
@@ -22,57 +28,57 @@ namespace xcore
 
 
 	/**
-	@group		xhash
-	@page		MD5 hash algorithm
+	 * @group		xhash
+	 * @page		MD5 hash algorithm
 
-				The MD5Hash class implements the MD5 message-digest algorithm. The implementation
-				in Core is based on code written by Colin Plumb in 1993. Copyright on the code
-				was not claimed and the code was placed in the public domain. This reference to
-				the original source is provided out of courtesy reasons. The original source code
-				was part of Nemesis "An operating system with principles".
+	 * 			The MD5Hash class implements the MD5 message-digest algorithm. The implementation
+	 * 			in Core is based on code written by Colin Plumb in 1993. Copyright on the code
+	 * 			was not claimed and the code was placed in the public domain. This reference to
+	 * 			the original source is provided out of courtesy reasons. The original source code
+	 * 			was part of Nemesis "An operating system with principles".
 
-				The Nemesis homepage can be found here:
+	 * 			The Nemesis homepage can be found here:
 
-				http://nemesis.sourceforge.net/
+	 * 			http: * nemesis.sourceforge.net/
 
-				And the original MD5 source code here:
+	 * 			And the original MD5 source code here:
 
-				http://nemesis.sourceforge.net/browse/mod/hash/md5/md5.c.html
+	 * 			http: * nemesis.sourceforge.net/browse/mod/hash/md5/md5.c.html
 
-				The MD5 algorithm (Message Digest 5) is a cryptographic message digest algorithm.
+	 * 			The MD5 algorithm (Message Digest 5) is a cryptographic message digest algorithm.
 
-				MD5 was designed by Ron Rivest, who is also the `R' in `RSA' in 1991. MD5 is
-				described in RFC 1321. C source code is included with the RFC. It is basically
-				MD4 with "safety-belts" and while it is slightly slower than MD4, it is more
-				secure. The algorithm consists of four distinct rounds, which have a slightly
-				different design from that of MD4. Message-digest size, as well as padding
-				requirements, remains the same. Den Boer and Bosselaers [B. den Boer and A.
-				Bosselaers. Collisions for the compression function of MD5. In Advances
-				in Cryptology - Eurocrypt '93, pages 293-304, Springer-Verlag, 1994.]
-				have found pseudo-collisions for MD5 (see RSA FAQ Question 98), but there
-				are no other known cryptanalytic results. 
+	 * 			MD5 was designed by Ron Rivest, who is also the `R' in `RSA' in 1991. MD5 is
+	 * 			described in RFC 1321. C source code is included with the RFC. It is basically
+	 * 			MD4 with "safety-belts" and while it is slightly slower than MD4, it is more
+	 * 			secure. The algorithm consists of four distinct rounds, which have a slightly
+	 * 			different design from that of MD4. Message-digest size, as well as padding
+	 * 			requirements, remains the same. Den Boer and Bosselaers [B. den Boer and A.
+	 * 			Bosselaers. Collisions for the compression function of MD5. In Advances
+	 * 			in Cryptology - Eurocrypt '93, pages 293-304, Springer-Verlag, 1994.]
+	 * 			have found pseudo-collisions for MD5 (see RSA FAQ Question 98), but there
+	 * 			are no other known cryptanalytic results. 
 
-				The MD5 algorithm takes as input a message of arbitrary length and produces
-				as output a 128-bit "fingerprint" or "message digest" of the input. It is
-				conjectured that it is computationally infeasible to produce two messages
-				having the same message digest, or to produce any message having a given
-				prespecified target message digest. The MD5 algorithm is intended for
-				digital signature applications, where a large file must be "compressed"
-				in a secure manner before being encrypted with a private (secret) key
-				under a public-key cryptosystem such as RSA or PGP. 
-	**/
+	 * 			The MD5 algorithm takes as input a message of arbitrary length and produces
+	 * 			as output a 128-bit "fingerprint" or "message digest" of the input. It is
+	 * 			conjectured that it is computationally infeasible to produce two messages
+	 * 			having the same message digest, or to produce any message having a given
+	 * 			prespecified target message digest. The MD5 algorithm is intended for
+	 * 			digital signature applications, where a large file must be "compressed"
+	 * 			in a secure manner before being encrypted with a private (secret) key
+	 * 			under a public-key cryptosystem such as RSA or PGP. 
+	 */
 
 
 
 	/**
-	@brief		Byteswap an area of memory
+	 * @brief		Byteswap an area of memory
 
-				This area converts a number of u32's to little endian format to be compatible
-				with the MD5 hash algorithm.
+	 * 			This area converts a number of u32's to little endian format to be compatible
+	 * 			with the MD5 hash algorithm.
 
-	@param		ioBuffer	Pointer to data to swap
-	@param		inLength	Number of u32's to swap
-	**/
+	 * @param		ioBuffer	Pointer to data to swap
+	 * @param		inLength	Number of u32's to swap
+	 */
 	static void sByteSwap(u32* ioBuffer, int inLength)
 	{
 #if !defined(X_LITTLE_ENDIAN)
@@ -84,14 +90,14 @@ namespace xcore
 
 
 	/**
-	@brief		Construct MD5 hash generator
+	 * @brief		Construct MD5 hash generator
 
-	Construct an empty MD5 hash generator. The buffer is initialized and the hash
-	value is marked as "open" (i.e. the final hash value has not been retrieved
-	yet).
+	 * Construct an empty MD5 hash generator. The buffer is initialized and the hash
+	 * value is marked as "open" (i.e. the final hash value has not been retrieved
+	 * yet).
 
-	@see		Update GetHash
-	**/
+	 * @see		Update GetHash
+	 */
 	xmd5_generator::xmd5_generator()
 		: mState(xmd5_generator::CLOSED)
 		, mLength(0)
@@ -106,11 +112,11 @@ namespace xcore
 
 
 	/**
-	@brief Update MD5 hash value with new data
-
-	@param inData	Buffer to update hash with
-	@param inLength	Length of buffer in bytes
-	**/
+	 * @brief Update MD5 hash value with new data
+     * 
+	 * @param inData	Buffer to update hash with
+	 * @param inLength	Length of buffer in bytes
+	 */
 	void					xmd5_generator::compute(void const* inData, s32 inLength)
 	{
 		ASSERTS(mState==OPEN, "Can't compute hash value before Open() has been called!");
@@ -155,8 +161,8 @@ namespace xcore
 
 
 	/**
-	@brief Get final hash value
-	**/
+	 * @brief Get final hash value
+	 */
 	bool				xmd5_generator::close(xhash128& hash)
 	{
 		// If this is the first time we call GetHash(), finish the last transform
@@ -222,12 +228,12 @@ namespace xcore
 
 
 	/**
-	@brief MD5 hash transform
-
-	The core of the MD5 algorithm, this alters an existing MD5 hash to
-	reflect the addition of 16 longwords of new data.  MD5Update blocks
-	the data and converts bytes into longwords for this routine.
-	**/
+	 * @brief MD5 hash transform
+	 *
+	 * The core of the MD5 algorithm, this alters an existing MD5 hash to
+	 * reflect the addition of 16 longwords of new data.  MD5Update blocks
+	 * the data and converts bytes into longwords for this routine.
+	 */
 	void					xmd5_generator::transform()
 	{
 		u32 a = mMD5[0];
@@ -312,15 +318,15 @@ namespace xcore
 
 
 	/**
-	@ingroup xhash
-	@brief	Get MD5 hash value of a block of data
+	 * @ingroup xhash
+	 * @brief	Get MD5 hash value of a block of data
 
-			This function is a single-shot MD5 hash value generator. It takes a block of
-			data bytes and returns its MD5 hash value. It uses the MD5Hash class internally
-			to produce its result.
+	 * 		This function is a single-shot MD5 hash value generator. It takes a block of
+	 * 		data bytes and returns its MD5 hash value. It uses the MD5Hash class internally
+	 * 		to produce its result.
 
-	@see	xmd5 xmd5_generator
-	**/
+	 * @see	xmd5 xmd5_generator
+	 */
 	xmd5		x_MD5Hash(void const* inBuffer, s32 inLength)
 	{
 		xmd5_generator md5;

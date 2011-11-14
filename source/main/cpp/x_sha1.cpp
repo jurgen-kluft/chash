@@ -1,3 +1,9 @@
+/**
+ * @file x_sha1.cpp
+ *
+ * Core MD5 hash value 
+ */
+
 // x_md5.cpp - Core MD5 hash value 
 #include "xbase\x_target.h"
 #include "xbase\x_va_list.h"
@@ -10,37 +16,38 @@
 
 namespace xcore
 {
-	// URL:
-	//     http://en.wikipedia.org/wiki/SHA-1
-	//
-	// Description:
-	//     This class implements the Secure Hashing Standard as defined
-	//     in FIPS PUB 180-1 published April 17, 1995.
-	//
-	//     The Secure Hashing Standard, which uses the Secure Hashing
-	//     Algorithm (SHA), produces a 160-bit message digest for a
-	//     given data stream.  In theory, it is highly improbable that
-	//     two messages will produce the same message digest.  Therefore,
-	//     this algorithm can serve as a means of providing a "fingerprint"
-	//     for a message.
-	//
-	// Portability Issues:
-	//     SHA-1 is defined in terms of 32-bit "words".  This code was
-	//     written with the expectation that the processor has at least
-	//     a 32-bit machine word size.  If the machine word size is larger,
-	//     the code should still function properly.  One caveat to that
-	//     is that the input functions taking characters and character arrays
-	//     assume that only 8 bits of information are stored in each character.
-	//
-	// Caveats:
-	//     SHA-1 is designed to work with messages less than 2^64 bits long.
-	//     Although SHA-1 allows a message digest to be generated for
-	//     messages of any number of bits less than 2^64, this implementation
-	//     only works with messages with a length that is a multiple of 8
-	//     bits.
-	//
-	// Code: From the implementation of Git
-	// 
+	/**
+     *  URL:
+	 *      http: * en.wikipedia.org/wiki/SHA-1
+	 * 
+	 *  Description:
+	 *      This class implements the Secure Hashing Standard as defined
+	 *      in FIPS PUB 180-1 published April 17, 1995.
+	 * 
+	 *      The Secure Hashing Standard, which uses the Secure Hashing
+	 *      Algorithm (SHA), produces a 160-bit message digest for a
+	 *      given data stream.  In theory, it is highly improbable that
+	 *      two messages will produce the same message digest.  Therefore,
+	 *      this algorithm can serve as a means of providing a "fingerprint"
+	 *      for a message.
+	 * 
+	 *  Portability Issues:
+	 *      SHA-1 is defined in terms of 32-bit "words".  This code was
+	 *      written with the expectation that the processor has at least
+	 *      a 32-bit machine word size.  If the machine word size is larger,
+	 *      the code should still function properly.  One caveat to that
+	 *      is that the input functions taking characters and character arrays
+	 *      assume that only 8 bits of information are stored in each character.
+	 * 
+	 *  Caveats:
+	 *      SHA-1 is designed to work with messages less than 2^64 bits long.
+	 *      Although SHA-1 allows a message digest to be generated for
+	 *      messages of any number of bits less than 2^64, this implementation
+	 *      only works with messages with a length that is a multiple of 8
+	 *      bits.
+	 * 
+	 *  Code: From the implementation of Git
+	 */
 
 	#define SHA_ROT(X,l,r)	(((X) << (l)) | ((X) >> (r)))
 	#define SHA_ROL(X,n)	SHA_ROT(X,n,32-(n))
@@ -66,10 +73,10 @@ namespace xcore
 	#define W(x)			(array[(x)&15])
 	#define setW(x, val)	(W(x) = (val))
 
-	// 
-	// Where do we get the source from? The first 16 iterations get it from
-	// the input data, the next mix it from the 512-bit array.
-	// 
+	/**  
+	 *  Where do we get the source from? The first 16 iterations get it from
+	 *  the input data, the next mix it from the 512-bit array.
+	 */
 	#define SHA_SRC(t) get_be32(data + t)
 	#define SHA_MIX(t) SHA_ROL(W(t+13) ^ W(t+8) ^ W(t+2) ^ W(t), 1)
 
@@ -252,7 +259,7 @@ namespace xcore
 		
 	}
 
-	/*  
+	/**
 	 *  Reset
 	 *
 	 *  Description:
@@ -275,7 +282,7 @@ namespace xcore
 		mComputed    = false;
 	}
 
-	/*  
+	/**
 	 *  Result
 	 *
 	 *  Description:
@@ -305,7 +312,7 @@ namespace xcore
 		return true;
 	}
 
-	/*  
+	/**
 	 *  Input
 	 *
 	 *  Description:

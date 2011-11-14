@@ -1,3 +1,9 @@
+/**
+ * @file x_hash128_generator.cpp
+ *
+ * Core Hash128 Generator
+ */
+
 // x_hash128_generator.cpp - Core Hash128 Generator
 #include "xbase\x_types.h"
 #include "xbase\x_string_std.h"
@@ -8,11 +14,11 @@ namespace xcore
 {
 
 	/**
-	@brief Check if one hash value is smaller than another hash value
-
-	This function implements operator< so that the ToString() of the hash
-	value results in the same result when done with a dictionary compare.
-	**/
+	 * @brief Check if one hash value is smaller than another hash value
+	 *
+	 * This function implements operator< so that the ToString() of the hash
+	 * value results in the same result when done with a dictionary compare.
+	 */
 	bool					xhash128::operator<(xhash128 const& inRHS) const
 	{
 		for (s32 i=0; i<16; i++)
@@ -27,11 +33,11 @@ namespace xcore
 
 
 	/**
-	@brief Check if one hash value is larger than another hash value 
-
-	This function implements operator> so that the toString() of the hash
-	value results in the same result when done with a dictionary compare.
-	**/
+	 * @brief Check if one hash value is larger than another hash value 
+	 *
+	 * This function implements operator> so that the toString() of the hash
+	 * value results in the same result when done with a dictionary compare.
+	 */
 	bool					xhash128::operator>(xhash128 const& inRHS) const
 	{
 		for (s32 i=0; i<16; i++)
@@ -64,8 +70,8 @@ namespace xcore
 
 
 	/**
-	@brief Convert hash value to String
-	**/
+	 * @brief Convert hash value to String
+	 */
 	bool					xhash128::toString(char* ioStr, u32& ioStrLength) const
 	{
 		if (ioStrLength < 32)
@@ -86,8 +92,8 @@ namespace xcore
 
 
 	/**
-	@brief Set hash value from String
-	**/
+	 * @brief Set hash value from String
+	 */
 	bool					xhash128::fromString(const char* inString)
 	{
 		u32 d[16];

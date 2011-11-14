@@ -1,3 +1,9 @@
+/**
+ * @file Checksum.h
+ *
+ * Core Checksum functions
+ */
+
 // Checksum.h - Core Checksum functions 
 #ifndef __XHASH_CHECKSUM_H__
 #define __XHASH_CHECKSUM_H__
@@ -11,9 +17,9 @@
 namespace xcore
 {
 	/**
-	@group		xhash
-	@brief		CRC implementations
-	**/
+	 * @group		xhash
+	 * @brief		CRC implementations
+	 */
 	class xcrc
 	{
 	public:

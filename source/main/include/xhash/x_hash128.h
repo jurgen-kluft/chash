@@ -1,3 +1,9 @@
+/**
+ * @file Checksum.h
+ *
+ * Core Checksum functions
+ */
+
 // x_hash128.h - Core Hash128 - 
 #ifndef __XHASH_HASH128_H__
 #define __XHASH_HASH128_H__
@@ -10,9 +16,9 @@
 
 namespace xcore
 {
-	//---------------------------------------------------------------------------------------------------------------------
-	//	Hash Utility functions
-	//---------------------------------------------------------------------------------------------------------------------
+	/**
+	 *	Hash Utility functions
+	 */
 	struct xhash128
 	{
 							xhash128()												{ clear(); }

@@ -1,3 +1,9 @@
+/**
+ * @file x_hash32_generator_murmur.cpp
+ *
+ * xCore Hash functions
+ */
+
 // x_hash32_generator_murmur.cpp - xCore Hash functions 
 #include "xbase\x_types.h"
 #include "xbase\x_string_std.h"

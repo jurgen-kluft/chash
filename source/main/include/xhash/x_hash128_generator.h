@@ -1,3 +1,9 @@
+/**
+ * @file x_hash128_generator.h
+ *
+ * Core Hash128 Generator
+ */
+
 // x_hash128_generator.h - Core Hash128 Generator - 
 #ifndef __XHASH_HASH128_GENERATOR_H__
 #define __XHASH_HASH128_GENERATOR_H__
@@ -21,10 +27,10 @@ namespace xcore
 
 	
 	/**
-	@group		xhash
-	@brief		hash128 generator interface
-	@desc		This class represents the hash128 generator.
-	**/
+	 * @group		xhash
+	 * @brief		hash128 generator interface
+	 * @desc		This class represents the hash128 generator.
+	 */
 	class xhash128_generator
 	{
 	public:

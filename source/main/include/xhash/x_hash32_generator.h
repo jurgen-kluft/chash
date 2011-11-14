@@ -1,3 +1,9 @@
+/**
+ * @file x_hash32_generator.h
+ *
+ * Core Hash32 Generator
+ */
+
 // x_hash32_generator.h - Core Hash32 Generator - 
 #ifndef __XHASH_HASH32_GENERATOR_H__
 #define __XHASH_HASH32_GENERATOR_H__
@@ -23,10 +29,10 @@ namespace xcore
 
 	
 	/**
-	@group		xhash
-	@brief		hash32 generator interface
-	@desc		This class represents the hash32 generator.
-	**/
+	 * @group		xhash
+	 * @brief		hash32 generator interface
+	 * @desc		This class represents the hash32 generator.
+	 */
 	class xhash32_generator
 	{
 	public:

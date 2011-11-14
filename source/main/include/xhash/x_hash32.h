@@ -1,3 +1,9 @@
+/**
+ * @file Hash.h
+ *
+ * Core Hash functions
+ */
+
 // Hash.h - Core Hash functions - 
 #ifndef __XHASH_HASHABLE_H__
 #define __XHASH_HASHABLE_H__
@@ -12,9 +18,9 @@
 
 namespace xcore
 {
-	//---------------------------------------------------------------------------------------------------------------------
-	//	Hash Utility functions
-	//---------------------------------------------------------------------------------------------------------------------
+	/**
+	 *	Hash Utility functions
+	 */
 	typedef		u32			xhash32;
 
 	class xhash_generator : public xhash_generator_murmur
@@ -22,29 +28,29 @@ namespace xcore
 
 	};
 
-	//---------------------------------------------------------------------------------------------------------------------
-	// Template class to make types hashable
-	//---------------------------------------------------------------------------------------------------------------------
+	/**
+	 * Template class to make types hashable
+	 */
 
 
 
 	/**
-	@group		xhash
-	@brief		hashable template class
+	 * @group		xhash
+	 * @brief		hashable template class
 
-				The hashable<T> template creates a hashable version of <T>,
-				by using the standard Hashing::Hash() function on the memory block occupied by
-				<mData>. taTYPEhis is a simple - though not so efficient - solution to
-				make most structures and internal types hashable.
+	 * 			The hashable<T> template creates a hashable version of <T>,
+	 * 			by using the standard Hashing::Hash() function on the memory block occupied by
+	 * 			<mData>. taTYPEhis is a simple - though not so efficient - solution to
+	 * 			make most structures and internal types hashable.
 
-				You should not try to use the hashable class on structures and classes that
-				have pointer members, because the hash value is calculated on the memory
-				block occupied by the type and will most likely not return valid hash
-				values for the data pointer to by members.
+	 * 			You should not try to use the hashable class on structures and classes that
+	 * 			have pointer members, because the hash value is calculated on the memory
+	 * 			block occupied by the type and will most likely not return valid hash
+	 * 			values for the data pointer to by members.
 
-				Because the hashable template stores the hash value of the type it embeds,
-				changing the value also requires updating the update() function.
-	**/
+	 * 			Because the hashable template stores the hash value of the type it embeds,
+	 * 			changing the value also requires updating the update() function.
+	 */
 	template <typename T, typename HG = xhash_generator>
 	class hashable
 	{
@@ -102,9 +108,9 @@ namespace xcore
 
 
 	/**
-	@group		xhash
-	@brief		Hashed pointer template
-	**/
+	 * @group		xhash
+ 	 * @brief		Hashed pointer template
+	 */
 	template <typename T, typename HG = xhash_generator>
 	struct hashed_ptr
 	{
