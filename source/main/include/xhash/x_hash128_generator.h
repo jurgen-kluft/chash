@@ -16,13 +16,13 @@
 
 namespace xcore
 {
-	class xihash128_generator
+	class xidigest128_generator : public xidigest_engine
 	{
 	public:
 		///@name Updating
-		virtual void		open() = 0;
-		virtual void		compute(void const* inBuffer, s32 inLength) = 0;
-		virtual bool		close(xhash128& hash) = 0;
+		virtual void		reset() = 0;
+		virtual void		update(void const* inBuffer, s32 inLength) = 0;
+		virtual bool		digst(xbyte* digest) = 0;
 	};
 
 	
@@ -40,7 +40,7 @@ namespace xcore
 		///@name Updating
 		void				open();
 		void				compute(void const* inBuffer, s32 inLength);
-		bool				close(xhash128& hash);
+		bool				close(xdigest128& hash);
 
 	private:
 		xihash128_generator*	mGenerator;

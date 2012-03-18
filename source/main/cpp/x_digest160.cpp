@@ -7,8 +7,7 @@
 // x_hash160_generator.cpp - Core Hash160 Generator
 #include "xbase\x_types.h"
 #include "xbase\x_string_std.h"
-#include "xhash\x_hash160.h"
-#include "xhash\x_hash160_generator.h"
+#include "xhash\x_digest160.h"
 
 namespace xcore
 {
@@ -19,7 +18,7 @@ namespace xcore
 	 * This function implements operator< so that the ToString() of the hash
 	 * value results in the same result when done with a dictionary compare.
 	 */
-	bool					xhash160::operator<(xhash160 const& inRHS) const
+	bool					xdigest160::operator<(xdigest160 const& inRHS) const
 	{
 		for (s32 i=0; i<20; i++)
 		{
@@ -38,7 +37,7 @@ namespace xcore
 	 * This function implements operator> so that the ToString() of the hash
 	 * value results in the same result when done with a dictionary compare.
 	 */
-	bool					xhash160::operator>(xhash160 const& inRHS) const
+	bool					xdigest160::operator>(xdigest160 const& inRHS) const
 	{
 		for (s32 i=0; i<20; i++)
 		{
@@ -51,7 +50,7 @@ namespace xcore
 	}
 
 
-	void					xhash160::set(u32 inR1, u32 inR2, u32 inR3, u32 inR4, u32 inR5)
+	void					xdigest160::set(u32 inR1, u32 inR2, u32 inR3, u32 inR4, u32 inR5)
 	{
 		mData32[0] = inR1;
 		mData32[1] = inR2;
@@ -61,7 +60,7 @@ namespace xcore
 	}
 
 
-	void					xhash160::get(u32& outR1, u32& outR2, u32& outR3, u32& outR4, u32& outR5) const
+	void					xdigest160::get(u32& outR1, u32& outR2, u32& outR3, u32& outR4, u32& outR5) const
 	{
 		outR1 = mData32[0];
 		outR2 = mData32[1];
@@ -74,10 +73,10 @@ namespace xcore
 	/**
 	 * @brief Convert MD5 hash value to String
 	 */
-	bool					xhash160::toString(char* ioStr, u32& ioStrLength) const
+	s32						xdigest160::toString(char* ioStr, u32 ioStrLength) const
 	{
 		if (ioStrLength < 40)
-			return false;
+			return 0;
 
 		const char* _format = "%02x%02x%02x%02x";
 
@@ -88,8 +87,7 @@ namespace xcore
 		s = s + x_sprintf(s, 8, _format, x_va(mData8[12]),  x_va(mData8[13]),  x_va( mData8[14]), x_va(mData8[15]));
 		s = s + x_sprintf(s, 8, _format, x_va(mData8[16]),  x_va(mData8[17]),  x_va( mData8[18]), x_va(mData8[19]));
 
-		ioStrLength = (u32)(s - ioStr);
-		return true;
+		return (u32)(s - ioStr);
 	}
 
 
@@ -97,7 +95,7 @@ namespace xcore
 	/**
 	 * @brief Set hash value from String
 	 */
-	bool					xhash160::fromString(const char* inString)
+	bool					xdigest160::fromString(const char* inString)
 	{
 		char part[21];
 		for (s32 i=0; i<20; ++i)
@@ -127,28 +125,6 @@ namespace xcore
 			return false;
 
 		return true;
-	}
-
-
-	xhash160_generator::xhash160_generator(xihash160_generator* generator)
-		: mGenerator(generator)
-	{
-	}
-
-	///@name Updating
-	void			xhash160_generator::open()
-	{
-		mGenerator->open();
-	}
-
-	void			xhash160_generator::compute(void const* inBuffer, u32 inLength)
-	{
-		mGenerator->compute(inBuffer, inLength);
-	}
-
-	bool			xhash160_generator::close(xhash160& hash)
-	{
-		return mGenerator->close(hash);
 	}
 
 }

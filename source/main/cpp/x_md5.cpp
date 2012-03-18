@@ -79,10 +79,10 @@ namespace xcore
 	 * @param		ioBuffer	Pointer to data to swap
 	 * @param		inLength	Number of u32's to swap
 	 */
-	static void sByteSwap(u32* ioBuffer, int inLength)
+	static void sByteSwap(u32* ioBuffer, s32 inLength)
 	{
 #if !defined(X_LITTLE_ENDIAN)
-		for (int i=0; i<inLength; i++)
+		for (s32 i=0; i<inLength; i++)
 			ioBuffer[i] = x_endian_swap::swap(ioBuffer[i]);
 #endif
 	}
@@ -98,8 +98,8 @@ namespace xcore
 
 	 * @see		Update GetHash
 	 */
-	xmd5_generator::xmd5_generator()
-		: mState(xmd5_generator::CLOSED)
+	xdigest_engine_md5::xdigest_engine_md5()
+		: mState(xdigest_engine_md5::CLOSED)
 		, mLength(0)
 	{
 	}
@@ -117,13 +117,13 @@ namespace xcore
 	 * @param inData	Buffer to update hash with
 	 * @param inLength	Length of buffer in bytes
 	 */
-	void					xmd5_generator::compute(void const* inData, s32 inLength)
+	void					xdigest_engine_md5::update(void const* inData, u32 inLength)
 	{
 		ASSERTS(mState==OPEN, "Can't compute hash value before Open() has been called!");
 
 		// Calculate current offset in buffer and bytes left
-		int buffer_offset = (mLength & 63);											// Current offset in buffer
-		int space_left	  = 64 - buffer_offset;										// Space available in mBuffer.mInput (at least 1)
+		u32 buffer_offset = (mLength & 63);											// Current offset in buffer
+		u32 space_left	  = 64 - buffer_offset;										// Space available in mBuffer.mInput (at least 1)
 
 		// Update length
 		mLength += inLength;
@@ -137,7 +137,7 @@ namespace xcore
 
 		// Fill up current buffer until it's full
 		u8 const* data   = (u8 const*)inData;
-		int     length = inLength;
+		u32     length = inLength;
 		x_memcopy((u8*)mBuffer.mInput + buffer_offset, data, space_left);
 		sByteSwap(mBuffer.mInput, 16);
 		transform();
@@ -163,13 +163,13 @@ namespace xcore
 	/**
 	 * @brief Get final hash value
 	 */
-	bool				xmd5_generator::close(xhash128& hash)
+	void				xdigest_engine_md5::digest(xbyte* digest)
 	{
 		// If this is the first time we call GetHash(), finish the last transform
 		if (mState == OPEN)
 		{
-			int		count	= mLength & 63;											// Number of bytes in mBuffer.mInput
-			u8*  p		= (u8*)mBuffer.mInput + count;
+			u32	count	= mLength & 63;											// Number of bytes in mBuffer.mInput
+			u8* p		= (u8*)mBuffer.mInput + count;
 
 			// Set the first char of padding to 0x80.  There is always room.
 			*p++ = 0x80;
@@ -196,18 +196,25 @@ namespace xcore
 			// Final transform
 			transform();
 
-			sByteSwap(mMD5, 4);
-
 			mState = CLOSED;
 		}
 
-		// Return hash value
-		hash.set(mMD5[0], mMD5[1], mMD5[2], mMD5[3]);
-		return true;
+		// export digest
+		xbyte const* src = (xbyte const*)&mMD5[0];
+		for (s32 i=0; i<16; ++i)
+			*digest++ = *src++;
+	}
+
+	void					xdigest_engine_md5::digest(xmd5& md5)
+	{
+		u32 e[4];
+		digest((xbyte*)e);
+		sByteSwap(e, 4);
+		md5.set(e[0], e[1], e[2], e[3]);
 	}
 
 
-	void					xmd5_generator::open()
+	void					xdigest_engine_md5::reset()
 	{
 		mState  = OPEN;
 		mLength = 0;
@@ -234,7 +241,7 @@ namespace xcore
 	 * reflect the addition of 16 longwords of new data.  MD5Update blocks
 	 * the data and converts bytes into longwords for this routine.
 	 */
-	void					xmd5_generator::transform()
+	void					xdigest_engine_md5::transform()
 	{
 		u32 a = mMD5[0];
 		u32 b = mMD5[1];
@@ -319,26 +326,23 @@ namespace xcore
 
 	/**
 	 * @ingroup xhash
-	 * @brief	Get MD5 hash value of a block of data
+	 * @brief	Get MD5 digest of a block of data
 
-	 * 		This function is a single-shot MD5 hash value generator. It takes a block of
-	 * 		data bytes and returns its MD5 hash value. It uses the MD5Hash class internally
-	 * 		to produce its result.
+	 * 		This function is a single-shot MD5 digest generator. It takes a block of
+	 * 		data bytes and returns its MD5 digest. It uses the MD5 digest engine 
+	 *      class internally to produce its result.
 
-	 * @see	xmd5 xmd5_generator
+	 * @see	xmd5 xdigest_engine_md5
 	 */
 	xmd5		x_MD5Hash(void const* inBuffer, s32 inLength)
 	{
-		xmd5_generator md5;
-		md5.open();
-		md5.compute(inBuffer, inLength);
+		xdigest_engine_md5 md5;
+		md5.reset();
+		md5.update(inBuffer, inLength);
 
-		xmd5 hash;
-		if (md5.close(hash))
-			return hash;
-
-		hash.clear();
-		return hash;
+		xmd5 digest;
+		md5.digest(digest);
+		return digest;
 	}
 
 

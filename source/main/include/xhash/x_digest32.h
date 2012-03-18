@@ -5,15 +5,15 @@
  */
 
 // Hash.h - Core Hash functions - 
-#ifndef __XHASH_HASHABLE_H__
-#define __XHASH_HASHABLE_H__
+#ifndef __XHASH_HASHABLE_32_H__
+#define __XHASH_HASHABLE_32_H__
 #include "xbase\x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif
 
 #include "xbase\x_types.h"
-#include "xhash\private\x_hash32_generator_murmur.h"
+#include "xhash\private\x_digest_engine_murmur.h"
 #include "xbase\x_endian.h"
 
 namespace xcore
@@ -21,9 +21,9 @@ namespace xcore
 	/**
 	 *	Hash Utility functions
 	 */
-	typedef		u32			xhash32;
+	typedef		u32			xdigest32;
 
-	class xhash_generator : public xhash_generator_murmur
+	class xdigest32_default : public xdigest_murmur
 	{
 
 	};
@@ -51,7 +51,7 @@ namespace xcore
 	 * 			Because the hashable template stores the hash value of the type it embeds,
 	 * 			changing the value also requires updating the update() function.
 	 */
-	template <typename T, typename HG = xhash_generator>
+	template <typename T, typename HG = xdigest32_default>
 	class hashable
 	{
 	public:
@@ -111,7 +111,7 @@ namespace xcore
 	 * @group		xhash
  	 * @brief		Hashed pointer template
 	 */
-	template <typename T, typename HG = xhash_generator>
+	template <typename T, typename HG = xdigest32_default>
 	struct hashed_ptr
 	{
 		///@name Construction/Destruction
@@ -197,4 +197,4 @@ namespace xcore
 
 
 }
-#endif	///< __XHASH_HASHABLE_H__
+#endif	///< __XHASH_HASHABLE_32_H__

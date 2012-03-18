@@ -1,12 +1,12 @@
 /**
  * @file x_md5.h
  *
- * xCore MD5 Hash value
+ * xCore MD5 Digest
  */
 
-// x_md5.h - xCore MD5 Hash value 
-#ifndef __XHASH_MD5HASH_H__
-#define __XHASH_MD5HASH_H__
+// x_md5.h - xCore MD5 Digest
+#ifndef __XHASH_MD5_DIGEST_H__
+#define __XHASH_MD5_DIGEST_H__
 #include "xbase\x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
@@ -14,28 +14,28 @@
 
 #include "xbase\x_types.h"
 
-#include "xhash\x_hash128.h"
-#include "xhash\x_hash128_generator.h"
+#include "xhash\x_digest128.h"
+#include "xhash\x_digest_engine.h"
 
 namespace xcore
 {
 	/**
 	 * @group		xhash
 	 * @brief		MD5 hash value
-	 * @desc		This struct represents the MD5 hash value ("message digest"). It contains a
-	 *			16-byte (128 bits) value, returned by the MD5Hash class.
+	 * @desc		This struct represents the MD5 digest ("message digest"). It contains a
+	 *			    16-byte (128 bits) value, returned by the md5_ class.
 	 */
-	class xmd5 : public xhash128
+	class xmd5 : public xdigest128
 	{
 	public:
 							xmd5()													{ }
-							xmd5(const char* inString) : xhash128(inString)			{ }
+							xmd5(const char* inString) : xdigest128(inString)		{ }
 	};
 
 	/**
-	 * @group		xhash
-	 * @brief		MD5 hash function
-	 * @desc		This class represents the MD5 hash function. This code is a modification from
+	 * @group	xhash
+	 * @brief	MD5 hash function
+	 * @desc	This class represents the MD5 hash function. This code is a modification from
 	 * 			the implementation by Colin Plumb. He placed this code in the public domain,
 	 * 			no copyright is claimed.
 
@@ -48,7 +48,7 @@ namespace xcore
 	 * 			MD5Hash object, call Update() on all of the data that needs to be hashed
 	 * 			and call the GetHash() function to retrieve the MD5Hash.
 	 */
-	class xmd5_generator : public xihash128_generator
+	class xdigest_engine_md5 : public xidigest_engine
 	{
 		enum EState
 		{
@@ -57,12 +57,15 @@ namespace xcore
 		};
 	public:
 		///@name Construction/Destruction
-							xmd5_generator();
+							xdigest_engine_md5();
 
 		///@name Updating
-		virtual void		open();
-		virtual void		compute(void const* inBuffer, s32 inLength);
-		virtual bool		close(xhash128& hash);
+		virtual u32			length() const { return 16; }
+		virtual void		reset();
+		virtual void		update(void const* inBuffer, u32 inLength);
+		virtual void		digest(xbyte* digest);
+
+		void				digest(xmd5& md5);
 
 	private:
 		void				transform();
@@ -86,4 +89,4 @@ namespace xcore
 }
 
 
-#endif
+#endif	// __XHASH_MD5_DIGEST_H__

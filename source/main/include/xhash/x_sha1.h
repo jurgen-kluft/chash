@@ -5,8 +5,8 @@
  */
 
 // MD5.h - Core MD5 Hash value 
-#ifndef __XHASH_MD5HASH_H__
-#define __XHASH_MD5HASH_H__
+#ifndef __XHASH_SHA1_DIGEST_H__
+#define __XHASH_SHA1_DIGEST_H__
 #include "xbase\x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
@@ -14,8 +14,8 @@
 
 #include "xbase\x_types.h"
 
-#include "xhash\x_hash160.h"
-#include "xhash\x_hash160_generator.h"
+#include "xhash\x_digest160.h"
+#include "xhash\x_digest_engine.h"
 
 namespace xcore
 {
@@ -24,11 +24,11 @@ namespace xcore
 	 * @brief		SHA1 hash value
 	 * @desc		This struct represents the SHA1 hash value ("message digest"). 
 	 */
-	class xsha1 : public xhash160
+	class xsha1 : public xdigest160
 	{
 	public:
 							xsha1()													{ }
-							xsha1(const char* inString) : xhash160(inString)		{ }
+							xsha1(const char* inString) : xdigest160(inString)		{ }
 	};
 
 	struct xsha1_ctx
@@ -42,28 +42,32 @@ namespace xcore
 	/**
 	 * @group		xhash
 	 * @brief		SHA1 hash value
-	 * @desc		This is a SHA1 hash generator
+	 * @desc		This is a SHA1 digest engine
 	 */
-	class xsha1_generator : public xihash160_generator
+	class xdigest_engine_sha1 : public xidigest_engine
 	{
 		enum EState
 		{
 			OPEN,
 			CLOSED,
 		};
+
 	public:
-					xsha1_generator();
+						xdigest_engine_sha1();
 
 		///@name Updating
-		virtual void open();
-		virtual void compute(void const* inBuffer, u32 inLength);
-		virtual bool close(xhash160& hash);
+		virtual u32		length() const { return 20; }
+		virtual void	reset();
+		virtual void	update(void const* inBuffer, u32 inLength);
+		virtual void	digest(xbyte* digest);
+
+		bool			digest(xsha1& hash);
 
 	private:
-		void		reset();
+		void			reset2();
 
-		bool		mComputed;									// Is the digest computed?
-		xsha1_ctx	mCtx;
+		bool			mComputed;									// Is the digest computed?
+		xsha1_ctx		mCtx;
 	};
 
 	/**
@@ -72,4 +76,4 @@ namespace xcore
 	extern xsha1	x_Sha1Hash(void const* inBuffer, s32 inLength);			///< Get sha1 value of a block of data
 
 }
-#endif
+#endif	// __XHASH_SHA1_DIGEST_H__

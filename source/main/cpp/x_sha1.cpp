@@ -254,7 +254,7 @@ namespace xcore
 		xsha1_ctx_update(ctx, padlen, 8);
 	}
 
-	xsha1_generator::xsha1_generator()
+	xdigest_engine_sha1::xdigest_engine_sha1()
 	{
 		
 	}
@@ -275,11 +275,14 @@ namespace xcore
 	 *  Comments:
 	 *
 	 */
-	void xsha1_generator::open()
+	void xdigest_engine_sha1::reset2()
 	{
 		xsha1_ctx_init(mCtx);
-
 		mComputed    = false;
+	}
+	void xdigest_engine_sha1::reset()
+	{
+		reset2();
 	}
 
 	/**
@@ -300,7 +303,30 @@ namespace xcore
 	 *  Comments:
 	 *
 	 */
-	bool xsha1_generator::close(xhash160& hash)
+	inline xbyte* to_bytes(xbyte* bytes, u32 p)
+	{
+		p = xhtonl(p);
+		xbyte const* src = (xbyte const*)&p;
+		*bytes++ = *src++;
+		*bytes++ = *src++;
+		*bytes++ = *src++;
+		*bytes++ = *src++;
+		return bytes;
+	}
+
+	void xdigest_engine_sha1::digest(xbyte* digest)
+	{
+		if (!mComputed)
+		{
+			xsha1_ctx_close(mCtx);
+			mComputed = true;
+		}
+
+		for (s32 i=0; i<5; ++i)
+			digest = to_bytes(digest, mCtx.H[i]);
+	}
+
+	bool xdigest_engine_sha1::digest(xsha1& hash)
 	{
 		if (!mComputed)
 		{
@@ -330,7 +356,7 @@ namespace xcore
 	 *  Comments:
 	 *
 	 */
-	void xsha1_generator::compute(void const* inBuffer, u32 inLength)
+	void xdigest_engine_sha1::update(void const* inBuffer, u32 inLength)
 	{
 		xsha1_ctx_update(mCtx, inBuffer, inLength);
 	}
@@ -338,13 +364,12 @@ namespace xcore
 
 	xsha1	x_Sha1Hash(void const* inBuffer, s32 inLength)
 	{
-		xsha1_generator g;
-		g.open();
-		g.compute(inBuffer, inLength);
+		xdigest_engine_sha1 g;
+		g.reset();
+		g.update(inBuffer, inLength);
 		xsha1 h;
-		if (g.close(h))
+		if (g.digest(h))
 			return h;
-
 		h.clear();
 		return h;
 	}

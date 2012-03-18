@@ -16,7 +16,7 @@
 
 namespace xcore
 {
-	typedef		u32			xhash32;
+	typedef		u32			xdigest32;
 
 	class xihash32_generator
 	{
@@ -24,7 +24,7 @@ namespace xcore
 		///@name Updating
 		virtual void		open() = 0;
 		virtual void		compute(void const* inBuffer, s32 inLength) = 0;
-		virtual bool		close(xhash32& hash) = 0;
+		virtual bool		close(xdigest32& hash) = 0;
 	};
 
 	
@@ -42,7 +42,7 @@ namespace xcore
 		///@name Updating
 		void				open();
 		void				compute(void const* inBuffer, s32 inLength);
-		bool				close(xhash32& hash);
+		bool				close(xdigest32& hash);
 
 	private:
 		xihash32_generator*	mGenerator;

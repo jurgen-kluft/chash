@@ -7,14 +7,14 @@
 // x_hash.cpp - Core Hash functions 
 #include "xbase\x_types.h"
 #include "xbase\x_string_std.h"
-#include "xhash\private\x_hash32_generator_fnv.h"
+#include "xhash\private\x_digest_engine_fnv.h"
 
 namespace xcore
 {
 	/**
 	 * 32 bit magic FNV-1a prime
 	 */
-	#define FNV_32_PRIME ((xhash32)0x01000193)
+	#define FNV_32_PRIME ((xdigest32)0x01000193)
 
 
 	/**
@@ -31,12 +31,12 @@ namespace xcore
 	 * NOTE: To use the recommended 32 bit FNV-1a hash, use FNV1_32A_INIT as the
 	 * 	 hval arg on the first call to either fnv_32a_buf() or fnv_32a_str().
 	 */
-	xhash32 xhash_generator_fnv::buf(void const* inData, u32 inLength)
+	xdigest32 xdigest_fnv::buf(void const* inData, u32 inLength)
 	{
 		return buf(inData, inLength, FNV_32_PRIME);
 	}
 
-	xhash32	xhash_generator_fnv::buf(void const *buf, u32 len, xhash32 hval)
+	xdigest32	xdigest_fnv::buf(void const *buf, u32 len, xdigest32 hval)
 	{
 		unsigned char *bp = (unsigned char *)buf;	/* start of buffer */
 		unsigned char *be = bp + len;		/* beyond end of buffer */
@@ -48,7 +48,7 @@ namespace xcore
 		{
 
 			/* xor the bottom with the current octet */
-			hval ^= (xhash32)*bp++;
+			hval ^= (xdigest32)*bp++;
 
 			/* multiply by the 32 bit FNV magic prime mod 2^32 */
 #if defined(NO_FNV_GCC_OPTIMIZATION)
@@ -76,12 +76,12 @@ namespace xcore
 	 * NOTE: To use the recommended 32 bit FNV-1a hash, use FNV1_32A_INIT as the
 	 *  	 hval arg on the first call to either fnv_32a_buf() or fnv_32a_str().
 	 */
-	xhash32	xhash_generator_fnv::str(char const *inStr)
+	xdigest32	xdigest_fnv::str(char const *inStr)
 	{
 		return str(inStr, FNV_32_PRIME);
 	}
 
-	xhash32	xhash_generator_fnv::str(char const *inStr, xhash32 hval)
+	xdigest32	xdigest_fnv::str(char const *inStr, xdigest32 hval)
 	{
 		unsigned char *s = (unsigned char *)inStr;	/* unsigned string */
 
@@ -92,7 +92,7 @@ namespace xcore
 		{
 
 			/* xor the bottom with the current octet */
-			hval ^= (xhash32)*s++;
+			hval ^= (xdigest32)*s++;
 
 			/* multiply by the 32 bit FNV magic prime mod 2^32 */
 #if defined(NO_FNV_GCC_OPTIMIZATION)

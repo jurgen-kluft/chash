@@ -7,7 +7,7 @@
 // x_hash32_generator_murmur.cpp - xCore Hash functions 
 #include "xbase\x_types.h"
 #include "xbase\x_string_std.h"
-#include "xhash\private\x_hash32_generator_murmur.h"
+#include "xhash\private\x_digest_engine_murmur.h"
 #include "xbase\x_endian.h"
 #include "xbase\x_string.h"
 
@@ -81,24 +81,24 @@ namespace xcore
 	}
 
 
-	xhash32			xhash_generator_murmur::buf(void const* inData, u32 inLength)
+	xdigest32			xdigest_murmur::buf(void const* inData, u32 inLength)
 	{
 
 		return gGetMurmurHash32((const char*)inData, inLength, 0);
 	}
 
-	xhash32			xhash_generator_murmur::buf(void const* inData, u32 inLength, xhash32 inPrevious)
+	xdigest32			xdigest_murmur::buf(void const* inData, u32 inLength, xdigest32 inPrevious)
 	{
 
 		return gGetMurmurHash32((const char*)inData, inLength, inPrevious);
 	}
 
-	xhash32			xhash_generator_murmur::str(char const* inStr)
+	xdigest32			xdigest_murmur::str(char const* inStr)
 	{
 		return gGetMurmurHash32((const char*)inStr, x_strlen(inStr), 0);
 	}
 
-	xhash32			xhash_generator_murmur::str(char const* inStr, xhash32 inPrevious)
+	xdigest32			xdigest_murmur::str(char const* inStr, xdigest32 inPrevious)
 	{
 		return gGetMurmurHash32((const char*)inStr, x_strlen(inStr), inPrevious);
 	}
