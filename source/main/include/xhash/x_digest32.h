@@ -12,9 +12,8 @@
 #pragma once
 #endif
 
-#include "xbase\x_types.h"
-#include "xhash\private\x_digest_engine_murmur.h"
-#include "xbase\x_endian.h"
+#include "xhash\x_digest_engine.h"
+#include "xhash\private\x_digest_murmur32.h"
 
 namespace xcore
 {
@@ -23,7 +22,7 @@ namespace xcore
 	 */
 	typedef		u32			xdigest32;
 
-	class xdigest32_default : public xdigest_murmur
+	class xdigest_default32 : public xdigest_murmur32
 	{
 
 	};
@@ -51,7 +50,7 @@ namespace xcore
 	 * 			Because the hashable template stores the hash value of the type it embeds,
 	 * 			changing the value also requires updating the update() function.
 	 */
-	template <typename T, typename HG = xdigest32_default>
+	template <typename T, typename HG = xdigest_default32>
 	class hashable
 	{
 	public:
@@ -111,7 +110,7 @@ namespace xcore
 	 * @group		xhash
  	 * @brief		Hashed pointer template
 	 */
-	template <typename T, typename HG = xdigest32_default>
+	template <typename T, typename HG = xdigest_default32>
 	struct hashed_ptr
 	{
 		///@name Construction/Destruction

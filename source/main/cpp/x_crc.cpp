@@ -40,7 +40,7 @@ namespace xcore
 	 * @group		xhash
 	 * Calculate running CRC of <inInitVal> over <inBuffer> with length <inLength>
 	 */
-	u32	xcrc::crc32(void const* inBuffer, int inLength, u32 inInitVal)
+	u32	xcrc::crc32(void const* inBuffer, s32 inLength, u32 inInitVal)
 	{
 		u8 const* p_in = (u8 const*)inBuffer;
 		u32	crc  = ~inInitVal;
@@ -50,17 +50,17 @@ namespace xcore
 		if (CRC32::mIsEmpty)
 		{
 			// Fill crc table for first 2^8 bit combinations
-			for (int n=0; n<CRC32::TABLE_SIZE; n++)
+			for (s32 n=0; n<CRC32::TABLE_SIZE; n++)
 			{
 				u32 c = n;
-				for (int k=0; k<8; k++)
+				for (s32 k=0; k<8; k++)
 					c = (c & 1) ? (CRC32::POLY32^(c >> 1)) : (c >> 1);
 				CRC32::mTable[n] = c;
 			}
 			CRC32::mIsEmpty = false;
 		}
 
-		for (int i=0; i<inLength; i++)
+		for (s32 i=0; i<inLength; i++)
 			crc = CRC32::mTable[(crc ^ (*p_in++)) & 0xff] ^ (crc >> 8);
 
 		return ~crc;
@@ -92,7 +92,7 @@ namespace xcore
 	 * @group		xhash
 	 * Calculate running Adler32 of <inInitVal> over <inBuffer> with length <inLength>
 	 */
-	u32 xcrc::adler32(void const* inBuffer, int inLength, u32 inInitVal)
+	u32 xcrc::adler32(void const* inBuffer, s32 inLength, u32 inInitVal)
 	{
 		u32 a1 = inInitVal & 0xFFFF;							///< Adler sum parts
 		u32 a2 = inInitVal >> 16;
@@ -102,7 +102,7 @@ namespace xcore
 		// Go on doing bits and pieces of the area until we're done
 		while (inLength)
 		{
-			int max_do = (inLength < (int)CRCAdler::NMAX32) ? inLength : ((int)CRCAdler::NMAX32);
+			s32 max_do = (inLength < (s32)CRCAdler::NMAX32) ? inLength : ((s32)CRCAdler::NMAX32);
 
 			inLength -= max_do;
 			while (max_do >= 16) { CRCAdler::ADO16(p_in, a1, a2); max_do-=16; }
@@ -121,7 +121,7 @@ namespace xcore
 	 * @group		xhash
 	 * Calculate running Adler16 of <inInitVal> over <inBuffer> with length <inLength>
 	 */
-	u16	xcrc::adler16(void const* inBuffer, int inLength, u16 inInitVal)
+	u16	xcrc::adler16(void const* inBuffer, s32 inLength, u16 inInitVal)
 	{
 		u32 a1 = inInitVal & 0xFF;								// Adler sum parts
 		u32 a2 = inInitVal >> 8;
@@ -131,7 +131,7 @@ namespace xcore
 		// Go on doing bits and pieces of the area until we're done
 		while (inLength)
 		{
-			int max_do = (inLength < (int)CRCAdler::NMAX16) ? inLength : ((int)CRCAdler::NMAX16);
+			s32 max_do = (inLength < (s32)CRCAdler::NMAX16) ? inLength : ((s32)CRCAdler::NMAX16);
 
 			inLength -= max_do;
 			while (max_do >= 16) { CRCAdler::ADO16(p_in, a1, a2); max_do-=16; }

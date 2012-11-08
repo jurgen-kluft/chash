@@ -1,15 +1,15 @@
 #include "xbase\x_target.h"
 #include "xbase\x_string_std.h"
 #include "xhash\x_digest32.h"
-#include "xhash\private\x_digest_engine_murmur.h"
+#include "xhash\private\x_digest_murmur32.h"
 
 #include "xunittest\xunittest.h"
 
 using namespace xcore;
 
-UNITTEST_SUITE_BEGIN(xhash)
+UNITTEST_SUITE_BEGIN(xhash32)
 {
-	UNITTEST_FIXTURE(xdigest_murmur)
+	UNITTEST_FIXTURE(xdigest_murmur32)
 	{
 		UNITTEST_FIXTURE_SETUP() {}
 		UNITTEST_FIXTURE_TEARDOWN() {}
@@ -18,29 +18,29 @@ UNITTEST_SUITE_BEGIN(xhash)
 		{
 			int indata[10]={1,2,3,4,5,6,7,8,9,13},indata2[10]={-1,-2,-3,-4,-5,0,1,2,3,4};
 			u32 len=10;
-			u32 ruhash=xdigest_murmur::buf(indata,len,100),ruhash2=xdigest_murmur::buf(indata,len,100);
+			u32 ruhash=xdigest_murmur32::buf(indata,len,100),ruhash2=xdigest_murmur32::buf(indata,len,100);
 			CHECK_EQUAL(ruhash>0,true);
 			CHECK_EQUAL(ruhash,ruhash2);
-			ruhash2=xdigest_murmur::buf(indata,9,100);
+			ruhash2=xdigest_murmur32::buf(indata,9,100);
 			CHECK_NOT_EQUAL(ruhash,ruhash2);
-			ruhash2=xdigest_murmur::buf(indata2,len,100);
+			ruhash2=xdigest_murmur32::buf(indata2,len,100);
 			CHECK_NOT_EQUAL(ruhash,ruhash2);
-			ruhash2=xdigest_murmur::buf(indata,len);
+			ruhash2=xdigest_murmur32::buf(indata,len);
 			CHECK_NOT_EQUAL(ruhash,ruhash2);
 		}
 		UNITTEST_TEST(xhash_generator_murmur_Hash2_void)
 		{
 			int indata[10]={1,2,3,4,5,6,7,8,9,13},indata2[10]={-1,-2,-3,-4,-5,0,1,2,3,4};
-			u32 len=10,len2=23,ru=xdigest_murmur::buf(indata,len),ru2;
-			CHECK_EQUAL(xdigest_murmur::buf(indata,len),ru);
-			ru2 = xdigest_murmur::buf(indata,len,ru);
-			CHECK_NOT_EQUAL(xdigest_murmur::buf(indata,len),ru2);
-			ru2 = xdigest_murmur::buf(indata,len2,ru);
-			CHECK_NOT_EQUAL(xdigest_murmur::buf(indata,len),ru2);
-			ru = xdigest_murmur::buf(indata,len,ru);
-			CHECK_NOT_EQUAL(xdigest_murmur::buf(indata,len),ru2);
-			ru2 = xdigest_murmur::buf(indata2,len,ru);
-			CHECK_NOT_EQUAL(xdigest_murmur::buf(indata,len),ru2);
+			u32 len=10,len2=23,ru=xdigest_murmur32::buf(indata,len),ru2;
+			CHECK_EQUAL(xdigest_murmur32::buf(indata,len),ru);
+			ru2 = xdigest_murmur32::buf(indata,len,ru);
+			CHECK_NOT_EQUAL(xdigest_murmur32::buf(indata,len),ru2);
+			ru2 = xdigest_murmur32::buf(indata,len2,ru);
+			CHECK_NOT_EQUAL(xdigest_murmur32::buf(indata,len),ru2);
+			ru = xdigest_murmur32::buf(indata,len,ru);
+			CHECK_NOT_EQUAL(xdigest_murmur32::buf(indata,len),ru2);
+			ru2 = xdigest_murmur32::buf(indata2,len,ru);
+			CHECK_NOT_EQUAL(xdigest_murmur32::buf(indata,len),ru2);
 		}
 		UNITTEST_TEST(xhash_generator_murmur_Hash2_u32)
 		{
@@ -48,20 +48,20 @@ UNITTEST_SUITE_BEGIN(xhash)
 			u32 len=10,len2=23;
 			for(s32 i=0;i<50;i++)
 			{
-				CHECK_EQUAL((xdigest_murmur::buf(indata,len,i*i)>0),true);
+				CHECK_EQUAL((xdigest_murmur32::buf(indata,len,i*i)>0),true);
 			}
-			CHECK_NOT_EQUAL(xdigest_murmur::buf(indata,len),xdigest_murmur::buf(indata,len,100));
-			CHECK_NOT_EQUAL(xdigest_murmur::buf(indata,len2,100),xdigest_murmur::buf(indata,len,100));
-			CHECK_NOT_EQUAL(xdigest_murmur::buf(indata,len,100),xdigest_murmur::buf(indata2,len,100));
-			CHECK_EQUAL(xdigest_murmur::buf(indata,len,100),xdigest_murmur::buf(indata,len,100));
+			CHECK_NOT_EQUAL(xdigest_murmur32::buf(indata,len),xdigest_murmur32::buf(indata,len,100));
+			CHECK_NOT_EQUAL(xdigest_murmur32::buf(indata,len2,100),xdigest_murmur32::buf(indata,len,100));
+			CHECK_NOT_EQUAL(xdigest_murmur32::buf(indata,len,100),xdigest_murmur32::buf(indata2,len,100));
+			CHECK_EQUAL(xdigest_murmur32::buf(indata,len,100),xdigest_murmur32::buf(indata,len,100));
 		}
 		UNITTEST_TEST(xhash_generator_murmur_Hash2_void2)
 		{
 			u32 indata[10]={1,2,3,4,5,6,7,8,9,13};
-			u32 len=10,ru=xdigest_murmur::buf(indata,len),ru2;
-			CHECK_EQUAL(xdigest_murmur::buf(indata,len),ru);
-			ru2 = xdigest_murmur::buf(indata,len,ru);
-			CHECK_NOT_EQUAL(xdigest_murmur::buf(indata,len),ru2);
+			u32 len=10,ru=xdigest_murmur32::buf(indata,len),ru2;
+			CHECK_EQUAL(xdigest_murmur32::buf(indata,len),ru);
+			ru2 = xdigest_murmur32::buf(indata,len,ru);
+			CHECK_NOT_EQUAL(xdigest_murmur32::buf(indata,len),ru2);
 		}
 		UNITTEST_TEST(xhash_generator_murmur_Hash2_u322)
 		{
@@ -69,9 +69,9 @@ UNITTEST_SUITE_BEGIN(xhash)
 			u32 len=10;
 			for(s32 i=0;i<50;i++)
 			{
-				CHECK_EQUAL((xdigest_murmur::buf(indata,len,i*i)>0),true);
+				CHECK_EQUAL((xdigest_murmur32::buf(indata,len,i*i)>0),true);
 			}
-			CHECK_NOT_EQUAL(xdigest_murmur::buf(indata,len),xdigest_murmur::buf(indata,len,100));
+			CHECK_NOT_EQUAL(xdigest_murmur32::buf(indata,len),xdigest_murmur32::buf(indata,len,100));
 		}
 		
 	}
@@ -418,7 +418,7 @@ UNITTEST_SUITE_BEGIN(xhash)
 			{
 				shashs+=(450*i);
 				sum+=450*i;
-				CHECK_EQUAL(xdigest_murmur::buf(&sum, sizeof(u32)),shashs.hash());
+				CHECK_EQUAL(xdigest_murmur32::buf(&sum, sizeof(u32)),shashs.hash());
 			}
 			hashable<f32> shashf;
 			shashf=(123.4f);
@@ -426,14 +426,14 @@ UNITTEST_SUITE_BEGIN(xhash)
 			f32 *rf;
 			f32 rf2=(f32 &)shashf;
 			rf=&rf2;
-			CHECK_EQUAL(xdigest_murmur::buf(rf, sizeof(f32)), shashf.hash());
+			CHECK_EQUAL(xdigest_murmur32::buf(rf, sizeof(f32)), shashf.hash());
 			hashable<char> shashc;
 			shashc=('x');
 			shashc+=('s');
 			char *rc;
 			char rc2=(char &)shashc;
 			rc=&rc2;
-			CHECK_EQUAL(xdigest_murmur::buf(rc,sizeof(char)), shashc.hash());
+			CHECK_EQUAL(xdigest_murmur32::buf(rc,sizeof(char)), shashc.hash());
 		}
 	}
 	UNITTEST_FIXTURE(hashed_ptr)

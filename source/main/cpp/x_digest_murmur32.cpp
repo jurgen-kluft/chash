@@ -1,15 +1,16 @@
 /**
- * @file x_hash32_generator_murmur.cpp
+ * @file x_digest_murmur32.cpp
  *
  * xCore Hash functions
  */
 
-// x_hash32_generator_murmur.cpp - xCore Hash functions 
-#include "xbase\x_types.h"
-#include "xbase\x_string_std.h"
-#include "xhash\private\x_digest_engine_murmur.h"
+// x_digest_murmur32.cpp - xCore Hash functions 
+#include "xbase\x_target.h"
 #include "xbase\x_endian.h"
 #include "xbase\x_string.h"
+#include "xbase\x_string_std.h"
+
+#include "xhash\private\x_digest_murmur32.h"
 
 namespace xcore
 {
@@ -81,24 +82,24 @@ namespace xcore
 	}
 
 
-	xdigest32			xdigest_murmur::buf(void const* inData, u32 inLength)
+	xdigest32			xdigest_murmur32::buf(void const* inData, u32 inLength)
 	{
 
 		return gGetMurmurHash32((const char*)inData, inLength, 0);
 	}
 
-	xdigest32			xdigest_murmur::buf(void const* inData, u32 inLength, xdigest32 inPrevious)
+	xdigest32			xdigest_murmur32::buf(void const* inData, u32 inLength, xdigest32 inPrevious)
 	{
 
 		return gGetMurmurHash32((const char*)inData, inLength, inPrevious);
 	}
 
-	xdigest32			xdigest_murmur::str(char const* inStr)
+	xdigest32			xdigest_murmur32::str(char const* inStr)
 	{
 		return gGetMurmurHash32((const char*)inStr, x_strlen(inStr), 0);
 	}
 
-	xdigest32			xdigest_murmur::str(char const* inStr, xdigest32 inPrevious)
+	xdigest32			xdigest_murmur32::str(char const* inStr, xdigest32 inPrevious)
 	{
 		return gGetMurmurHash32((const char*)inStr, x_strlen(inStr), inPrevious);
 	}
