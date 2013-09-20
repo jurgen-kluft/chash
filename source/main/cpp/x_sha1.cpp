@@ -8,7 +8,6 @@
 #include "xbase\x_target.h"
 #include "xbase\x_va_list.h"
 #include "xbase\x_integer.h"
-#include "xbase\x_string_std.h"
 #include "xbase\x_memory_std.h"
 #include "xbase\x_endian.h"
 
