@@ -35,8 +35,18 @@ namespace xcore
 
 		void			clear();
 		bool			is_verified() const;
+
 		void			set_hash(xhash_t const& _hash);
+
+		enum echild {LEFT=0, RIGHT=1};
+		bool			has_child(echild _child) const		{ return pchild[_child] != NULL; }
+		bool			is_leaf(echild _child) const		{ return tchild[_child] == 1; }
 	};
+
+	static inline u8 sCombineBitmaps(u8 _left, u8 _right)
+	{
+
+	}
 
 	static inline void sCopyHash(xhash_t& _dst, xhashtree::hash_t const& _src)
 	{
