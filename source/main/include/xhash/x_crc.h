@@ -1,10 +1,10 @@
 /**
- * @file Checksum.h
+ * @file x_crc.h
  *
  * Core Checksum functions
  */
 
-// Checksum.h - Core Checksum functions 
+// x_crc.h - Core Checksum functions 
 #ifndef __XHASH_CHECKSUM_H__
 #define __XHASH_CHECKSUM_H__
 #include "xbase\x_target.h"

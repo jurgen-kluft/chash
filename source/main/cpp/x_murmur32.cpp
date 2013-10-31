@@ -5,7 +5,7 @@
  */
 
 // x_murmur32.cpp - xCore Hash functions 
-#include "xbase\x_types.h"
+#include "xbase\x_target.h"
 #include "xhash\x_murmur32.h"
 #include "xhash\private\x_digest_murmur32.h"
 

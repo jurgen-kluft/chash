@@ -5,7 +5,7 @@
  */
 
 // x_hash128_generator.cpp - Core Hash128 Generator
-#include "xbase\x_types.h"
+#include "xbase\x_target.h"
 #include "xbase\x_string_std.h"
 #include "xhash\x_digest128.h"
 
