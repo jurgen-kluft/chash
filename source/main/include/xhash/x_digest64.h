@@ -1,18 +1,16 @@
 /**
- * @file Hash.h
+ * @file x_digest64.h
  *
  * Core Hash functions
  */
 
-// Hash.h - Core Hash functions - 
+// x_digest64.h - Core Hash functions - 
 #ifndef __XHASH_HASHABLE_64_H__
 #define __XHASH_HASHABLE_64_H__
 #include "xbase\x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif
-
-#include "xhash\x_digest_engine.h"
 
 namespace xcore
 {

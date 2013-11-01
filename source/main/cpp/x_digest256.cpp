@@ -1,6 +1,6 @@
 #include "xbase\x_target.h"
 #include "xbase\x_string_std.h"
-#include "xhash\x_digest128.h"
+#include "xhash\x_digest256.h"
 
 namespace xcore
 {
@@ -11,7 +11,7 @@ namespace xcore
 	 * This function implements operator< so that the ToString() of the hash
 	 * value results in the same result when done with a dictionary compare.
 	 */
-	bool					xdigest128::operator<(xdigest128 const& inRHS) const
+	bool					xdigest256::operator<(xdigest256 const& inRHS) const
 	{
 		for (u32 i=0; i<size(); i++)
 		{
@@ -30,7 +30,7 @@ namespace xcore
 	 * This function implements operator> so that the toString() of the hash
 	 * value results in the same result when done with a dictionary compare.
 	 */
-	bool					xdigest128::operator>(xdigest128 const& inRHS) const
+	bool					xdigest256::operator>(xdigest256 const& inRHS) const
 	{
 		for (u32 i=0; i<size(); i++)
 		{
@@ -43,26 +43,40 @@ namespace xcore
 	}
 
 
-	void					xdigest128::set32(u32 i, u32 inR)
+	void					xdigest256::set32(u32 i, u32 inR)
 	{
 		if (i<size32())
 			mData32[i] = inR;
 	}
 
 
-	void					xdigest128::get32(u32 i, u32& outR) const
+	void					xdigest256::get32(u32 i, u32& outR) const
 	{
-		if (i>=0 && i<size32())
+		if (i<size32())
 			outR = mData32[i];
 		else
 			outR = 0;
 	}
 
+	void					xdigest256::set64(u32 i, u64 inR)
+	{
+		if (i<size64())
+			mData64[i] = inR;
+	}
+
+
+	void					xdigest256::get64(u32 i, u64& outR) const
+	{
+		if (i<size64())
+			outR = mData64[i];
+		else
+			outR = 0;
+	}
 
 	/**
 	 * @brief Convert hash value to String
 	 */
-	s32						xdigest128::toString(char* ioStr, u32 ioStrLength) const
+	s32						xdigest256::toString(char* ioStr, u32 ioStrLength) const
 	{
 		if (ioStrLength < (size() * 2))
 			return 0;
@@ -76,11 +90,10 @@ namespace xcore
 		return (u32)(s - ioStr);
 	}
 
-
 	/**
 	 * @brief Set hash value from String
 	 */
-	bool					xdigest128::fromString(const char* inString)
+	bool					xdigest256::fromString(const char* inString)
 	{
 		if ((u32)x_strlen(inString) < (size() * 2))
 			return false;

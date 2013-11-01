@@ -55,11 +55,11 @@ UNITTEST_SUITE_BEGIN(xmd5)
 		UNITTEST_TEST(xmd5_operator_max)
 		{
 			xmd5 smd5h,smd5h2,smd5h3;
-			const char* rch="2222222222222222222222222222222222222";
-			char* rch2="111111111111111111111111111111111111111111";
-			char* rch3="111111111111111111111111122222211111111111";
-			smd5h.fromString(rch);
-			smd5h2.fromString(rch2);
+			const char* rch ="000002222222222222222222222222222222222222";
+			const char* rch2="111111111111111111111111111111111111111111";
+			const char* rch3="111111111111111111111111122222211111111111";
+			CHECK_TRUE(smd5h.fromString(rch));
+			CHECK_TRUE(smd5h2.fromString(rch2));
 			bool sBig=(smd5h2>smd5h);
 			CHECK_EQUAL(sBig,false);
 			smd5h3.fromString(rch3);
@@ -112,7 +112,7 @@ UNITTEST_SUITE_BEGIN(xmd5)
 				u32 ru,ru2,ru3,ru4;
 				smd5h.set(i,i,i,i);
 				smd5h.get(ru,ru2,ru3,ru4);
-				CHECK_EQUAL((smd5h.getHash()==ru),true);
+				CHECK_EQUAL((smd5h.getHash32()==ru),true);
 			}
 		}
 		UNITTEST_TEST(xmd5_ToString)

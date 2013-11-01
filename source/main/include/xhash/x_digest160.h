@@ -19,6 +19,9 @@ namespace xcore
 							xdigest160()											{ clear(); }
 							xdigest160(const char* inString)						{ fromString(inString); }
 
+		u32					size() const											{ return 20; }
+		u32					size32() const											{ return 5; }
+
 		///@name Equality
 		bool				operator==(xdigest160 const& inRHS) const				{ return mData32[0] == inRHS.mData32[0] && mData32[1] == inRHS.mData32[1] && mData32[2] == inRHS.mData32[2] && mData32[3] == inRHS.mData32[3] && mData32[4] == inRHS.mData32[4]; }
 		bool				operator!=(xdigest160 const& inRHS) const				{ return !(*this == inRHS); }

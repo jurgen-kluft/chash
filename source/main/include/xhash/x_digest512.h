@@ -21,9 +21,9 @@ namespace xcore
 
 		void				clear()														{ for (s32 i=0; i<8; ++i) mData64[i]=0; }
 		
-		s32					size() const												{ return 64; }
-		s32					size32() const												{ return 16; }
-		s32					size64() const												{ return 8; }
+		u32					size() const												{ return 64; }
+		u32					size32() const												{ return 16; }
+		u32					size64() const												{ return 8; }
 
 		///@name Equality
 		bool				operator==(xdigest512 const& inRHS) const					{ for (s32 i=0; i<8; ++i) if (mData64[i]!=inRHS.mData64[i]) return false; return true; }
@@ -32,10 +32,10 @@ namespace xcore
 		bool				operator>(xdigest512 const& inRHS) const;
 
 		///@name The hash value
-		void				set32(s32 index, u32 inR);
-		void				get32(s32 index, u32& outR) const;
-		void				set64(s32 index, u64 inR);
-		void				get64(s32 index, u64& outR) const;
+		void				set32(u32 index, u32 inR);
+		void				get32(u32 index, u32& outR) const;
+		void				set64(u32 index, u64 inR);
+		void				get64(u32 index, u64& outR) const;
 
 		///@name Hashing
 		inline u32			getHash32() const											{ return mData32[0]; } ///< Get hash value (when used as a key in a hash set or map)
