@@ -12,8 +12,6 @@
 #pragma once
 #endif
 
-#include "xbase\x_types.h"
-
 namespace xcore
 {
 	struct xdigest128
@@ -21,20 +19,23 @@ namespace xcore
 							xdigest128()												{ clear(); }
 							xdigest128(const char* inString)							{ fromString(inString); }
 
-		void				clear()														{ set(0,0,0,0); }
+		void				clear()														{ mData64[0]=0; mData64[1]=0; }
 
 		///@name Equality
-		bool				operator==(xdigest128 const& inRHS) const					{ return mData32[0] == inRHS.mData32[0] && mData32[1] == inRHS.mData32[1] && mData32[2] == inRHS.mData32[2] && mData32[3] == inRHS.mData32[3]; }
+		bool				operator==(xdigest128 const& inRHS) const					{ return mData64[0] == inRHS.mData64[0] && mData64[1] == inRHS.mData64[1]; }
 		bool				operator!=(xdigest128 const& inRHS) const					{ return !(*this == inRHS); }
 		bool				operator<(xdigest128 const& inRHS) const;
 		bool				operator>(xdigest128 const& inRHS) const;
 
 		///@name The hash value
-		void				set(u32 inR1, u32 inR2, u32 inR3, u32 inR4);
-		void				get(u32& outR1, u32& outR2, u32& outR3, u32& outR4) const;
+		void				set32(s32 index, u32 inR);
+		void				get32(s32 index, u32& outR) const;
+		void				set64(s32 index, u64 inR);
+		void				get64(s32 index, u64& outR) const;
 
 		///@name Hashing
-		inline u32			getHash() const											{ return mData32[0]; } ///< Get hash value (when used as a key in a hash set or map)
+		inline u32			getHash32() const											{ return mData32[0]; } ///< Get hash value (when used as a key in a hash set or map)
+		inline u64			getHash64() const											{ return mData64[0]; } ///< Get hash value (when used as a key in a hash set or map)
 
 		///@name To/From String
 		s32					toString(char* ioStr, u32 ioStrLength) const;			///< Convert hash value to String (incoming length > 16)

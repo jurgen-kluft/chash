@@ -50,21 +50,19 @@ namespace xcore
 	}
 
 
-	void					xdigest128::set(u32 inR1, u32 inR2, u32 inR3, u32 inR4)
+	void					xdigest128::set32(s32 i, u32 inR)
 	{
-		mData32[0] = inR1;
-		mData32[1] = inR2;
-		mData32[2] = inR3;
-		mData32[3] = inR4;
+		if (i>=0 && i<4)
+			mData32[i] = inR;
 	}
 
 
-	void					xdigest128::get(u32& outR1, u32& outR2, u32& outR3, u32& outR4) const
+	void					xdigest128::get32(s32 i, u32& outR) const
 	{
-		outR1 = mData32[0];
-		outR2 = mData32[1];
-		outR3 = mData32[2];
-		outR4 = mData32[3];
+		if (i>=0 && i<4)
+			outR = mData32[i];
+		else
+			outR = 0xFFFFFFFF;
 	}
 
 

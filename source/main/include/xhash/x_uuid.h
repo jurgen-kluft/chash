@@ -12,9 +12,6 @@
 #pragma once
 #endif
 
-#include "xbase\x_types.h"
-#include "xbase\x_memory_std.h"
-
 namespace xcore
 {
 	// Forward declares
@@ -52,8 +49,8 @@ namespace xcore
 		f_inline u32		hash() const											{ return mHash; } ///< Return the hash value of this UID
 
 		/// Operators
-		inline bool			operator==(xuuid const& inRHS) const					{ return x_memcmp(this, &inRHS, sizeof(xuuid))==0; } ///< Check if two UUIDs are equal
-		inline bool			operator!=(xuuid const& inRHS) const					{ return x_memcmp(this, &inRHS, sizeof(xuuid))!=0; } ///< Check if two UUIDs are inequal
+		inline bool			operator==(xuuid const& inRHS) const					{ return mData1==inRHS.mData1 && mData2==inRHS.mData2 && mData3==inRHS.mData3 && mData4==inRHS.mData4; } ///< Check if two UUIDs are equal
+		inline bool			operator!=(xuuid const& inRHS) const					{ return mHash!=inRHS.mHash; } ///< Check if two UUIDs are inequal
 
 		/// UUID -> String
 		bool				toString(xcstring& outString);							///< Convert UUID to string representation "{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}"

@@ -12,7 +12,6 @@
 #pragma once
 #endif
 
-#include "xbase\x_types.h"
 #include "xhash\x_digest_engine.h"
 
 namespace xcore

@@ -209,7 +209,8 @@ namespace xcore
 		u32 e[4];
 		digest((xbyte*)e);
 		sByteSwap(e, 4);
-		md5.set(e[0], e[1], e[2], e[3]);
+		for (s32 i=0; i<4; ++i)
+			md5.set32(i, e[i]);
 	}
 
 
