@@ -9,6 +9,7 @@ UNITTEST_SUITE_LIST(xHashUnitTest);
 UNITTEST_SUITE_DECLARE(xHashUnitTest, xcrc);
 UNITTEST_SUITE_DECLARE(xHashUnitTest, xmd5);
 UNITTEST_SUITE_DECLARE(xHashUnitTest, xsha1);
+UNITTEST_SUITE_DECLARE(xHashUnitTest, xskein);
 UNITTEST_SUITE_DECLARE(xHashUnitTest, xuuid);
 UNITTEST_SUITE_DECLARE(xHashUnitTest, xhash32);
 UNITTEST_SUITE_DECLARE(xHashUnitTest, xhash64);
