@@ -1,12 +1,5 @@
-/**
- * @file x_murmur32.cpp
- *
- * xCore Hash functions
- */
-
-// x_murmur32.cpp - xCore Hash functions 
 #include "xbase\x_target.h"
-#include "xhash\x_murmur32.h"
+#include "xhash\x_skein.h"
 #include "xhash\private\x_digest_murmur32.h"
 
 #include <string.h>
@@ -1435,5 +1428,116 @@ namespace skein_hash
 
 namespace xcore
 {
+	xdigest_engine_skein256::xdigest_engine_skein256()
+	{
+		reset2();
+	}
+
+	///@name Updating
+	void	xdigest_engine_skein256::reset()
+	{
+		reset2();
+	}
+
+	void	xdigest_engine_skein256::update(void const* inBuffer, u32 inLength)
+	{
+		if (mState == OPEN)
+			skein_hash::Skein_256_Update((skein_hash::Skein_256_Ctxt_t*)&mCtx, (skein_hash::u08b_t*)inBuffer, inLength);
+	}
+
+	void	xdigest_engine_skein256::digest(xbyte* digest)
+	{
+		if (mState == OPEN)
+		{
+			mState = CLOSED;
+			skein_hash::Skein_256_Final((skein_hash::Skein_256_Ctxt_t*)&mCtx, digest);
+		}
+	}
+
+	bool	xdigest_engine_skein256::digest(xskein256& hash)
+	{
+		if (mState == OPEN)
+		{
+			mState = CLOSED;
+			skein_hash::Skein_256_Final((skein_hash::Skein_256_Ctxt_t*)&mCtx, hash.data());
+			return true;
+		}
+		return false;
+	}
+
+	void	xdigest_engine_skein256::reset2()
+	{
+		mState = OPEN;
+		skein_hash::Skein_256_Init((skein_hash::Skein_256_Ctxt_t*)&mCtx, 256);
+	}
+
+
+	xdigest_engine_skein512::xdigest_engine_skein512()
+	{
+		reset2();
+	}
+
+	///@name Updating
+	void	xdigest_engine_skein512::reset()
+	{
+		reset2();
+	}
+
+	void	xdigest_engine_skein512::update(void const* inBuffer, u32 inLength)
+	{
+		if (mState == OPEN)
+			skein_hash::Skein_512_Update((skein_hash::Skein_512_Ctxt_t*)&mCtx, (skein_hash::u08b_t*)inBuffer, inLength);
+	}
+
+	void	xdigest_engine_skein512::digest(xbyte* digest)
+	{
+		if (mState == OPEN)
+		{
+			mState = CLOSED;
+			skein_hash::Skein_512_Final((skein_hash::Skein_512_Ctxt_t*)&mCtx, digest);
+		}
+	}
+
+	bool	xdigest_engine_skein512::digest(xskein512& hash)
+	{
+		if (mState == OPEN)
+		{
+			mState = CLOSED;
+			skein_hash::Skein_512_Final((skein_hash::Skein_512_Ctxt_t*)&mCtx, hash.data());
+			return true;
+		}
+		return false;
+	}
+
+	void	xdigest_engine_skein512::reset2()
+	{
+		mState = OPEN;
+		skein_hash::Skein_512_Init((skein_hash::Skein_512_Ctxt_t*)&mCtx, 512);
+	}
+
+
+
+	/**
+	 *	Utilities
+	 */
+	xskein256	x_skein256Hash(void const* inBuffer, s32 inLength)
+	{
+		skein_hash::Skein_256_Ctxt_t ctx;
+		skein_hash::Skein_256_Init(&ctx, 256);
+		skein_hash::Skein_256_Update(&ctx, (skein_hash::u08b_t*)inBuffer, inLength);
+		xskein256 hash;
+		skein_hash::Skein_256_Final(&ctx, hash.data());
+		return hash;
+	}
+
+	xskein512	x_skein512Hash(void const* inBuffer, s32 inLength)
+	{
+		skein_hash::Skein_512_Ctxt_t ctx;
+		skein_hash::Skein_512_Init(&ctx, 512);
+		skein_hash::Skein_512_Update(&ctx, (skein_hash::u08b_t*)inBuffer, inLength);
+		xskein512 hash;
+		skein_hash::Skein_512_Final(&ctx, hash.data());
+		return hash;
+	}
 
 }

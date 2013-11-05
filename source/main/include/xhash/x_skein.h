@@ -74,14 +74,38 @@ namespace xcore
 		virtual void	reset();
 		virtual void	update(void const* inBuffer, u32 inLength);
 		virtual void	digest(xbyte* digest);
-
 		bool			digest(xskein256& hash);
 
 	private:
 		void			reset2();
 
-		bool			mComputed;									// Is the digest computed?
+		EState			mState;									// Is the digest computed?
 		xskein256_ctx	mCtx;
+	};
+
+	class xdigest_engine_skein512 : public xidigest_engine
+	{
+		enum EState
+		{
+			OPEN,
+			CLOSED,
+		};
+
+	public:
+						xdigest_engine_skein512();
+
+		///@name Updating
+		virtual u32		length() const { return 64; }
+		virtual void	reset();
+		virtual void	update(void const* inBuffer, u32 inLength);
+		virtual void	digest(xbyte* digest);
+		bool			digest(xskein512& hash);
+
+	private:
+		void			reset2();
+
+		EState			mState;									// Is the digest computed?
+		xskein512_ctx	mCtx;
 	};
 
 	/**

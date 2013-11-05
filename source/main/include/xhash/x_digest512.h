@@ -41,6 +41,10 @@ namespace xcore
 		inline u32			getHash32() const											{ return mData32[0]; } ///< Get hash value (when used as a key in a hash set or map)
 		inline u64			getHash64() const											{ return mData64[0]; } ///< Get hash value (when used as a key in a hash set or map)
 
+		///@name Access
+		u8 const*			data() const												{ return mData8; }
+		u8*					data()														{ return mData8; }
+
 		///@name To/From String
 		s32					toString(char* ioStr, u32 ioStrLength) const;			///< Convert hash value to String (incoming length > 16)
 		bool				fromString(const char* inStr);							///< Set hash value from String
