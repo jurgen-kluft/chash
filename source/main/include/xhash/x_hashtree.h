@@ -21,7 +21,7 @@ namespace xcore
 	 * @behavior	Submitting hashes is going to allocate nodes, leafs and hashes and if submitted
 	 *              in the worst case random order (010101....010101) then this data structure will
 	 *              use the most amount of memory.
-	 *				So the aim is to submit hashes in an left to right order (increasing index).
+	 *				So the aim is to submit hashes in a continues order (increasing or decreasing index).
 	 *              The hash tree will collapse sub-trees when it can validate the node hash. The user
 	 *              can submit a trusted hash into a node with @submit_trusted_hash().
 	 *              The range is aligned to 8 since every leaf can hold the hashes of 4 items while a
@@ -58,11 +58,7 @@ namespace xcore
 
 		struct node_t
 		{
-#ifdef TARGET_64BIT
-			xbyte				data[32];
-#else
 			xbyte				data[16];
-#endif
 		};
 
 		class iallocator
@@ -95,8 +91,6 @@ namespace xcore
 
 		s32					find_node_to_trust(u32& _index) const;								// return: 0=did not find item, 1=item was found
 		s32					find_nodes_to_trust(u32* _index, u32 _max) const;					// return: 0=did not find any node, >0=number of nodes found
-
-		bool				try_get_node_hash(u32 _index, hash_t& _out_hash, bool& _out_is_trusted_hash) const;
 
 	private:
 		iallocator*			allocator;

@@ -14,24 +14,19 @@ namespace xcore
 	typedef		xhashtree::hash_t			xhash_t;
 	typedef		xhashtree::iallocator		xallocator_t;
 
-	// sizeof(xleaf_t) == 16 | 32
+	// sizeof(xleaf_t) == 16
 	struct xleaf_t
 	{
-		xbyte*			phash[4];			// 16 | 32
+		u32				phash[4];		// 16, every index is linked to a block of 4 hashes
 	};
 
-	// sizeof(xnode_t) == 16 | 28
+	// sizeof(xnode_t) == 16
 	struct xnode_t
 	{
-		xbyte*			phash;				//  4 |  8
-		union
-		{
-			xnode_t*		pchild[2];		//  8 | 16
-			xleaf_t*		pleaf[2];		//  8 | 16
-		};
-		u8				tchild[2];			//  2 |  2 (0=node, 1=leaf)
-		u8				bitmap;				//  1 |  1
-		u8				flags;				//  1 |  1 (1=Trusted, 2=Combined)
+		u32				hash;			//  4 
+		u32				ichild[2];		//  8
+		u16				bitmap;			//  2
+		u16				flags;			//  2 (0=left-node|left-leaf, 1=right-node|right-leaf, 2=trusted-hash|content-hash, 4=verified)
 
 		void			clear();
 		bool			is_verified() const;
@@ -39,11 +34,11 @@ namespace xcore
 		void			set_hash(xhash_t const& _hash);
 
 		enum echild {LEFT=0, RIGHT=1};
-		bool			has_child(echild _child) const		{ return pchild[_child] != NULL; }
-		bool			is_leaf(echild _child) const		{ return tchild[_child] == 1; }
+		bool			has_child(echild _child) const		{ return ichild[_child] != -1; }
+		bool			is_leaf(echild _child) const		{ return (flags&(1<<_child)) != 0; }
 	};
 
-	static inline u8 sCombineBitmaps(u8 _left, u8 _right)
+	static inline u8 sCombineBitmaps(u16 _left, u16 _right)
 	{
 
 	}
