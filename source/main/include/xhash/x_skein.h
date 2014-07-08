@@ -32,9 +32,9 @@ namespace xcore
 
 	struct xskein256_ctx
 	{
-		u64		size;
-		u32		H[5];
-		u32		W[16];
+		u64		header[3];
+		u64		X[4];
+		u8		b[32];
 	};
 
 
@@ -47,9 +47,9 @@ namespace xcore
 
 	struct xskein512_ctx
 	{
-		u64		size;
-		u32		H[5];
-		u32		W[16];
+		u64		header[3];
+		u64		X[8];
+		u8		b[64];
 	};
 
 
@@ -111,8 +111,12 @@ namespace xcore
 	/**
 	 *	Utilities
 	 */
-	extern xskein256	x_skein256Hash(void const* inBuffer, s32 inLength);			///< Get skein 256 bits hash value of a block of data
-	extern xskein512	x_skein512Hash(void const* inBuffer, s32 inLength);			///< Get skein 512 bits hash value of a block of data
+	extern xskein256	x_skein256Hash256(void const* inBuffer, s32 inLength);				///< Get skein256 256 bits hash value of a block of data
+	extern xskein256	x_skein512Hash256(void const* inBuffer, s32 inLength);				///< Get skein512 256 bits hash value of a block of data
+	extern xskein512	x_skein512Hash512(void const* inBuffer, s32 inLength);				///< Get skein512 512 bits hash value of a block of data
 
+	extern xskein256	x_skein256Hash256B(void const* inBuffer, s32 inLengthInBits);		///< Get skein256 256 bits hash value of a bit-stream
+	extern xskein256	x_skein512Hash256B(void const* inBuffer, s32 inLengthInBits);		///< Get skein512 256 bits hash value of a bit-stream
+	extern xskein512	x_skein512Hash512B(void const* inBuffer, s32 inLengthInBits);		///< Get skein512 512 bits hash value of a bit-stream
 }
 #endif	// __XHASH_skein_DIGEST_H__

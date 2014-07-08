@@ -80,7 +80,7 @@ namespace xcore
 		if (ioStrLength < (size() * 2))
 			return 0;
 
-		const char* _format = "%02x%02x%02x%02x";
+		const char* _format = "%02X%02X%02X%02X";
 		u32 const l = size();
 		char* s = ioStr;
 		for (u32 i=0; i<l; i+=4)
@@ -97,7 +97,7 @@ namespace xcore
 		if ((u32)x_strlen(inString) < (size() * 2))
 			return false;
 
-		const char* const format = "%02x%02x%02x%02x";
+		const char* const format = "%02X%02X%02X%02X";
 		u32 const l = size();
 		for (u32 i=0; i<l; i+=4)
 		{

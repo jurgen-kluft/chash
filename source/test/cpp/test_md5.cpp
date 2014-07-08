@@ -60,7 +60,7 @@ UNITTEST_SUITE_BEGIN(xmd5)
 			CHECK_TRUE(smd5h.fromString(rch));
 			CHECK_TRUE(smd5h2.fromString(rch2));
 			bool sBig=(smd5h2>smd5h);
-			CHECK_EQUAL(sBig,false);
+			CHECK_EQUAL(sBig,true);
 			smd5h3.fromString(rch3);
 			sBig=(smd5h3>smd5h);
 			CHECK_EQUAL(sBig,true);
