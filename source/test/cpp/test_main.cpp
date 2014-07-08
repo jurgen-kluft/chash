@@ -1,6 +1,5 @@
 #include "xbase\x_target.h"
 #include "xbase\x_allocator.h"
-#include "xbase\x_string_std.h"
 
 #include "xunittest\xunittest.h"
 #include "xbase\x_console.h"
@@ -26,7 +25,7 @@ public:
 		mAllocator = allocator;
 	}
 
-	void*	Allocate(int size)
+	void*	Allocate(size_t size)
 	{
 		++mNumAllocations;
 		return mAllocator->allocate(size, 4);

@@ -1,5 +1,4 @@
 #include "xbase\x_target.h"
-#include "xbase\x_string_std.h"
 #include "xhash\private\x_digest_murmur64.h"
 
 #include "xunittest\xunittest.h"

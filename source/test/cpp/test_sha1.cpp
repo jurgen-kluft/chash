@@ -1,5 +1,5 @@
 #include "xbase\x_target.h"
-#include "xbase\x_string_std.h"
+#include "xbase\x_string_ascii.h"
 #include "xhash\x_sha1.h"
 
 #include "xunittest\xunittest.h"

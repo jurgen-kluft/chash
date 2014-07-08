@@ -45,7 +45,7 @@
 		<Properties DependencyType="Root" Platform="*">
 			<PropertyGroup Label="xhash_TargetDirs">
 				<xhash_RootDir>$(SolutionDir)</xhash_RootDir> 
-				<xhash_LibraryDir>$(SolutionDir)target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</xhash_LibraryDir>
+				<xhash_LibraryDir>$(SolutionDir)target\xhash\outdir\xhash_$(PackageSignature)\</xhash_LibraryDir>
 				<xhash_IncludeDir>$(SolutionDir)source\main\include\</xhash_IncludeDir>
 				<xhash_TestIncludeDir>$(SolutionDir)source\test\include\</xhash_TestIncludeDir>
 			</PropertyGroup>
@@ -63,7 +63,7 @@
 		<Properties DependencyType="Source" Platform="*">
 			<PropertyGroup Label="xhash_TargetDirs">
 				<xhash_RootDir>$(SolutionDir)target\xhash\</xhash_RootDir> 
-				<xhash_LibraryDir>$(SolutionDir)target\xhash\target\xhash\outdir\xhash_$(Configuration)_$(Platform)\</xhash_LibraryDir>
+				<xhash_LibraryDir>$(SolutionDir)target\xhash\target\xhash\outdir\xhash_$(PackageSignature)\</xhash_LibraryDir>
 				<xhash_IncludeDir>$(SolutionDir)target\xhash\source\main\include\</xhash_IncludeDir>
 				<xhash_TestIncludeDir>$(SolutionDir)target\xhash\source\test\include\</xhash_TestIncludeDir>
 			</PropertyGroup>
