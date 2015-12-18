@@ -1,7 +1,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <PackageDir>$(MSBuildProjectDirectory)</PackageDir>
-    <PackagePlatform>Win32</PackagePlatform>
+    <PackagePlatform>x64</PackagePlatform>
     <PackageName>xhash</PackageName>
     <PackageSolution>xhash.sln</PackageSolution>
     <PackageCategory>Main</PackageCategory>

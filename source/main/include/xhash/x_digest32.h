@@ -140,14 +140,12 @@ namespace xcore
 		inline void			set(T* ptr)												
 		{ 
 			mPtr = ptr; 
-
-			#ifdef X_BIG_ENDIAN
-			ASSERT(sizeof(ptr) == sizeof(u32)); // this will not work on 64 bit systems!!
-			u32 endianPtrVal = (u32)ptr;
-			ptr = (T*)xcore::x_endian_swap::swap(endianPtrVal);
-			#endif
-
-			mHash = (HG::buf(&ptr, sizeof(T*))); 
+			
+			u64 data = (u64)ptr;
+#ifdef X_BIG_ENDIAN
+			endianPtrVal = xcore::x_endian_swap::swap(endianPtrVal);
+#endif
+			mHash = (HG::buf(&data, sizeof(T*)));
 		
 		}
 		///@name Data

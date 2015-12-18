@@ -906,17 +906,17 @@ UNITTEST_SUITE_BEGIN(xhash32)
 			sptru = ps;
 			u32 uhash=sptru.hash();
 
-			CHECK_EQUAL(0x0ace4dc6,uhash);
+			CHECK_EQUAL(0xb650cab1,uhash);
 
 			sptru = pf;
 			u32 uhash2=sptru.hash();
 
-			CHECK_EQUAL(0xd2335159,uhash2);
+			CHECK_EQUAL(0x5c3e4cef,uhash2);
 
 			sptru = pc;
 			u32 uhash3=sptru.hash();
 
-			CHECK_EQUAL(0x19f02a74,uhash3);
+			CHECK_EQUAL(0x41804a3f,uhash3);
 		}
 		UNITTEST_TEST(hashed_void_ptr_vector)
 		{

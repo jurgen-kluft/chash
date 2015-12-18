@@ -20,11 +20,11 @@ namespace SkeinTestVectors
 	static inline xbyte CharToByte(char ch)
 	{
 		xbyte ich = 0;
-		if ( (ch >= '0') && (ch <= '9') )
+		if ((ch >= '0') && (ch <= '9'))
 			ich = ch - '0';
-		else if ( (ch >= 'A') && (ch <= 'F') )
+		else if ((ch >= 'A') && (ch <= 'F'))
 			ich = ch - 'A' + 10;
-		else if ( (ch >= 'a') && (ch <= 'f') )
+		else if ((ch >= 'a') && (ch <= 'f'))
 			ich = ch - 'a' + 10;
 		return ich;
 	}
@@ -37,25 +37,25 @@ namespace SkeinTestVectors
 
 	static u32 TextMsgToByteMsg(char const* _textmsg, u32 _length, xbyte* _bytemsg)
 	{
-		for (s32 j=0; j<_length; ++j)
+		for (s32 j = 0; j < _length; ++j)
 			_bytemsg[j] = 0;
 
-		u32 i=0;
-		u32 d=0;
+		u32 i = 0;
+		u32 d = 0;
 		while (true)
 		{
 			char const ch = _textmsg[i];
 			if (ch == '\0')
 				break;
-			
-			xbyte const b =  CharToByte(ch);
-			for (s32 j=0; j<_length-1; j++ )
-				_bytemsg[j] = (_bytemsg[j] << 4) | (_bytemsg[j+1] >> 4);
+
+			xbyte const b = CharToByte(ch);
+			for (s32 j = 0; j < _length - 1; j++)
+				_bytemsg[j] = (_bytemsg[j] << 4) | (_bytemsg[j + 1] >> 4);
 			_bytemsg[_length - 1] = (_bytemsg[_length - 1] << 4) | b;
-			d ++;
+			d++;
 			i += 1;
 		}
-		return (d+1) / 2;
+		return (d + 1) / 2;
 	}
 
 	static xbyte ByteMsg[4096];
@@ -89,7 +89,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 
 		UNITTEST_TEST(Empty)
 		{
-			
+
 		}
 
 		UNITTEST_TEST(test1)
@@ -98,12 +98,12 @@ UNITTEST_SUITE_BEGIN(xskein)
 			xskein256 hash = x_skein256Hash256(message, 1);
 
 			u8 vhash[] =
-			{ 
+			{
 				0xA4, 0x7B, 0xE7, 0x1A, 0x18, 0x5B, 0xA0, 0xAF, 0x82, 0x0B, 0x3C, 0xE8, 0x45, 0xA3, 0xD3, 0x5A,
 				0x80, 0xEC, 0x64, 0xF9, 0x6A, 0x0D, 0x6A, 0x36, 0xE3, 0xF5, 0x36, 0x36, 0x24, 0xD8, 0xA0, 0x91
 			};
 
-			for (u32 i=0; i<hash.size(); ++i)
+			for (u32 i = 0; i < hash.size(); ++i)
 				CHECK_EQUAL(vhash[i], hash.data()[i]);
 		}
 
@@ -113,12 +113,12 @@ UNITTEST_SUITE_BEGIN(xskein)
 			xskein256 hash = x_skein256Hash256(message, 4);
 
 			u8 vhash[] =
-			{ 
+			{
 				0xBA,0x4D,0x44,0x62,0x35,0x18,0xD9,0x94,0xAD,0x01,0x9E,0xBD,0xB5,0x99,0x44,0xA9,
-				0xFB,0x46,0x17,0xD8,0x59,0xD9,0x2E,0x33,0x82,0x88,0x9D,0xA4,0x4C,0xB8,0x05,0xA2			
+				0xFB,0x46,0x17,0xD8,0x59,0xD9,0x2E,0x33,0x82,0x88,0x9D,0xA4,0x4C,0xB8,0x05,0xA2
 			};
 
-			for (u32 i=0; i<hash.size(); ++i)
+			for (u32 i = 0; i < hash.size(); ++i)
 				CHECK_EQUAL(vhash[i], hash.data()[i]);
 		}
 
@@ -129,7 +129,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 			SkeinTestVectors::Vector* test = SkeinTestVectors::Tests;
 			while (test->Msg != NULL)
 			{
-				u32 const test_bytelen = (test->Len+7)/8;
+				u32 const test_bytelen = (test->Len + 7) / 8;
 				u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
 				CHECK_EQUAL(test_bytelen, len);
 				xskein512 digest = x_skein512Hash512B(bytemsg, test->Len);
