@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	xcode.Generate(xhash.GetProject())
+	xcode.Generate(xhash.GetPackage())
 }
