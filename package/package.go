@@ -1,4 +1,4 @@
-package xcore
+package xhash
 
 import (
 	"github.com/jurgen-kluft/xbase/package"
@@ -7,7 +7,7 @@ import (
 	"github.com/jurgen-kluft/xunittest/package"
 )
 
-// GetPackage returns the package object of 'xcore'
+// GetPackage returns the package object of 'xhash'
 func GetPackage() *denv.Package {
 	// Dependencies
 	xunittestpkg := xunittest.GetPackage()
@@ -15,7 +15,7 @@ func GetPackage() *denv.Package {
 	xbasepkg := xbase.GetPackage()
 
 	// The main (xhash) package
-	mainpkg := denv.NewPackage("xcore")
+	mainpkg := denv.NewPackage("xhash")
 	mainpkg.AddPackage(xunittestpkg)
 	mainpkg.AddPackage(xentrypkg)
 	mainpkg.AddPackage(xbasepkg)
