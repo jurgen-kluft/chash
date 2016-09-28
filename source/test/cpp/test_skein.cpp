@@ -135,7 +135,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 				xskein512 digest = x_skein512Hash512B(bytemsg, test->Len);
 				digest.toString(digest_str, sizeof(digest_str));
 
-				s32 c = x_strCompare(test->Digest, digest_str);
+				s32 c = StrCmp(test->Digest, digest_str);
 				CHECK_EQUAL(0, c);
 				test = test + 1;
 			}

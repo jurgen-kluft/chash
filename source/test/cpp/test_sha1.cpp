@@ -32,7 +32,7 @@ UNITTEST_SUITE_BEGIN(xsha1)
 			CHECK_TRUE(len!=0);
 			CHECK_EQUAL(40, len);
 
-			CHECK_EQUAL(0, x_strCompareNoCase("da39a3ee5e6b4b0d3255bfef95601890afd80709", len, sha1Str));
+			CHECK_EQUAL(0, StrCmpin("da39a3ee5e6b4b0d3255bfef95601890afd80709", sha1Str, len));
 		}
 
 		UNITTEST_TEST(Fox1)
@@ -41,7 +41,7 @@ UNITTEST_SUITE_BEGIN(xsha1)
 			g.reset();
 
 			char const* data = "The quick brown fox jumps over the lazy dog";
-			u32 data_len = x_strlen(data);
+			u32 data_len = StrLen(data);
 			g.update(data, data_len);
 
 			xsha1 h;
@@ -53,7 +53,7 @@ UNITTEST_SUITE_BEGIN(xsha1)
 			CHECK_TRUE(len!=0);
 			CHECK_EQUAL(40, len);
 
-			CHECK_EQUAL(0, x_strCompareNoCase("2fd4e1c67a2d28fced849ee1bb76e7391b93eb12", len, sha1Str));
+			CHECK_EQUAL(0, StrCmpin("2fd4e1c67a2d28fced849ee1bb76e7391b93eb12", sha1Str, len));
 		}
 
 
@@ -63,7 +63,7 @@ UNITTEST_SUITE_BEGIN(xsha1)
 			g.reset();
 
 			char const* data = "The quick brown fox jumps over the lazy cog";
-			u32 data_len = x_strlen(data);
+			u32 data_len = StrLen(data);
 			g.update(data, data_len);
 
 			xsha1 h;
@@ -75,7 +75,7 @@ UNITTEST_SUITE_BEGIN(xsha1)
 			CHECK_TRUE(len!=0);
 			CHECK_EQUAL(40, len);
 
-			CHECK_EQUAL(0, x_strCompareNoCase("de9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3", len, sha1Str));
+			CHECK_EQUAL(0, StrCmpin("de9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3", sha1Str, len));
 		}
 
 	}

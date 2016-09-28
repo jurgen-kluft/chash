@@ -88,12 +88,12 @@ namespace xcore
 
 	xdigest64			xdigest_murmur64::str(char const* inStr)
 	{
-		return gGetMurmurHash64((const char*)inStr, x_strlen(inStr), 0);
+		return gGetMurmurHash64((const char*)inStr, StrLen(inStr), 0);
 	}
 
 	xdigest64			xdigest_murmur64::str(char const* inStr, xdigest64 inPrevious)
 	{
-		return gGetMurmurHash64((const char*)inStr, x_strlen(inStr), inPrevious);
+		return gGetMurmurHash64((const char*)inStr, StrLen(inStr), inPrevious);
 	}
 
 }

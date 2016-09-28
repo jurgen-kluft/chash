@@ -96,12 +96,12 @@ namespace xcore
 
 	xdigest32			xdigest_murmur32::str(char const* inStr)
 	{
-		return gGetMurmurHash32((const char*)inStr, x_strlen(inStr), 0);
+		return gGetMurmurHash32((const char*)inStr, StrLen(inStr), 0);
 	}
 
 	xdigest32			xdigest_murmur32::str(char const* inStr, xdigest32 inPrevious)
 	{
-		return gGetMurmurHash32((const char*)inStr, x_strlen(inStr), inPrevious);
+		return gGetMurmurHash32((const char*)inStr, StrLen(inStr), inPrevious);
 	}
 
 }

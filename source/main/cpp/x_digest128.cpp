@@ -71,7 +71,7 @@ namespace xcore
 		u32 const l = size();
 		char* s = ioStr;
 		for (u32 i=0; i<l; i+=4)
-			s = s + x_sprintf(s, 8, _format, x_va(mData8[i+0]),  x_va(mData8[i+1]),  x_va( mData8[i+2]), x_va(mData8[i+3]));
+			s = s + SPrintf(s, 8, _format, x_va(mData8[i+0]),  x_va(mData8[i+1]),  x_va( mData8[i+2]), x_va(mData8[i+3]));
 
 		return (u32)(s - ioStr);
 	}
@@ -82,7 +82,7 @@ namespace xcore
 	 */
 	bool					xdigest128::fromString(const char* inString)
 	{
-		if ((u32)x_strlen(inString) < (size() * 2))
+		if ((u32)StrLen(inString) < (size() * 2))
 			return false;
 
 		const char* const format = "%02x%02x%02x%02x";
@@ -90,7 +90,7 @@ namespace xcore
 		for (u32 i=0; i<l; i+=4)
 		{
 			u8 d[4];
-			if (x_sscanf(inString + (i*2), format, x_va_r(&d[0]), x_va_r(&d[1]), x_va_r(&d[2]), x_va_r(&d[3])) == 4)
+			if (SScanf(inString + (i*2), format, x_va_r(&d[0]), x_va_r(&d[1]), x_va_r(&d[2]), x_va_r(&d[3])) == 4)
 			{
 				for (s32 j=0; j<4; j++)
 					mData8[i+j] = d[j];
