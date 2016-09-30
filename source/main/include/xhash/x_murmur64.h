@@ -21,7 +21,7 @@ namespace xcore
 	 */
 	typedef		u64			xdigest64;
 
-	class xdigest_engine_murmur64 : public xidigest_engine
+	class xdigest_engine_murmur64 : public xdigest_engine
 	{
 		xdigest64			mHash;
 

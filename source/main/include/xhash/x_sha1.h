@@ -42,7 +42,7 @@ namespace xcore
 	 * @brief		SHA1 hash value
 	 * @desc		This is a SHA1 digest engine
 	 */
-	class xdigest_engine_sha1 : public xidigest_engine
+	class xdigest_engine_sha1 : public xdigest_engine
 	{
 		enum EState
 		{

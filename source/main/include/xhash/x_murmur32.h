@@ -21,7 +21,7 @@ namespace xcore
 	 */
 	typedef		u32			xdigest32;
 
-	class xdigest_engine_murmur32 : public xidigest_engine
+	class xdigest_engine_murmur32 : public xdigest_engine
 	{
 		xdigest32			mHash;
 

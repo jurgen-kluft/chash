@@ -15,7 +15,7 @@
 
 namespace xcore
 {
-	class xidigest_engine
+	class xdigest_engine
 	{
 	public:
 		virtual u32			length() const = 0;
@@ -23,18 +23,6 @@ namespace xcore
 		virtual void		update(void const* inBuffer, u32 inLength) = 0;
 		virtual void		digest(xbyte* digest) = 0;
 	};
-
-	class xdigest_engine
-	{
-		xidigest_engine*	mEngine;
-	public:
-		inline				xdigest_engine(xidigest_engine * engine) : mEngine(engine) {}
-
-		u32					length() const;
-		void				reset();
-		void				update(void const* inBuffer, u32 inLength);
-		void				digest(xbyte* digest);
-	};
-
 }
+
 #endif	///< __XHASH_DIGEST_ENGINE_H__

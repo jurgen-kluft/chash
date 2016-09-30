@@ -58,7 +58,7 @@ namespace xcore
 	 * @brief		skein hash value
 	 * @desc		This is a skein digest engine
 	 */
-	class xdigest_engine_skein256 : public xidigest_engine
+	class xdigest_engine_skein256 : public xdigest_engine
 	{
 		enum EState
 		{
@@ -83,7 +83,7 @@ namespace xcore
 		xskein256_ctx	mCtx;
 	};
 
-	class xdigest_engine_skein512 : public xidigest_engine
+	class xdigest_engine_skein512 : public xdigest_engine
 	{
 		enum EState
 		{

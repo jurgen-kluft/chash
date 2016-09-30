@@ -46,7 +46,7 @@ namespace xcore
 	 * 			MD5Hash object, call Update() on all of the data that needs to be hashed
 	 * 			and call the GetHash() function to retrieve the MD5Hash.
 	 */
-	class xdigest_engine_md5 : public xidigest_engine
+	class xdigest_engine_md5 : public xdigest_engine
 	{
 		enum EState
 		{

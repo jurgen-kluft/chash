@@ -31,7 +31,7 @@ namespace xcore
 	};
 
 
-	class xdigest_engine_fnv : public xidigest_engine
+	class xdigest_engine_fnv : public xdigest_engine
 	{
 		xdigest32			mHash;
 	public:
