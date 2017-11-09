@@ -1,7 +1,7 @@
-#include "xbase\x_target.h"
-#include "xhash\private\x_digest_murmur64.h"
+#include "xbase/x_target.h"
+#include "xhash/private/x_digest_murmur64.h"
 
-#include "xunittest\xunittest.h"
+#include "xunittest/xunittest.h"
 
 using namespace xcore;
 

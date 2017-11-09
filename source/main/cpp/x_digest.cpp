@@ -4,7 +4,7 @@
  * Core Digest
  */
 
-#include "xhash\x_digest_engine.h"
+#include "xhash/x_digest_engine.h"
 
 namespace xcore
 {

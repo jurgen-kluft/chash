@@ -1,9 +1,9 @@
-#include "xbase\x_target.h"
-#include "xbase\x_string_ascii.h"
+#include "xbase/x_target.h"
+#include "xbase/x_string_ascii.h"
 
-#include "xhash\x_skein.h"
+#include "xhash/x_skein.h"
 
-#include "xunittest\xunittest.h"
+#include "xunittest/xunittest.h"
 
 using namespace xcore;
 

@@ -7,13 +7,13 @@
 // Hash.h - Core Hash functions - 
 #ifndef __XHASH_HASHABLE_32_H__
 #define __XHASH_HASHABLE_32_H__
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif
 
-#include "xhash\x_digest_engine.h"
-#include "xhash\private\x_digest_murmur32.h"
+#include "xhash/x_digest_engine.h"
+#include "xhash/private/x_digest_murmur32.h"
 
 namespace xcore
 {

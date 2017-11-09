@@ -5,8 +5,8 @@
  */
 
 // x_hash.cpp - Core Hash functions 
-#include "xbase\x_target.h"
-#include "xhash\private\x_digest_engine_fnv.h"
+#include "xbase/x_target.h"
+#include "xhash/private/x_digest_engine_fnv.h"
 
 namespace xcore
 {

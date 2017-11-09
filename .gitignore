@@ -1,20 +1,20 @@
 #ignore all files
 *.*
 vendor/
+source/main/builddir/
+source/test/builddir/
+tags
 
 #except the following files
-!*.go
 !*.cpp
 !*.hpp
 !*.c
 !*.h
 !*.inl
 
-!*.sln
-!*.vcproj
-!*.vcxproj
-
 !*.pl
+
+!*.go
 
 !*.cs
 !*.csproj

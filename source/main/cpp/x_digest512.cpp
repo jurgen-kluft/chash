@@ -1,6 +1,6 @@
-#include "xbase\x_target.h"
-#include "xbase\x_string_ascii.h"
-#include "xhash\x_digest512.h"
+#include "xbase/x_target.h"
+#include "xbase/x_string_ascii.h"
+#include "xhash/x_digest512.h"
 
 namespace xcore
 {

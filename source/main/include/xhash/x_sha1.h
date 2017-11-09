@@ -7,13 +7,13 @@
 // x_sha1.h - Core SHA1 Hash value 
 #ifndef __XHASH_SHA1_DIGEST_H__
 #define __XHASH_SHA1_DIGEST_H__
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif
 
-#include "xhash\x_digest160.h"
-#include "xhash\x_digest_engine.h"
+#include "xhash/x_digest160.h"
+#include "xhash/x_digest_engine.h"
 
 namespace xcore
 {

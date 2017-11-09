@@ -1,7 +1,7 @@
-#include "xbase\x_target.h"
-#include "xhash\x_uuid.h"
+#include "xbase/x_target.h"
+#include "xhash/x_uuid.h"
 
-#include "xunittest\xunittest.h"
+#include "xunittest/xunittest.h"
 
 using namespace xcore;
 

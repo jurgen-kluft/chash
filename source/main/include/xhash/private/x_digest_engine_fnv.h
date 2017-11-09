@@ -7,12 +7,12 @@
 // x_digest_engine_fnv.h - xCore Digest - 
 #ifndef __XHASH_DIGEST_ENGINE_32_FNV_H__
 #define __XHASH_DIGEST_ENGINE_32_FNV_H__
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif
 
-#include "xhash\x_digest_engine.h"
+#include "xhash/x_digest_engine.h"
 
 namespace xcore
 {

@@ -7,7 +7,7 @@
 // x_digest160.h - Core Digest 160 - 
 #ifndef __XHASH_DIGEST_160_H__
 #define __XHASH_DIGEST_160_H__
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif

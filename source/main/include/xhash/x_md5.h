@@ -7,13 +7,13 @@
 // x_md5.h - xCore MD5 Digest
 #ifndef __XHASH_MD5_DIGEST_H__
 #define __XHASH_MD5_DIGEST_H__
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif
 
-#include "xhash\x_digest128.h"
-#include "xhash\x_digest_engine.h"
+#include "xhash/x_digest128.h"
+#include "xhash/x_digest_engine.h"
 
 namespace xcore
 {

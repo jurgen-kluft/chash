@@ -5,8 +5,8 @@
  */
 
 // x_digest64.cpp - Core Hash 64
-#include "xbase\x_target.h"
-#include "xhash\private\x_digest_murmur64.h"
+#include "xbase/x_target.h"
+#include "xhash/private/x_digest_murmur64.h"
 
 namespace xcore
 {

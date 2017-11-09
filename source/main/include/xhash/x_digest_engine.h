@@ -7,7 +7,7 @@
 // x_digest_engine.h - Core Digest Engine - 
 #ifndef __XHASH_DIGEST_ENGINE_H__
 #define __XHASH_DIGEST_ENGINE_H__
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif

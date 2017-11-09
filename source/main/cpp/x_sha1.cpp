@@ -5,13 +5,13 @@
  */
 
 // x_md5.cpp - Core MD5 hash value 
-#include "xbase\x_target.h"
-#include "xbase\x_va_list.h"
-#include "xbase\x_integer.h"
-#include "xbase\x_memory_std.h"
-#include "xbase\x_endian.h"
+#include "xbase/x_target.h"
+#include "xbase/x_va_list.h"
+#include "xbase/x_integer.h"
+#include "xbase/x_memory_std.h"
+#include "xbase/x_endian.h"
 
-#include "xhash\x_sha1.h"
+#include "xhash/x_sha1.h"
 
 namespace xcore
 {

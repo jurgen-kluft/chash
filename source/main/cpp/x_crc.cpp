@@ -5,9 +5,9 @@
  */
 
 // x_crc.cpp - Core CRC functions 
-#include "xbase\x_target.h"
-#include "xbase\x_debug.h"
-#include "xhash\x_crc.h"
+#include "xbase/x_target.h"
+#include "xbase/x_debug.h"
+#include "xhash/x_crc.h"
 
 namespace xcore
 {

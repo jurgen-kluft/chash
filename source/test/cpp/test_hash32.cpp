@@ -1,8 +1,8 @@
-#include "xbase\x_target.h"
-#include "xhash\x_digest32.h"
-#include "xhash\private\x_digest_murmur32.h"
+#include "xbase/x_target.h"
+#include "xhash/x_digest32.h"
+#include "xhash/private/x_digest_murmur32.h"
 
-#include "xunittest\xunittest.h"
+#include "xunittest/xunittest.h"
 
 using namespace xcore;
 

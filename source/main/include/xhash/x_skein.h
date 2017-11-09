@@ -7,14 +7,14 @@
 // x_skein.h - Core Skein Hash value 
 #ifndef __XHASH_SKEIN_DIGEST_H__
 #define __XHASH_SKEIN_DIGEST_H__
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif
 
-#include "xhash\x_digest256.h"
-#include "xhash\x_digest512.h"
-#include "xhash\x_digest_engine.h"
+#include "xhash/x_digest256.h"
+#include "xhash/x_digest512.h"
+#include "xhash/x_digest_engine.h"
 
 namespace xcore
 {

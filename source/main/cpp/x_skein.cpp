@@ -1,6 +1,6 @@
-#include "xbase\x_target.h"
-#include "xhash\x_skein.h"
-#include "xhash\private\x_digest_murmur32.h"
+#include "xbase/x_target.h"
+#include "xhash/x_skein.h"
+#include "xhash/private/x_digest_murmur32.h"
 
 #include <string.h>
 

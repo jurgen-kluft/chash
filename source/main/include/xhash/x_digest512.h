@@ -7,7 +7,7 @@
 // x_digest512.h - Core Digest 512 bits -  
 #ifndef __XHASH_DIGEST_512_H__
 #define __XHASH_DIGEST_512_H__
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif

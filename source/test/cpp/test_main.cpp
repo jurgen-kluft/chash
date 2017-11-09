@@ -1,8 +1,8 @@
-#include "xbase\x_target.h"
-#include "xbase\x_allocator.h"
+#include "xbase/x_target.h"
+#include "xbase/x_allocator.h"
 
-#include "xunittest\xunittest.h"
-#include "xbase\x_console.h"
+#include "xunittest/xunittest.h"
+#include "xbase/x_console.h"
 
 UNITTEST_SUITE_LIST(xHashUnitTest);
 UNITTEST_SUITE_DECLARE(xHashUnitTest, xcrc);
