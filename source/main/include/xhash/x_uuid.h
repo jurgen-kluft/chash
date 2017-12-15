@@ -55,7 +55,7 @@ namespace xcore
 		inline bool			operator!=(xuuid const& inRHS) const					{ return mHash!=inRHS.mHash; } ///< Check if two UUIDs are inequal
 
 		/// UUID -> String
-		bool				toString(xchars& string);							///< Convert UUID to string representation "{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}"
+		void				toString(xchars& string) const;							///< Convert UUID to string representation "{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}"
 
 		/// Standard UIDs
 		static xuuid		sNil;													///< The special Nil UID (all bits set to 0)

@@ -32,6 +32,8 @@ namespace xcore
 		bool				operator>(xdigest128 const& inRHS) const;
 
 		///@name The hash value
+		void				set8(u32 index, u8 inR)										{ ASSERT(index < sizeof(mData8)); mData8[index] = inR;}
+		void				get8(u32 index, u8& outR) const								{ ASSERT(index < sizeof(mData8)); outR = mData8[index]; }
 		void				set32(u32 index, u32 inR);
 		void				get32(u32 index, u32& outR) const;
 		void				set64(u32 index, u64 inR);

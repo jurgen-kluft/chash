@@ -2166,7 +2166,7 @@ namespace xcore
 		return hash;
 	}
 
-	xskein256	x_skein512Hash256B(xcbuffer const& buffer, s32 inLengthInBits)
+	xskein256	x_skein512Hash256B(xcbuffer const& buffer, u32 inLengthInBits)
 	{
 		ASSERT(buffer.size() >= ((inLengthInBits + 7) / 8));
 
@@ -2198,7 +2198,7 @@ namespace xcore
 		return hash;
 	}
 
-	xskein512	x_skein512Hash512B(xcbuffer const& buffer, s32 inLengthInBits)
+	xskein512	x_skein512Hash512B(xcbuffer const& buffer, u32 inLengthInBits)
 	{
 		ASSERT(buffer.size() >= ((inLengthInBits + 7) / 8));
 

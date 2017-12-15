@@ -83,7 +83,7 @@ namespace xcore
 	/**
 	 *	Utilities
 	 */
-	extern xmd5		x_MD5Hash(void const* inBuffer, s32 inLength);			///< Get MD5 hash value of a block of data
+	extern xmd5		x_MD5Hash(xcbuffer const& buffer);							///< Get MD5 hash value of a block of data
 }
 
 
