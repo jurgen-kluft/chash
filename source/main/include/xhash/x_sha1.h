@@ -56,8 +56,8 @@ namespace xcore
 		///@name Updating
 		virtual u32		length() const { return 20; }
 		virtual void	reset();
-		virtual void	update(void const* inBuffer, u32 inLength);
-		virtual void	digest(xbyte* digest);
+		virtual void	update(xcbuffer const& buffer);
+		virtual void	digest(xbuffer & digest);
 
 		bool			digest(xsha1& hash);
 
@@ -71,7 +71,7 @@ namespace xcore
 	/**
 	 *	Utilities
 	 */
-	extern xsha1	x_Sha1Hash(void const* inBuffer, s32 inLength);			///< Get sha1 value of a block of data
+	extern xsha1	x_Sha1Hash(xcbuffer const& buffer);			///< Get sha1 value of a block of data
 
 }
 #endif	// __XHASH_SHA1_DIGEST_H__

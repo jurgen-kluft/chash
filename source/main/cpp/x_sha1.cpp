@@ -209,10 +209,12 @@ namespace xcore
 		ctx.H[4] += E;
 	}
 
-	void	xsha1_ctx_update(xsha1_ctx& ctx, const void *data, u32 len)
+	void	xsha1_ctx_update(xsha1_ctx& ctx, xcbuffer const& buffer)
 	{
 		u32 lenW = ctx.size & 63;
 
+		u32 len = buffer.size();
+		xbyte const* data = buffer.m_data;
 		ctx.size += len;
 
 		// Read the data into W and process blocks as they get full
@@ -224,7 +226,7 @@ namespace xcore
 			x_memcpy(lenW + (char *)ctx.W, data, left);
 			lenW = (lenW + left) & 63;
 			len -= left;
-			data = ((const char *)data + left);
+			data = ((const xbyte *)data + left);
 			if (lenW)
 				return;
 			xsha1_ctx_block(ctx, ctx.W);
@@ -232,7 +234,7 @@ namespace xcore
 		while (len >= 64)
 		{
 			xsha1_ctx_block(ctx, (u32 const*)data);
-			data = ((const char *)data + 64);
+			data = ((const xbyte *)data + 64);
 			len -= 64;
 		}
 		if (len)
@@ -249,8 +251,9 @@ namespace xcore
 		padlen[1] = xhtonl((u32)(ctx.size << 3));
 
 		s32 i = ctx.size & 63;
-		xsha1_ctx_update(ctx, pad, 1 + (63 & (55 - i)));
-		xsha1_ctx_update(ctx, padlen, 8);
+		//xsha1_ctx_update(ctx, pad, 1 + (63 & (55 - i)));
+		xsha1_ctx_update(ctx, xcbuffer(1 + (63 & (55 - i)), pad));
+		xsha1_ctx_update(ctx, xcbuffer(8, (xbyte const*)padlen));
 	}
 
 	xdigest_engine_sha1::xdigest_engine_sha1()
@@ -302,18 +305,18 @@ namespace xcore
 	 *  Comments:
 	 *
 	 */
-	inline xbyte* to_bytes(xbyte* bytes, u32 p)
+	inline u32 to_bytes(xbuffer & bytes, u32 i, u32 p)
 	{
 		p = xhtonl(p);
 		xbyte const* src = (xbyte const*)&p;
-		*bytes++ = *src++;
-		*bytes++ = *src++;
-		*bytes++ = *src++;
-		*bytes++ = *src++;
-		return bytes;
+		bytes[i++] = *src++;
+		bytes[i++] = *src++;
+		bytes[i++] = *src++;
+		bytes[i++] = *src++;
+		return i;
 	}
 
-	void xdigest_engine_sha1::digest(xbyte* digest)
+	void xdigest_engine_sha1::digest(xbuffer & digest)
 	{
 		if (!mComputed)
 		{
@@ -321,8 +324,9 @@ namespace xcore
 			mComputed = true;
 		}
 
+		u32 idx = 0;
 		for (s32 i=0; i<5; ++i)
-			digest = to_bytes(digest, mCtx.H[i]);
+			to_bytes(digest, idx, mCtx.H[i]);
 	}
 
 	bool xdigest_engine_sha1::digest(xsha1& hash)
@@ -355,17 +359,17 @@ namespace xcore
 	 *  Comments:
 	 *
 	 */
-	void xdigest_engine_sha1::update(void const* inBuffer, u32 inLength)
+	void xdigest_engine_sha1::update(xcbuffer const& buffer)
 	{
-		xsha1_ctx_update(mCtx, inBuffer, inLength);
+		xsha1_ctx_update(mCtx, buffer);
 	}
 
 
-	xsha1	x_Sha1Hash(void const* inBuffer, s32 inLength)
+	xsha1	x_Sha1Hash(xcbuffer const& buffer)
 	{
 		xdigest_engine_sha1 g;
 		g.reset();
-		g.update(inBuffer, inLength);
+		g.update(buffer);
 		xsha1 h;
 		if (g.digest(h))
 			return h;

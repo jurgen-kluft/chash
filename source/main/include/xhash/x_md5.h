@@ -60,8 +60,8 @@ namespace xcore
 		///@name Updating
 		virtual u32			length() const { return 16; }
 		virtual void		reset();
-		virtual void		update(void const* inBuffer, u32 inLength);
-		virtual void		digest(xbyte* digest);
+		virtual void		update(xcbuffer const& buffer);
+		virtual void		digest(xbuffer & digest);
 
 		void				digest(xmd5& md5);
 

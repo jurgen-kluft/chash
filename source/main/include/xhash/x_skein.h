@@ -72,8 +72,8 @@ namespace xcore
 		///@name Updating
 		virtual u32		length() const { return 32; }
 		virtual void	reset();
-		virtual void	update(void const* inBuffer, u32 inLength);
-		virtual void	digest(xbyte* digest);
+		virtual void	update(xcbuffer const& buffer);
+		virtual void	digest(xbuffer & digest);
 		bool			digest(xskein256& hash);
 
 	private:
@@ -97,8 +97,8 @@ namespace xcore
 		///@name Updating
 		virtual u32		length() const { return 64; }
 		virtual void	reset();
-		virtual void	update(void const* inBuffer, u32 inLength);
-		virtual void	digest(xbyte* digest);
+		virtual void	update(xcbuffer const& buffer);
+		virtual void	digest(xbuffer & digest);
 		bool			digest(xskein512& hash);
 
 	private:
@@ -111,12 +111,12 @@ namespace xcore
 	/**
 	 *	Utilities
 	 */
-	extern xskein256	x_skein256Hash256(void const* inBuffer, s32 inLength);				///< Get skein256 256 bits hash value of a block of data
-	extern xskein256	x_skein512Hash256(void const* inBuffer, s32 inLength);				///< Get skein512 256 bits hash value of a block of data
-	extern xskein512	x_skein512Hash512(void const* inBuffer, s32 inLength);				///< Get skein512 512 bits hash value of a block of data
+	extern xskein256	x_skein256Hash256(xcbuffer const& buffer);				///< Get skein256 256 bits hash value of a block of data
+	extern xskein256	x_skein512Hash256(xcbuffer const& buffer);				///< Get skein512 256 bits hash value of a block of data
+	extern xskein512	x_skein512Hash512(xcbuffer const& buffer);				///< Get skein512 512 bits hash value of a block of data
 
-	extern xskein256	x_skein256Hash256B(void const* inBuffer, s32 inLengthInBits);		///< Get skein256 256 bits hash value of a bit-stream
-	extern xskein256	x_skein512Hash256B(void const* inBuffer, s32 inLengthInBits);		///< Get skein512 256 bits hash value of a bit-stream
-	extern xskein512	x_skein512Hash512B(void const* inBuffer, s32 inLengthInBits);		///< Get skein512 512 bits hash value of a bit-stream
+	extern xskein256	x_skein256Hash256B(xcbuffer const& buffer, u32 inLengthInBits);		///< Get skein256 256 bits hash value of a bit-stream
+	extern xskein256	x_skein512Hash256B(xcbuffer const& buffer, u32 inLengthInBits);		///< Get skein512 256 bits hash value of a bit-stream
+	extern xskein512	x_skein512Hash512B(xcbuffer const& buffer, u32 inLengthInBits);		///< Get skein512 512 bits hash value of a bit-stream
 }
 #endif	// __XHASH_skein_DIGEST_H__

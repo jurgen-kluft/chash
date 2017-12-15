@@ -116,7 +116,7 @@ namespace xcore
 	 * @param inData	Buffer to update hash with
 	 * @param inLength	Length of buffer in bytes
 	 */
-	void					xdigest_engine_md5::update(void const* inData, u32 inLength)
+	void					xdigest_engine_md5::update(const xcbuffer& buffer)
 	{
 		ASSERTS(mState==OPEN, "Can't compute hash value before Open() has been called!");
 
@@ -125,7 +125,7 @@ namespace xcore
 		u32 space_left	  = 64 - buffer_offset;										// Space available in mBuffer.mInput (at least 1)
 
 		// Update length
-		mLength += inLength;
+		mLength += buffer.size();
 
 		// If there's enough space in the buffer, just copy and exit
 		if (inLength < space_left)

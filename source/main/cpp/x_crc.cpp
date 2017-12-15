@@ -40,11 +40,11 @@ namespace xcore
 	 * @group		xhash
 	 * Calculate running CRC of <inInitVal> over <inBuffer> with length <inLength>
 	 */
-	u32	xcrc::crc32(void const* inBuffer, s32 inLength, u32 inInitVal)
+	u32	xcrc::crc32(xcbuffer const& buffer, u32 inInitVal)
 	{
-		u8 const* p_in = (u8 const*)inBuffer;
+		ASSERT(buffer.m_data);
+		u8 const* p_in = (u8 const*)buffer.m_data;
 		u32	crc  = ~inInitVal;
-		ASSERT(inBuffer);
 
 		// Create CRC32 table
 		if (CRC32::mIsEmpty)
@@ -60,7 +60,7 @@ namespace xcore
 			CRC32::mIsEmpty = false;
 		}
 
-		for (s32 i=0; i<inLength; i++)
+		for (s32 i=0; i<buffer.size(); i++)
 			crc = CRC32::mTable[(crc ^ (*p_in++)) & 0xff] ^ (crc >> 8);
 
 		return ~crc;
@@ -92,19 +92,20 @@ namespace xcore
 	 * @group		xhash
 	 * Calculate running Adler32 of <inInitVal> over <inBuffer> with length <inLength>
 	 */
-	u32 xcrc::adler32(void const* inBuffer, s32 inLength, u32 inInitVal)
+	u32 xcrc::adler32(xcbuffer const& buffer, u32 inInitVal)
 	{
 		u32 a1 = inInitVal & 0xFFFF;							///< Adler sum parts
 		u32 a2 = inInitVal >> 16;
 
-		u8 const* p_in = (u8 const*)inBuffer;
+		u8 const* p_in = (u8 const*)buffer.m_data;
 
 		// Go on doing bits and pieces of the area until we're done
-		while (inLength)
+		s32 len = buffer.size();
+		while (len)
 		{
-			s32 max_do = (inLength < (s32)CRCAdler::NMAX32) ? inLength : ((s32)CRCAdler::NMAX32);
+			s32 max_do = (len < (s32)CRCAdler::NMAX32) ? len : ((s32)CRCAdler::NMAX32);
 
-			inLength -= max_do;
+			len -= max_do;
 			while (max_do >= 16) { CRCAdler::ADO16(p_in, a1, a2); max_do-=16; }
 			while (max_do >  0)  { CRCAdler::ADO1(p_in, a1, a2);  max_do--;   }
 
@@ -121,19 +122,20 @@ namespace xcore
 	 * @group		xhash
 	 * Calculate running Adler16 of <inInitVal> over <inBuffer> with length <inLength>
 	 */
-	u16	xcrc::adler16(void const* inBuffer, s32 inLength, u16 inInitVal)
+	u16	xcrc::adler16(xcbuffer const& buffer, u16 inInitVal)
 	{
 		u32 a1 = inInitVal & 0xFF;								// Adler sum parts
 		u32 a2 = inInitVal >> 8;
 
-		u8 const* p_in = (u8 const*)inBuffer;
+		u8 const* p_in = (u8 const*)buffer.m_data;
 
 		// Go on doing bits and pieces of the area until we're done
-		while (inLength)
+		s32 len = buffer.size();
+		while (len)
 		{
-			s32 max_do = (inLength < (s32)CRCAdler::NMAX16) ? inLength : ((s32)CRCAdler::NMAX16);
+			s32 max_do = (len < (s32)CRCAdler::NMAX16) ? len : ((s32)CRCAdler::NMAX16);
 
-			inLength -= max_do;
+			len -= max_do;
 			while (max_do >= 16) { CRCAdler::ADO16(p_in, a1, a2); max_do-=16; }
 			while (max_do >  0)  { CRCAdler::ADO1(p_in, a1, a2);  max_do--; }
 

@@ -14,14 +14,14 @@
 
 namespace xcore
 {
-	xcore::u32 gGetMurmurHash32(const char* str, u32 len, u32 seed)
+	xcore::u32 gGetMurmurHash32(xcbuffer const& buffer, u32 seed)
 	{
 		// 'm' and 'r' are mixing constants generated offline.
 		// They're not really 'magic', they just happen to work well.
 
 		const xcore::u32 m = 0x5bd1e995;
 		const xcore::s32 r = 24;
-		xcore::u32 length = len;
+		xcore::u32 length = buffer.size();
 
 		// Initialize the hash to a 'random' value
 
@@ -29,7 +29,7 @@ namespace xcore
 
 		// Mix 4 bytes at a time into the hash
 
-		const xcore::u8* data = (const xcore::u8*)str;
+		const xcore::u8* data = (const xcore::u8*)buffer.m_data;
 		while( length >= 4 )
 		{
 			xcore::u32 k;
@@ -66,42 +66,24 @@ namespace xcore
 		return h;
 	}
 
-	static void reverseEndianIfNeeded(const char* inData, char* outData, u32 len)
+	xdigest32			xdigest_murmur32::buf(xcbuffer const& buffer)
 	{
-		#ifdef X_BIG_ENDIAN
-		
-		for(xcore::u32 i = 0; i < len; i++)
-		{
-			outData[len - i - 1] = inData[i];
-		}
-
-		#else
-
-		x_memcopy(outData, inData, len);
-		#endif
+		return gGetMurmurHash32(buffer, 0);
 	}
 
-
-	xdigest32			xdigest_murmur32::buf(void const* inData, u32 inLength)
+	xdigest32			xdigest_murmur32::buf(xcbuffer const& buffer, xdigest32 inPrevious)
 	{
-
-		return gGetMurmurHash32((const char*)inData, inLength, 0);
+		return gGetMurmurHash32(buffer, inPrevious);
 	}
 
-	xdigest32			xdigest_murmur32::buf(void const* inData, u32 inLength, xdigest32 inPrevious)
+	xdigest32			xdigest_murmur32::str(xcchars const& _str)
 	{
-
-		return gGetMurmurHash32((const char*)inData, inLength, inPrevious);
+		return gGetMurmurHash32(_str.buffer(), 0);
 	}
 
-	xdigest32			xdigest_murmur32::str(char const* inStr)
+	xdigest32			xdigest_murmur32::str(xcchars const& _str, xdigest32 inPrevious)
 	{
-		return gGetMurmurHash32((const char*)inStr, ascii::size(inStr), 0);
-	}
-
-	xdigest32			xdigest_murmur32::str(char const* inStr, xdigest32 inPrevious)
-	{
-		return gGetMurmurHash32((const char*)inStr, ascii::size(inStr), inPrevious);
+		return gGetMurmurHash32(_str.buffer(), inPrevious);
 	}
 
 }
