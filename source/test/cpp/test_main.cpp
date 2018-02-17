@@ -46,8 +46,6 @@ bool gRunUnitTest(UnitTest::TestReporter& reporter)
 	UnitTestAllocator unittestAllocator( xcore::gCreateSystemAllocator() );
 	UnitTest::SetAllocator(&unittestAllocator);
 
-	xcore::xconsole::addDefault();
-
 	int r = UNITTEST_SUITE_RUN(reporter, xHashUnitTest);
 	if (unittestAllocator.mNumAllocations!=0)
 	{

@@ -12,6 +12,8 @@
 #pragma once
 #endif
 
+#include "xbase/x_chars.h"
+
 #include "xhash/x_digest160.h"
 #include "xhash/x_digest_engine.h"
 
@@ -26,7 +28,7 @@ namespace xcore
 	{
 	public:
 							xsha1()													{ }
-							xsha1(const char* inString) : xdigest160(inString)		{ }
+							xsha1(ascii::crunes const& str) : xdigest160(str)		{ }
 	};
 
 	struct xsha1_ctx

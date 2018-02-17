@@ -12,12 +12,14 @@
 #pragma once
 #endif
 
+#include "xbase/x_string_ascii.h"
+
 namespace xcore
 {
 	struct xdigest128
 	{
 							xdigest128()												{ clear(); }
-							xdigest128(const char* inString)							{ fromString(inString); }
+							xdigest128(ascii::crunes const& str)						{ fromString(str); }
 
 		void				clear()														{ mData64[0]=0; mData64[1]=0; }
 
@@ -45,8 +47,8 @@ namespace xcore
 		inline u64			getHash64() const											{ return mData64[0]; } ///< Get hash value (when used as a key in a hash set or map)
 
 		///@name To/From String
-		s32					toString(char* ioStr, u32 ioStrLength) const;			///< Convert hash value to String (incoming length > 16)
-		bool				fromString(const char* inStr);							///< Set hash value from String
+		s32					toString(ascii::runes& str) const;							///< Convert hash value to String (incoming length > 16)
+		bool				fromString(ascii::crunes const&);							///< Set hash value from String
 
 	private:
 		union

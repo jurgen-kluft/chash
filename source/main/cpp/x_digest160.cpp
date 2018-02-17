@@ -66,37 +66,36 @@ namespace xcore
 	/**
 	 * @brief Convert MD5 hash value to String
 	 */
-	s32						xdigest160::toString(char* ioStr, u32 ioStrLength) const
+	s32						xdigest160::toString(ascii::runes& str) const
 	{
-		if (ioStrLength < (size() * 2))
+		if (str.size() < (size() * 2))
 			return 0;
 
-		const char* _format = "%02x%02x%02x%02x";
+		ascii::crunes _format("%02X%02X%02X%02X");
+		ascii::runes _str(str);
 		u32 const l = size();
-		char* s = ioStr;
 		for (u32 i=0; i<l; i+=4)
-			s = s + ascii::sprintf(s, s + 8, _format, NULL, x_va(mData8[i+0]),  x_va(mData8[i+1]),  x_va( mData8[i+2]), x_va(mData8[i+3]));
+			ascii::sprintf(_str, _format, x_va(mData8[i+0]),  x_va(mData8[i+1]),  x_va( mData8[i+2]), x_va(mData8[i+3]));
 
-		return (u32)(s - ioStr);
-
+		return 1;
 	}
-
 
 
 	/**
 	 * @brief Set hash value from String
 	 */
-	bool					xdigest160::fromString(const char* inString)
+	bool					xdigest160::fromString(ascii::crunes const& str)
 	{
-		if ((u32)ascii::size(inString) < (size() * 2))
+		if (str.size() < (size() * 2))
 			return false;
 
-		const char* const format = "%02x%02x%02x%02x";
+		ascii::crunes s(str);
+		ascii::crunes format("%02X%02X%02X%02X");
 		u32 const l = size();
 		for (u32 i=0; i<l; i+=4)
 		{
 			u8 d[4];
-			if (ascii::sscanf(inString + (i*2), NULL, format, NULL, x_va_r(&d[0]), x_va_r(&d[1]), x_va_r(&d[2]), x_va_r(&d[3])) == 4)
+			if (ascii::sscanf(s, format, x_va_r(&d[0]), x_va_r(&d[1]), x_va_r(&d[2]), x_va_r(&d[3])) == 4)
 			{
 				for (s32 j=0; j<4; j++)
 					mData8[i+j] = d[j];

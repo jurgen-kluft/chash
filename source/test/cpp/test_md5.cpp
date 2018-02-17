@@ -54,9 +54,9 @@ UNITTEST_SUITE_BEGIN(xmd5)
 		UNITTEST_TEST(xmd5_operator_max)
 		{
 			xmd5 smd5h,smd5h2,smd5h3;
-			const char* rch ="000002222222222222222222222222222222222222";
-			const char* rch2="111111111111111111111111111111111111111111";
-			const char* rch3="111111111111111111111111122222211111111111";
+			ascii::crunes rch ("000002222222222222222222222222222222222222");
+			ascii::crunes rch2("111111111111111111111111111111111111111111");
+			ascii::crunes rch3("111111111111111111111111122222211111111111");
 			CHECK_TRUE(smd5h.fromString(rch));
 			CHECK_TRUE(smd5h2.fromString(rch2));
 			bool sBig=(smd5h2>smd5h);
@@ -68,9 +68,9 @@ UNITTEST_SUITE_BEGIN(xmd5)
 		UNITTEST_TEST(xmd5_operator_min)
 		{
 			xmd5 smd5h,smd5h2;
-			const char* rch="2222222222222222222222222222222222222";
-			char* rch2="111111111111111111111111111111111111111111111111111111111111";
-			char* rch3="33333333333333333333333333333333333333333333333333333333";
+			ascii::crunes rch("2222222222222222222222222222222222222");
+			ascii::crunes rch2("111111111111111111111111111111111111111111111111111111111111");
+			ascii::crunes rch3("33333333333333333333333333333333333333333333333333333333");
 			smd5h.fromString(rch);
 			smd5h2.fromString(rch2);
 			bool sBig=(smd5h2<smd5h);
@@ -116,20 +116,21 @@ UNITTEST_SUITE_BEGIN(xmd5)
 		}
 		UNITTEST_TEST(xmd5_ToString)
 		{
-			char rch[100];
+			xuchars128 rchb;
+			ascii::runes rch = rchb.chars();
 			xmd5 smd5h;
-			s32 sTOStr=smd5h.toString(rch, 100-1);
-			CHECK_EQUAL(sTOStr,16*2);
+			smd5h.toString(rch);
+			CHECK_EQUAL(rch.size(),16*2);
 		}
 		UNITTEST_TEST(xmd5_FromString)
 		{
-			char const* rch = "da39a3ee5e6b4b0d3255bfef95601890";
+			ascii::crunes rch("da39a3ee5e6b4b0d3255bfef95601890");
 			xmd5 smd5h;
 			
 			bool sFromStr = smd5h.fromString(rch);
 			CHECK_EQUAL(sFromStr, true);
 			
-			sFromStr = smd5h.fromString("too short");
+			sFromStr = smd5h.fromString(ascii::crunes("too short"));
 			CHECK_EQUAL(sFromStr, false);
 		}
 	}
@@ -173,9 +174,9 @@ UNITTEST_SUITE_BEGIN(xmd5)
 			u32 ru,ru2,ru3,ru4;
 			u32 ruu,ruu2,ruu3,ruu4;
 			smd5.reset();
-			xmd5 smd5h("a unique string");  
+			xmd5 smd5h(ascii::crunes("a unique string"));
 			smd5.digest(smd5h);
-			xmd5 smd5h2("a different string"); 
+			xmd5 smd5h2(ascii::crunes("a different string"));
 			smd52.digest(smd5h2);
 			smd5h.get(ru,ru2,ru3,ru4);
 			smd5h2.get(ruu,ruu2,ruu3,ruu4);
