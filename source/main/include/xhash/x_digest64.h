@@ -12,6 +12,8 @@
 #pragma once
 #endif
 
+#include "xbase/x_buffer.h"
+
 namespace xcore
 {
 	/**
@@ -23,7 +25,7 @@ namespace xcore
 	/**
 	 *	Utilities, default 64 bit hash, murmur hash
 	 */
-	extern xdigest64		x_Hash64(const char* inBuffer, u32 inLength);			///< Get 64 bit hash value of a string
+	extern xdigest64		x_Hash64(xcbuffer buf);			///< Get 64 bit hash value of a string
 
 }
 #endif	///< __XHASH_HASHABLE_32_H__

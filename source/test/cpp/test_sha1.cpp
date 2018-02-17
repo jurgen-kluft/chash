@@ -39,9 +39,8 @@ UNITTEST_SUITE_BEGIN(xsha1)
 			xdigest_engine_sha1 g;
 			g.reset();
 
-			char const* data = "The quick brown fox jumps over the lazy dog";
-			u32 data_len = ascii::len(data, NULL);
-			g.update(data, data_len);
+			xcuchars data("The quick brown fox jumps over the lazy dog");
+			g.update(data.buffer());
 
 			xsha1 h;
 			CHECK_TRUE(g.digest(h));
@@ -60,9 +59,8 @@ UNITTEST_SUITE_BEGIN(xsha1)
 			xdigest_engine_sha1 g;
 			g.reset();
 
-			char const* data = "The quick brown fox jumps over the lazy cog";
-			u32 data_len = ascii::len(data, NULL);
-			g.update(data, data_len);
+			xcuchars data("The quick brown fox jumps over the lazy cog");
+			g.update(data.buffer());
 
 			xsha1 h;
 			CHECK_TRUE(g.digest(h));

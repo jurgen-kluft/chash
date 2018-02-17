@@ -10,9 +10,9 @@
 
 namespace xcore
 {
-	xdigest64		x_Hash64(const char* inBuffer, u32 inLength)
+	xdigest64		x_Hash64(xcbuffer buf)
 	{
-		return xdigest_murmur64::buf(inBuffer, inLength, 0);
+		return xdigest_murmur64::buf(buf, 0);
 	}
 
 }

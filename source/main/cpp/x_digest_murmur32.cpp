@@ -76,12 +76,12 @@ namespace xcore
 		return gGetMurmurHash32(buffer, inPrevious);
 	}
 
-	xdigest32			xdigest_murmur32::str(xcchars const& _str)
+	xdigest32			xdigest_murmur32::str(xcuchars const& _str)
 	{
 		return gGetMurmurHash32(_str.buffer(), 0);
 	}
 
-	xdigest32			xdigest_murmur32::str(xcchars const& _str, xdigest32 inPrevious)
+	xdigest32			xdigest_murmur32::str(xcuchars const& _str, xdigest32 inPrevious)
 	{
 		return gGetMurmurHash32(_str.buffer(), inPrevious);
 	}

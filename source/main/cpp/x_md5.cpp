@@ -9,6 +9,7 @@
 #include "xbase/x_va_list.h"
 #include "xbase/x_memory_std.h"
 #include "xbase/x_endian.h"
+#include "xbase/x_buffer.h"
 
 #include "xhash/x_md5.h"
 
@@ -207,8 +208,9 @@ namespace xcore
 
 	void					xdigest_engine_md5::digest(xmd5& md5)
 	{
-		xbuffer16 e;
-		digest(e.buffer());
+		xbytes16 e;
+		xbuffer b = e.buffer();
+		digest(b);
 		sByteSwap((u32*)e.m_data, 4);
 		for (s32 i=0; i<e.size(); ++i)
 			md5.set8(i, e[i]);

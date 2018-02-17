@@ -93,12 +93,11 @@ namespace xcore
 	private:
 		///@name Actions
 		template<typename D>
-		inline void				update(const D& data)								{ mCachedHash = HG::buf(&data, sizeof(D)); } // Update the hash value from the value of <T>
-
-		inline void 			update(const s32& data)								{ mCachedHash = HG::buf((u32*)&data, sizeof(u32)); }
-		inline void 			update(const u32& data)								{ mCachedHash = HG::buf((u32*)&data, sizeof(u32)); }
-		inline void 			update(const s64& data)								{ mCachedHash = HG::buf((u64*)&data, sizeof(u64)); }
-		inline void 			update(const u64& data)								{ mCachedHash = HG::buf((u64*)&data, sizeof(u64)); }
+		inline void				update(const D& data)								{ mCachedHash = HG::buf(xcbuffer(sizeof(D)  , (xbyte*)&data)); } // Update the hash value from the value of <T>
+		inline void 			update(const s32& data)								{ mCachedHash = HG::buf(xcbuffer(sizeof(u32), (xbyte*)&data)); }
+		inline void 			update(const u32& data)								{ mCachedHash = HG::buf(xcbuffer(sizeof(u32), (xbyte*)&data)); }
+		inline void 			update(const s64& data)								{ mCachedHash = HG::buf(xcbuffer(sizeof(u64), (xbyte*)&data)); }
+		inline void 			update(const u64& data)								{ mCachedHash = HG::buf(xcbuffer(sizeof(u64), (xbyte*)&data)); }
 
 		T						mData;
 		u32						mCachedHash;
@@ -115,7 +114,7 @@ namespace xcore
 	{
 		///@name Construction/Destruction
 		inline				hashed_ptr()											: mPtr(NULL),  mHash(0) { }
-		inline				hashed_ptr(T *inPtr)									: mPtr(inPtr), mHash(HG::buf(&inPtr, sizeof(T*))) { }
+		inline				hashed_ptr(T *inPtr)									: mPtr(inPtr), mHash(HG::buf(xcbuffer(sizeof(T*), (xbyte const*)&inPtr))) { }
 
 		///@name Operators
 		inline bool			operator==(const hashed_ptr<T>& inRHS) const			{ return mPtr == inRHS.mPtr; }
@@ -145,7 +144,7 @@ namespace xcore
 #ifdef X_BIG_ENDIAN
 			endianPtrVal = xcore::x_endian_swap::swap(endianPtrVal);
 #endif
-			mHash = (HG::buf(&data, sizeof(T*)));
+			mHash = (HG::buf(xcbuffer(sizeof(T*), (xbyte const*)&data)));
 		
 		}
 		///@name Data

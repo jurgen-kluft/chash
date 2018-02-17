@@ -13,7 +13,7 @@
 #endif
 
 #include "xbase/x_buffer.h"
-
+#include "xbase/x_chars.h"
 
 namespace xcore
 {
@@ -28,8 +28,8 @@ namespace xcore
 		/// Murmur hash
 		static xdigest64			buf(xcbuffer const& _buffer);
 		static xdigest64			buf(xcbuffer const& _buffer, xdigest64 prev);
-		static xdigest64			str(xcchars const& _str);
-		static xdigest64			str(xcchars const& _str, xdigest64 prev);
+		static xdigest64			str(xcuchars const& _str);
+		static xdigest64			str(xcuchars const& _str, xdigest64 prev);
 	};
 
 }

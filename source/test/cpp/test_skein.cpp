@@ -95,7 +95,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 		UNITTEST_TEST(test1)
 		{
 			u8 message[] = { 0xFF };
-			xskein256 hash = x_skein256Hash256(message, 1);
+			xskein256 hash = x_skein256Hash256(xcbuffer(1, message));
 
 			u8 vhash[] =
 			{
@@ -109,8 +109,8 @@ UNITTEST_SUITE_BEGIN(xskein)
 
 		UNITTEST_TEST(test2)
 		{
-			u8 message[] = { 0xFB,0xD1,0x7C,0x26 };
-			xskein256 hash = x_skein256Hash256(message, 4);
+			xbyte message[] = { 0xFB,0xD1,0x7C,0x26 };
+			xskein256 hash = x_skein256Hash256(xcbuffer(4, message));
 
 			u8 vhash[] =
 			{
@@ -132,7 +132,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 				u32 const test_bytelen = (test->Len + 7) / 8;
 				u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
 				CHECK_EQUAL(test_bytelen, len);
-				xskein512 digest = x_skein512Hash512B(bytemsg, test->Len);
+				xskein512 digest = x_skein512Hash512B(xcbuffer(512, bytemsg), test->Len);
 				digest.toString(digest_str.chars());
 
 				s32 c = ascii::compare(ascii::crunes(test->Digest), digest_str.cchars());

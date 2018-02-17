@@ -162,11 +162,11 @@ UNITTEST_SUITE_BEGIN(xmd5)
 		}
 		UNITTEST_TEST(Compute)
 		{
-			s32 inBuffer[10]={1,1,2,3,5,8,13,21,34,55};
+			xbyte inBuffer[]={1,1,2,3,5,8,13,21,34,55};
 			s32	inLength=10;
 			xdigest_engine_md5 smd5;
 			smd5.reset();
-			smd5.update(inBuffer,inLength);
+			smd5.update(xcbuffer(inLength, inBuffer));
 		}
 		UNITTEST_TEST(Digest)
 		{

@@ -12,7 +12,7 @@
 #pragma once
 #endif
 
-#include "xbase/x_buffer.h"
+#include "xbase/x_chars.h"
 #include "xhash/x_digest_engine.h"
 
 namespace xcore
@@ -28,8 +28,8 @@ namespace xcore
 		static xdigest32		buf(xcbuffer const& buffer);
 		static xdigest32		buf(xcbuffer const& buffer, xdigest32 prev);
 
-		static xdigest32		str(xcchars const& str);
-		static xdigest32		str(xcchars const& str, xdigest32 prev);
+		static xdigest32		str(xcuchars const& str);
+		static xdigest32		str(xcuchars const& str, xdigest32 prev);
 	};
 
 
