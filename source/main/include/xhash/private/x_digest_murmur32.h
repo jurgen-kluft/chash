@@ -12,6 +12,8 @@
 #pragma once
 #endif
 
+#include "xbase/x_buffer.h"
+
 namespace xcore
 {
 	/**
@@ -23,10 +25,10 @@ namespace xcore
 	{
 	public:
 		/// Murmur hash
-		static xdigest32			buf(void const* inData, u32 inLength);
-		static xdigest32			buf(void const* inData, u32 inLength, xdigest32 inPrevious);
-		static xdigest32			str(char const* inStr);
-		static xdigest32			str(char const* inStr, xdigest32 inPrevious);
+		static xdigest32			buf(xcbuffer const& buffer);
+		static xdigest32			buf(xcbuffer const& buffer, xdigest32 inPrevious);
+		static xdigest32			str(xcchars const& _str);
+		static xdigest32			str(xcchars const& _str, xdigest32 inPrevious);
 	};
 
 

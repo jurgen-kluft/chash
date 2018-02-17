@@ -60,8 +60,8 @@ namespace xcore
 		///@name Updating
 		virtual u32			length() const { return 16; }
 		virtual void		reset();
-		virtual void		update(void const* inBuffer, u32 inLength);
-		virtual void		digest(xbyte* digest);
+		virtual void		update(xcbuffer const& buffer);
+		virtual void		digest(xbuffer & digest);
 
 		void				digest(xmd5& md5);
 
@@ -83,7 +83,7 @@ namespace xcore
 	/**
 	 *	Utilities
 	 */
-	extern xmd5		x_MD5Hash(void const* inBuffer, s32 inLength);			///< Get MD5 hash value of a block of data
+	extern xmd5		x_MD5Hash(xcbuffer const& buffer);							///< Get MD5 hash value of a block of data
 }
 
 

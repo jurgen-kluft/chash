@@ -12,6 +12,7 @@
 #pragma once
 #endif
 
+#include "xbase/x_buffer.h"
 #include "xhash/x_digest_engine.h"
 
 namespace xcore
@@ -24,10 +25,11 @@ namespace xcore
 	class xdigest_fnv
 	{
 	public:
-		static xdigest32		buf(void const* inData, u32 inLength);
-		static xdigest32		buf(void const* inData, u32 inLength, xdigest32 inPrevious);
-		static xdigest32		str(char const* inStr);
-		static xdigest32		str(char const* inStr, xdigest32 inPrevious);
+		static xdigest32		buf(xcbuffer const& buffer);
+		static xdigest32		buf(xcbuffer const& buffer, xdigest32 prev);
+
+		static xdigest32		str(xcchars const& str);
+		static xdigest32		str(xcchars const& str, xdigest32 prev);
 	};
 
 
@@ -39,11 +41,11 @@ namespace xcore
 
 		virtual u32			length() const										{ return 4; }
 		virtual void		reset()												{ mHash = 0; }
-		virtual void		update(void const* inBuffer, s32 inLength)			{ xdigest_fnv::buf(inBuffer, inLength, mHash); }
-		virtual void		digest(xbyte* digest)								
+		virtual void		update(xcbuffer const& buffer)						{ xdigest_fnv::buf(buffer, mHash); }
+		virtual void		digest(xbuffer& digest)
 		{ 
 			xbyte const* src = (xbyte const*)&mHash;
-			for (s32 i=0; i<4; ++i) *digest++ = *src++;
+			for (s32 i=0; i<4; ++i) digest[i] = *src++;
 		}
 
 		bool				digest(xdigest32& digest)							{ digest = mHash; return true; }

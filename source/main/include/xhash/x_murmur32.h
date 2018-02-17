@@ -30,8 +30,8 @@ namespace xcore
 
 		virtual u32			length() const										{ return 4; }
 		virtual void		reset()												{ mHash = 0; }
-		virtual void		update(void const* inBuffer, s32 inLength);
-		virtual void		digest(xbyte* digest)								{ *((u32*)digest) = mHash; }
+		virtual void		update(xcbuffer const& buffer);
+		virtual void		digest(xbuffer & digest)							{ digest = xcbuffer(4, (xbyte const*)&mHash);}
 
 		bool				digest(xdigest32& digest)							{ digest = mHash; return true; }
 	};

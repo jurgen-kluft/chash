@@ -19,15 +19,17 @@ namespace xcore
 	#define MURMUR64_ENDIAN_SWAP(r) ( ((r>>24)&0x000000FF) | ((r>>8)&0x0000FF00) | ((r<<8)&0x00FF0000) | ((r<<24)&0xFF000000) )
 #endif
 
-	xcore::u64 gGetMurmurHash64(const char* str, s32 len, u64 seed)
+	xcore::u64 gGetMurmurHash64(xcbuffer const& buffer, u64 seed)
 	{
 		const xcore::u32 m = 0x5bd1e995;
 		const xcore::s32 r = 24;
 
+		u32 len = buffer.size();
+
 		xcore::u32 h1 = xcore::u32(seed) ^ len;
 		xcore::u32 h2 = xcore::u32(seed >> 32);
 
-		const xcore::u32* data = (const xcore::u32*)str;
+		const xcore::u32* data = (const xcore::u32*)buffer.m_data;
 
 		while (len >= 8)
 		{
@@ -74,26 +76,24 @@ namespace xcore
 	}
 
 
-	xdigest64			xdigest_murmur64::buf(void const* inData, u32 inLength)
+	xdigest64			xdigest_murmur64::buf(xcbuffer const& buffer)
 	{
-
-		return gGetMurmurHash64((const char*)inData, inLength, 0);
+		return gGetMurmurHash64(buffer, 0);
 	}
 
-	xdigest64			xdigest_murmur64::buf(void const* inData, u32 inLength, xdigest64 inPrevious)
+	xdigest64			xdigest_murmur64::buf(xcbuffer const& buffer, xdigest64 inPrevious)
 	{
-
-		return gGetMurmurHash64((const char*)inData, inLength, inPrevious);
+		return gGetMurmurHash64(buffer, inPrevious);
 	}
 
-	xdigest64			xdigest_murmur64::str(char const* inStr)
+	xdigest64			xdigest_murmur64::str(xcchars const& _str)
 	{
-		return gGetMurmurHash64((const char*)inStr, ascii::size(inStr), 0);
+		return gGetMurmurHash64(_str.buffer(), 0);
 	}
 
-	xdigest64			xdigest_murmur64::str(char const* inStr, xdigest64 inPrevious)
+	xdigest64			xdigest_murmur64::str(xcchars const& _str, xdigest64 inPrevious)
 	{
-		return gGetMurmurHash64((const char*)inStr, ascii::size(inStr), inPrevious);
+		return gGetMurmurHash64(_str.buffer(), inPrevious);
 	}
 
 }

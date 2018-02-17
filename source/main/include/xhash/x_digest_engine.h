@@ -12,6 +12,7 @@
 #pragma once
 #endif
 
+#include "xbase/x_buffer.h"
 
 namespace xcore
 {
@@ -20,8 +21,8 @@ namespace xcore
 	public:
 		virtual u32			length() const = 0;
 		virtual void		reset() = 0;
-		virtual void		update(void const* inBuffer, u32 inLength) = 0;
-		virtual void		digest(xbyte* digest) = 0;
+		virtual void		update(xcbuffer const&) = 0;
+		virtual void		digest(xbuffer&) = 0;
 	};
 }
 

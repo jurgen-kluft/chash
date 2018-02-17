@@ -116,7 +116,7 @@ namespace xcore
 	 * @param inData	Buffer to update hash with
 	 * @param inLength	Length of buffer in bytes
 	 */
-	void					xdigest_engine_md5::update(void const* inData, u32 inLength)
+	void					xdigest_engine_md5::update(const xcbuffer& buffer)
 	{
 		ASSERTS(mState==OPEN, "Can't compute hash value before Open() has been called!");
 
@@ -125,18 +125,19 @@ namespace xcore
 		u32 space_left	  = 64 - buffer_offset;										// Space available in mBuffer.mInput (at least 1)
 
 		// Update length
-		mLength += inLength;
+		u32 const len = buffer.size();
+		mLength += len;
 
 		// If there's enough space in the buffer, just copy and exit
-		if (inLength < space_left)
+		if (len  < space_left)
 		{
-			x_memcopy((u8*)mBuffer.mInput + buffer_offset, inData, inLength);
+			x_memcopy((u8*)mBuffer.mInput + buffer_offset, buffer.m_data, len);
 			return;
 		}
 
 		// Fill up current buffer until it's full
-		u8 const* data   = (u8 const*)inData;
-		u32     length = inLength;
+		u8 const* data   = (u8 const*)buffer.m_data;
+		u32     length = len;
 		x_memcopy((u8*)mBuffer.mInput + buffer_offset, data, space_left);
 		sByteSwap(mBuffer.mInput, 16);
 		transform();
@@ -162,7 +163,7 @@ namespace xcore
 	/**
 	 * @brief Get final hash value
 	 */
-	void				xdigest_engine_md5::digest(xbyte* digest)
+	void				xdigest_engine_md5::digest(xbuffer& digest)
 	{
 		// If this is the first time we call GetHash(), finish the last transform
 		if (mState == OPEN)
@@ -201,16 +202,16 @@ namespace xcore
 		// export digest
 		xbyte const* src = (xbyte const*)&mMD5[0];
 		for (s32 i=0; i<16; ++i)
-			*digest++ = *src++;
+			digest[i] = *src++;
 	}
 
 	void					xdigest_engine_md5::digest(xmd5& md5)
 	{
-		u32 e[4];
-		digest((xbyte*)e);
-		sByteSwap(e, 4);
-		for (s32 i=0; i<4; ++i)
-			md5.set32(i, e[i]);
+		xbuffer16 e;
+		digest(e.buffer());
+		sByteSwap((u32*)e.m_data, 4);
+		for (s32 i=0; i<e.size(); ++i)
+			md5.set8(i, e[i]);
 	}
 
 
@@ -334,11 +335,11 @@ namespace xcore
 
 	 * @see	xmd5 xdigest_engine_md5
 	 */
-	xmd5		x_MD5Hash(void const* inBuffer, s32 inLength)
+	xmd5		x_MD5Hash(xcbuffer const& buffer)
 	{
 		xdigest_engine_md5 md5;
 		md5.reset();
-		md5.update(inBuffer, inLength);
+		md5.update(buffer);
 
 		xmd5 digest;
 		md5.digest(digest);

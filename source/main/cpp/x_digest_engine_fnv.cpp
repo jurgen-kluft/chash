@@ -30,15 +30,15 @@ namespace xcore
 	 * NOTE: To use the recommended 32 bit FNV-1a hash, use FNV1_32A_INIT as the
 	 * 	 hval arg on the first call to either fnv_32a_buf() or fnv_32a_str().
 	 */
-	xdigest32 xdigest_fnv::buf(void const* inData, u32 inLength)
+	xdigest32 xdigest_fnv::buf(xcbuffer const& buffer)
 	{
-		return buf(inData, inLength, FNV_32_PRIME);
+		return buf(buffer, FNV_32_PRIME);
 	}
 
-	xdigest32	xdigest_fnv::buf(void const *buf, u32 len, xdigest32 hval)
+	xdigest32	xdigest_fnv::buf(xcbuffer const& buffer, xdigest32 hval)
 	{
-		unsigned char *bp = (unsigned char *)buf;	/* start of buffer */
-		unsigned char *be = bp + len;		/* beyond end of buffer */
+		unsigned char *bp = (unsigned char *)buffer.m_data;		/* start of buffer */
+		unsigned char *be = bp + buffer.size();					/* beyond end of buffer */
 
 		/*
 		* FNV-1a hash each octet in the buffer
@@ -75,34 +75,34 @@ namespace xcore
 	 * NOTE: To use the recommended 32 bit FNV-1a hash, use FNV1_32A_INIT as the
 	 *  	 hval arg on the first call to either fnv_32a_buf() or fnv_32a_str().
 	 */
-	xdigest32	xdigest_fnv::str(char const *inStr)
+	xdigest32	xdigest_fnv::str(xcchars const& _str)
 	{
-		return str(inStr, FNV_32_PRIME);
+		return str(_str, FNV_32_PRIME);
 	}
 
-	xdigest32	xdigest_fnv::str(char const *inStr, xdigest32 hval)
+	xdigest32	xdigest_fnv::str(xcchars const& _str, xdigest32 _hval)
 	{
-		unsigned char *s = (unsigned char *)inStr;	/* unsigned string */
+		uchar const * s = (uchar const *)_str.m_str;	/* unsigned string */
 
 		/*
 		* FNV-1a hash each octet in the buffer
 		*/
-		while (*s) 
+		while (s < _str.m_end)
 		{
 
 			/* xor the bottom with the current octet */
-			hval ^= (xdigest32)*s++;
+			_hval ^= (xdigest32)*s++;
 
 			/* multiply by the 32 bit FNV magic prime mod 2^32 */
 #if defined(NO_FNV_GCC_OPTIMIZATION)
-			hval *= FNV_32_PRIME;
+			_hval *= FNV_32_PRIME;
 #else
-			hval += (hval<<1) + (hval<<4) + (hval<<7) + (hval<<8) + (hval<<24);
+			_hval += (_hval <<1) + (_hval <<4) + (_hval <<7) + (_hval <<8) + (_hval <<24);
 #endif
 		}
 
 		/* return our new hash value */
-		return hval;
+		return _hval;
 	}
 
 }

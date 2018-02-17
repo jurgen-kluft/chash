@@ -2021,18 +2021,19 @@ namespace xcore
 		reset2();
 	}
 
-	void	xdigest_engine_skein256::update(void const* inBuffer, u32 inLength)
+	void	xdigest_engine_skein256::update(xcbuffer const& buffer)
 	{
 		if (mState == OPEN)
-			skein_hash::Skein_256_Update((skein_hash::Skein_256_Ctxt_t*)&mCtx, (skein_hash::u08b_t*)inBuffer, inLength);
+			skein_hash::Skein_256_Update((skein_hash::Skein_256_Ctxt_t*)&mCtx, (skein_hash::u08b_t*)buffer.m_data, buffer.size());
 	}
 
-	void	xdigest_engine_skein256::digest(xbyte* digest)
+	void	xdigest_engine_skein256::digest(xbuffer & digest)
 	{
 		if (mState == OPEN)
 		{
 			mState = CLOSED;
-			skein_hash::Skein_256_Final((skein_hash::Skein_256_Ctxt_t*)&mCtx, digest);
+			ASSERT(digest.size() >= 32);
+			skein_hash::Skein_256_Final((skein_hash::Skein_256_Ctxt_t*)&mCtx, digest.m_data);
 		}
 	}
 
@@ -2065,18 +2066,19 @@ namespace xcore
 		reset2();
 	}
 
-	void	xdigest_engine_skein512::update(void const* inBuffer, u32 inLength)
+	void	xdigest_engine_skein512::update(xcbuffer const& buffer)
 	{
 		if (mState == OPEN)
-			skein_hash::Skein_512_Update((skein_hash::Skein_512_Ctxt_t*)&mCtx, (skein_hash::u08b_t*)inBuffer, inLength);
+			skein_hash::Skein_512_Update((skein_hash::Skein_512_Ctxt_t*)&mCtx, (skein_hash::u08b_t*)buffer.m_data, buffer.size());
 	}
 
-	void	xdigest_engine_skein512::digest(xbyte* digest)
+	void	xdigest_engine_skein512::digest(xbuffer & digest)
 	{
 		if (mState == OPEN)
 		{
 			mState = CLOSED;
-			skein_hash::Skein_512_Final((skein_hash::Skein_512_Ctxt_t*)&mCtx, digest);
+			ASSERT(digest.size() >= 64);
+			skein_hash::Skein_512_Final((skein_hash::Skein_512_Ctxt_t*)&mCtx, digest.m_data);
 		}
 	}
 
@@ -2102,42 +2104,44 @@ namespace xcore
 	/**
 	 *	Utilities
 	 */
-	xskein256	x_skein256Hash256(void const* inBuffer, s32 inLength)
+	xskein256	x_skein256Hash256(xcbuffer const& buffer)
 	{
 		skein_hash::Skein_256_Ctxt_t ctx;
 		skein_hash::Skein_256_Init(&ctx, 256);
-		skein_hash::Skein_256_Update(&ctx, (skein_hash::u08b_t*)inBuffer, inLength);
+		skein_hash::Skein_256_Update(&ctx, (skein_hash::u08b_t*)buffer.m_data, buffer.size());
 		xskein256 hash;
 		skein_hash::Skein_256_Final(&ctx, hash.data());
 		return hash;
 	}
 
-	xskein256	x_skein512Hash256(void const* inBuffer, s32 inLength)
+	xskein256	x_skein512Hash256(xcbuffer const& buffer)
 	{
 		skein_hash::Skein_512_Ctxt_t ctx;
 		skein_hash::Skein_512_Init(&ctx, 256);
-		skein_hash::Skein_512_Update(&ctx, (skein_hash::u08b_t*)inBuffer, inLength);
+		skein_hash::Skein_512_Update(&ctx, (skein_hash::u08b_t*)buffer.m_data, buffer.size());
 		xskein256 hash;
 		skein_hash::Skein_512_Final(&ctx, hash.data());
 		return hash;
 	}
 
-	xskein512	x_skein512Hash512(void const* inBuffer, s32 inLength)
+	xskein512	x_skein512Hash512(xcbuffer const& buffer)
 	{
 		skein_hash::Skein_512_Ctxt_t ctx;
 		skein_hash::Skein_512_Init(&ctx, 512);
-		skein_hash::Skein_512_Update(&ctx, (skein_hash::u08b_t*)inBuffer, inLength);
+		skein_hash::Skein_512_Update(&ctx, (skein_hash::u08b_t*)buffer.m_data, buffer.size());
 		xskein512 hash;
 		skein_hash::Skein_512_Final(&ctx, hash.data());
 		return hash;
 	}
 
-	xskein256	x_skein256Hash256B(void const* inBuffer, s32 inLengthInBits)
+	xskein256	x_skein256Hash256B(xcbuffer const& buffer, u32 inLengthInBits)
 	{
+		ASSERT(buffer.size() >= ((inLengthInBits + 7) / 8));
+
 		skein_hash::Skein_256_Ctxt_t ctx;
 		skein_hash::Skein_256_Init(&ctx, 256);
 
-		u8 const* data = (u8 const*)inBuffer;
+		u8 const* data = (u8 const*)buffer.m_data;
 
 		xskein256 hash;
 		if ((inLengthInBits & 7) == 0)  /* partial bytes? */
@@ -2162,12 +2166,14 @@ namespace xcore
 		return hash;
 	}
 
-	xskein256	x_skein512Hash256B(void const* inBuffer, s32 inLengthInBits)
+	xskein256	x_skein512Hash256B(xcbuffer const& buffer, u32 inLengthInBits)
 	{
+		ASSERT(buffer.size() >= ((inLengthInBits + 7) / 8));
+
 		skein_hash::Skein_512_Ctxt_t ctx;
 		skein_hash::Skein_512_Init(&ctx, 256);
 
-		u8 const* data = (u8 const*)inBuffer;
+		u8 const* data = (u8 const*)buffer.m_data;
 
 		xskein256 hash;
 		if ((inLengthInBits & 7) == 0)  /* partial bytes? */
@@ -2192,12 +2198,14 @@ namespace xcore
 		return hash;
 	}
 
-	xskein512	x_skein512Hash512B(void const* inBuffer, s32 inLengthInBits)
+	xskein512	x_skein512Hash512B(xcbuffer const& buffer, u32 inLengthInBits)
 	{
+		ASSERT(buffer.size() >= ((inLengthInBits + 7) / 8));
+
 		skein_hash::Skein_512_Ctxt_t ctx;
 		skein_hash::Skein_512_Init(&ctx, 512);
 
-		u8 const* data = (u8 const*)inBuffer;
+		u8 const* data = (u8 const*)buffer.m_data;
 
 		xskein512 hash;
 		if ((inLengthInBits & 7) == 0)  /* partial bytes? */

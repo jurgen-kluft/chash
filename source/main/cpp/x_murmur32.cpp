@@ -11,8 +11,8 @@
 
 namespace xcore
 {
-	void		xdigest_engine_murmur32::update(void const* inBuffer, s32 inLength)
+	void		xdigest_engine_murmur32::update(xcbuffer const& buffer)
 	{
-		mHash = xdigest_murmur32::buf(inBuffer, inLength, mHash);
+		mHash = xdigest_murmur32::buf(buffer, mHash);
 	}
 }
