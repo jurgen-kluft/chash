@@ -2,6 +2,7 @@
 *.*
 vendor/
 target/
+t2-output/
 source/main/builddir/
 source/test/builddir/
 tags
