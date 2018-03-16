@@ -9,6 +9,7 @@
 #include "xbase/x_va_list.h"
 #include "xbase/x_memory_std.h"
 #include "xbase/x_endian.h"
+#include "xbase/x_buffer.h"
 
 #include "xhash/x_md5.h"
 #include "xbase/x_chars.h"

@@ -27,7 +27,7 @@ namespace xcore
 	{
 	public:
 							xmd5()													{ }
-							xmd5(const char* inString) : xdigest128(inString)		{ }
+							xmd5(ascii::crunes const& str) : xdigest128(str)		{ }
 	};
 
 	/**

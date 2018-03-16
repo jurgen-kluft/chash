@@ -19,7 +19,7 @@ namespace xcore
 	struct xdigest512
 	{
 							xdigest512()												{ clear(); }
-							xdigest512(const char* inString)							{ fromString(inString); }
+							xdigest512(ascii::crunes const& str)						{ fromString(str); }
 
 		void				clear()														{ for (s32 i=0; i<8; ++i) mData64[i]=0; }
 		

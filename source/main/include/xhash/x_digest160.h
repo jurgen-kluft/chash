@@ -19,7 +19,7 @@ namespace xcore
 	struct xdigest160
 	{
 							xdigest160()											{ clear(); }
-							xdigest160(const char* inString)						{ fromString(inString); }
+							xdigest160(ascii::crunes const& str)					{ fromString(str); }
 
 		u32					size() const											{ return 20; }
 		u32					size32() const											{ return 5; }

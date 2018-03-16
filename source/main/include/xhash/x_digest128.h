@@ -19,7 +19,7 @@ namespace xcore
 	struct xdigest128
 	{
 							xdigest128()												{ clear(); }
-							xdigest128(const char* inString)							{ fromString(inString); }
+							xdigest128(ascii::crunes const& str)						{ fromString(str); }
 
 		void				clear()														{ mData64[0]=0; mData64[1]=0; }
 

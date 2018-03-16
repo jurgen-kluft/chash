@@ -2033,9 +2033,15 @@ namespace xcore
 		{
 			mState = CLOSED;
 			ASSERT(digest.size() >= 32);
+<<<<<<< HEAD
 			xbyte data[32];
 			skein_hash::Skein_256_Final((skein_hash::Skein_256_Ctxt_t*)&mCtx, data);
 			digest.write(xcbuffer(sizeof(data), data));
+=======
+			xbytes32 d;
+			skein_hash::Skein_256_Final((skein_hash::Skein_256_Ctxt_t*)&mCtx, d.m_data);
+			digest.write(d.buffer());
+>>>>>>> 72cdc7374881baff3db1652803cbe5bb50d4de6b
 		}
 	}
 
@@ -2080,9 +2086,9 @@ namespace xcore
 		{
 			mState = CLOSED;
 			ASSERT(digest.size() >= 64);
-			xbyte data[64];
-			skein_hash::Skein_512_Final((skein_hash::Skein_512_Ctxt_t*)&mCtx, data);
-			digest.write(xcbuffer(sizeof(data), data));
+			xbytes64 d;
+			skein_hash::Skein_512_Final((skein_hash::Skein_512_Ctxt_t*)&mCtx, d.m_data);
+			digest.write(d.buffer());
 		}
 	}
 

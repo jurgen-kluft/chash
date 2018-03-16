@@ -19,7 +19,7 @@ namespace xcore
 	struct xdigest256
 	{
 							xdigest256()												{ clear(); }
-							xdigest256(const char* inString)							{ fromString(inString); }
+							xdigest256(ascii::crunes const& str)						{ fromString(str); }
 
 		void				clear()														{ for (s32 i=0; i<4; ++i) mData64[i]=0; }
 
