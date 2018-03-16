@@ -76,37 +76,37 @@ namespace xcore
 	/**
 	 * @brief Convert hash value to String
 	 */
-	s32						xdigest256::toString(char* ioStr, u32 ioStrLength) const
+	s32						xdigest256::toString(xuchars& str) const
 	{
-		if (ioStrLength < (size() * 2))
+		if (str.size() < (size() * 2))
 			return 0;
 
-		const char* _format = "%02x%02x%02x%02x";
+		xcuchars _format("%02X%02X%02X%02X");
 		u32 const l = size();
-		char* s = ioStr;
-		for (u32 i=0; i<l; i+=4)
-			s = s + ascii::sprintf(s, s + 8, _format, NULL, x_va(mData8[i+0]),  x_va(mData8[i+1]),  x_va( mData8[i+2]), x_va(mData8[i+3]));
+		for (u32 i = 0; i<l; i += 4)
+			ascii::sprintf(str, _format, x_va(mData8[i + 0]), x_va(mData8[i + 1]), x_va(mData8[i + 2]), x_va(mData8[i + 3]));
 
-		return (u32)(s - ioStr);
+		return str.size();
 	}
 
 	/**
 	 * @brief Set hash value from String
 	 */
-	bool					xdigest256::fromString(const char* inString)
+	bool					xdigest256::fromString(xcuchars const& _str)
 	{
-		if ((u32)ascii::size(inString) < (size() * 2))
+		if (_str.size() < (size() * 2))
 			return false;
 
-		const char* const format = "%02x%02x%02x%02x";
+		xcuchars str(_str);
+		xcuchars format("%02X%02X%02X%02X");
 		u32 const l = size();
-		for (u32 i=0; i<l; i+=4)
+		for (u32 i = 0; i<l; i += 4)
 		{
 			u8 d[4];
-			if (ascii::sscanf(inString + (i*2), NULL, format, NULL, x_va_r(&d[0]), x_va_r(&d[1]), x_va_r(&d[2]), x_va_r(&d[3])) == 4)
+			if (ascii::sscanf(str, format, x_va_r(&d[0]), x_va_r(&d[1]), x_va_r(&d[2]), x_va_r(&d[3])) == 4)
 			{
-				for (s32 j=0; j<4; j++)
-					mData8[i+j] = d[j];
+				for (s32 j = 0; j<4; j++)
+					mData8[i + j] = d[j];
 			}
 			else
 			{

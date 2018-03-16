@@ -75,12 +75,12 @@ namespace xcore
 	 * NOTE: To use the recommended 32 bit FNV-1a hash, use FNV1_32A_INIT as the
 	 *  	 hval arg on the first call to either fnv_32a_buf() or fnv_32a_str().
 	 */
-	xdigest32	xdigest_fnv::str(xcchars const& _str)
+	xdigest32	xdigest_fnv::str(xcuchars const& _str)
 	{
 		return str(_str, FNV_32_PRIME);
 	}
 
-	xdigest32	xdigest_fnv::str(xcchars const& _str, xdigest32 _hval)
+	xdigest32	xdigest_fnv::str(xcuchars const& _str, xdigest32 _hval)
 	{
 		uchar const * s = (uchar const *)_str.m_str;	/* unsigned string */
 

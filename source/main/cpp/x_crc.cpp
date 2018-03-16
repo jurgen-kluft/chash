@@ -100,10 +100,10 @@ namespace xcore
 		u8 const* p_in = (u8 const*)buffer.m_data;
 
 		// Go on doing bits and pieces of the area until we're done
-		s32 len = buffer.size();
+		s64 len = buffer.size();
 		while (len)
 		{
-			s32 max_do = (len < (s32)CRCAdler::NMAX32) ? len : ((s32)CRCAdler::NMAX32);
+			s64 max_do = (len < (s32)CRCAdler::NMAX32) ? len : ((s32)CRCAdler::NMAX32);
 
 			len -= max_do;
 			while (max_do >= 16) { CRCAdler::ADO16(p_in, a1, a2); max_do-=16; }
@@ -130,10 +130,10 @@ namespace xcore
 		u8 const* p_in = (u8 const*)buffer.m_data;
 
 		// Go on doing bits and pieces of the area until we're done
-		s32 len = buffer.size();
+		s64 len = buffer.size();
 		while (len)
 		{
-			s32 max_do = (len < (s32)CRCAdler::NMAX16) ? len : ((s32)CRCAdler::NMAX16);
+			s64 max_do = (len < (s32)CRCAdler::NMAX16) ? len : ((s32)CRCAdler::NMAX16);
 
 			len -= max_do;
 			while (max_do >= 16) { CRCAdler::ADO16(p_in, a1, a2); max_do-=16; }

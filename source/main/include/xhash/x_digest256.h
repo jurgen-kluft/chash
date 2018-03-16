@@ -12,6 +12,8 @@
 #pragma once
 #endif
 
+#include "xbase/x_chars.h"
+
 namespace xcore
 {
 	struct xdigest256
@@ -46,8 +48,8 @@ namespace xcore
 		u8*					data()														{ return mData8; }
 
 		///@name To/From String
-		s32					toString(char* ioStr, u32 ioStrLength) const;			///< Convert hash value to String (incoming length > 16)
-		bool				fromString(const char* inStr);							///< Set hash value from String
+		s32					toString(xuchars& str) const;								//< Convert hash value to String (incoming length > 16)
+		bool				fromString(xcuchars const& str);							//< Set hash value from String
 
 	private:
 		union

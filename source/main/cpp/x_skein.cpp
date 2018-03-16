@@ -2024,7 +2024,7 @@ namespace xcore
 	void	xdigest_engine_skein256::update(xcbuffer const& buffer)
 	{
 		if (mState == OPEN)
-			skein_hash::Skein_256_Update((skein_hash::Skein_256_Ctxt_t*)&mCtx, (skein_hash::u08b_t*)buffer.m_data, buffer.size());
+			skein_hash::Skein_256_Update((skein_hash::Skein_256_Ctxt_t*)&mCtx, (skein_hash::u08b_t*)buffer.m_data, (xcore::skein_hash::size_t)buffer.size());
 	}
 
 	void	xdigest_engine_skein256::digest(xbuffer & digest)
@@ -2033,7 +2033,9 @@ namespace xcore
 		{
 			mState = CLOSED;
 			ASSERT(digest.size() >= 32);
-			skein_hash::Skein_256_Final((skein_hash::Skein_256_Ctxt_t*)&mCtx, digest.m_data);
+			xbyte data[32];
+			skein_hash::Skein_256_Final((skein_hash::Skein_256_Ctxt_t*)&mCtx, data);
+			digest.write(xcbuffer(sizeof(data), data));
 		}
 	}
 
@@ -2069,7 +2071,7 @@ namespace xcore
 	void	xdigest_engine_skein512::update(xcbuffer const& buffer)
 	{
 		if (mState == OPEN)
-			skein_hash::Skein_512_Update((skein_hash::Skein_512_Ctxt_t*)&mCtx, (skein_hash::u08b_t*)buffer.m_data, buffer.size());
+			skein_hash::Skein_512_Update((skein_hash::Skein_512_Ctxt_t*)&mCtx, (skein_hash::u08b_t*)buffer.m_data, (xcore::skein_hash::size_t)buffer.size());
 	}
 
 	void	xdigest_engine_skein512::digest(xbuffer & digest)
@@ -2078,7 +2080,9 @@ namespace xcore
 		{
 			mState = CLOSED;
 			ASSERT(digest.size() >= 64);
-			skein_hash::Skein_512_Final((skein_hash::Skein_512_Ctxt_t*)&mCtx, digest.m_data);
+			xbyte data[64];
+			skein_hash::Skein_512_Final((skein_hash::Skein_512_Ctxt_t*)&mCtx, data);
+			digest.write(xcbuffer(sizeof(data), data));
 		}
 	}
 
@@ -2108,7 +2112,7 @@ namespace xcore
 	{
 		skein_hash::Skein_256_Ctxt_t ctx;
 		skein_hash::Skein_256_Init(&ctx, 256);
-		skein_hash::Skein_256_Update(&ctx, (skein_hash::u08b_t*)buffer.m_data, buffer.size());
+		skein_hash::Skein_256_Update(&ctx, (skein_hash::u08b_t*)buffer.m_data, (xcore::skein_hash::size_t)buffer.size());
 		xskein256 hash;
 		skein_hash::Skein_256_Final(&ctx, hash.data());
 		return hash;
@@ -2118,7 +2122,7 @@ namespace xcore
 	{
 		skein_hash::Skein_512_Ctxt_t ctx;
 		skein_hash::Skein_512_Init(&ctx, 256);
-		skein_hash::Skein_512_Update(&ctx, (skein_hash::u08b_t*)buffer.m_data, buffer.size());
+		skein_hash::Skein_512_Update(&ctx, (skein_hash::u08b_t*)buffer.m_data, (xcore::skein_hash::size_t)buffer.size());
 		xskein256 hash;
 		skein_hash::Skein_512_Final(&ctx, hash.data());
 		return hash;
@@ -2128,7 +2132,7 @@ namespace xcore
 	{
 		skein_hash::Skein_512_Ctxt_t ctx;
 		skein_hash::Skein_512_Init(&ctx, 512);
-		skein_hash::Skein_512_Update(&ctx, (skein_hash::u08b_t*)buffer.m_data, buffer.size());
+		skein_hash::Skein_512_Update(&ctx, (skein_hash::u08b_t*)buffer.m_data, (xcore::skein_hash::size_t)buffer.size());
 		xskein512 hash;
 		skein_hash::Skein_512_Final(&ctx, hash.data());
 		return hash;

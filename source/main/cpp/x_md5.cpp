@@ -11,6 +11,7 @@
 #include "xbase/x_endian.h"
 
 #include "xhash/x_md5.h"
+#include "xbase/x_chars.h"
 
 namespace xcore
 {
@@ -125,7 +126,7 @@ namespace xcore
 		u32 space_left	  = 64 - buffer_offset;										// Space available in mBuffer.mInput (at least 1)
 
 		// Update length
-		u32 const len = buffer.size();
+		u32 const len = (u32)buffer.size();
 		mLength += len;
 
 		// If there's enough space in the buffer, just copy and exit
@@ -207,7 +208,7 @@ namespace xcore
 
 	void					xdigest_engine_md5::digest(xmd5& md5)
 	{
-		xbuffer16 e;
+		xbytes16 e;
 		digest(e.buffer());
 		sByteSwap((u32*)e.m_data, 4);
 		for (s32 i=0; i<e.size(); ++i)

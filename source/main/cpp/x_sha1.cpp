@@ -213,7 +213,7 @@ namespace xcore
 	{
 		u32 lenW = ctx.size & 63;
 
-		u32 len = buffer.size();
+		u32 len = (u32)buffer.size();
 		xbyte const* data = buffer.m_data;
 		ctx.size += len;
 

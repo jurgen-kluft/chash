@@ -12,6 +12,8 @@
 #pragma once
 #endif
 
+#include "xbase/x_chars.h"
+
 namespace xcore
 {
 	struct xdigest160
@@ -36,8 +38,8 @@ namespace xcore
 		inline u32			getHash() const											{ return mData32[0]; } ///< Get hash value (when used as a key in a hash set or map)
 
 		///@name To/From String
-		s32					toString(char* ioStr, u32 ioStrLength) const;			///< Convert hash value to String (incoming length > 20)
-		bool				fromString(const char* inStr);							///< Set hash value from String
+		s32					toString(xuchars& str) const;								//< Convert hash value to String (incoming length > 16)
+		bool				fromString(xcuchars const& str);							//< Set hash value from String
 
 		void				clear()													{ set(0,0,0,0,0); }
 

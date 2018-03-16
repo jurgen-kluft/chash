@@ -8,6 +8,7 @@
 #include "xbase/x_target.h"
 #include "xbase/x_endian.h"
 #include "xbase/x_string_ascii.h"
+#include "xbase/x_chars.h"
 
 #include "xhash/private/x_digest_murmur64.h"
 
@@ -24,7 +25,7 @@ namespace xcore
 		const xcore::u32 m = 0x5bd1e995;
 		const xcore::s32 r = 24;
 
-		u32 len = buffer.size();
+		u32 len = (u32)buffer.size();
 
 		xcore::u32 h1 = xcore::u32(seed) ^ len;
 		xcore::u32 h2 = xcore::u32(seed >> 32);
@@ -86,12 +87,12 @@ namespace xcore
 		return gGetMurmurHash64(buffer, inPrevious);
 	}
 
-	xdigest64			xdigest_murmur64::str(xcchars const& _str)
+	xdigest64			xdigest_murmur64::str(xcuchars const& _str)
 	{
 		return gGetMurmurHash64(_str.buffer(), 0);
 	}
 
-	xdigest64			xdigest_murmur64::str(xcchars const& _str, xdigest64 inPrevious)
+	xdigest64			xdigest_murmur64::str(xcuchars const& _str, xdigest64 inPrevious)
 	{
 		return gGetMurmurHash64(_str.buffer(), inPrevious);
 	}

@@ -9,6 +9,7 @@
 #include "xbase/x_endian.h"
 #include "xbase/x_memory_std.h"
 #include "xbase/x_string_ascii.h"
+#include "xbase/x_chars.h"
 
 #include "xhash/private/x_digest_murmur32.h"
 
@@ -21,7 +22,7 @@ namespace xcore
 
 		const xcore::u32 m = 0x5bd1e995;
 		const xcore::s32 r = 24;
-		xcore::u32 length = buffer.size();
+		xcore::u32 length = (u32)buffer.size();
 
 		// Initialize the hash to a 'random' value
 
@@ -76,12 +77,12 @@ namespace xcore
 		return gGetMurmurHash32(buffer, inPrevious);
 	}
 
-	xdigest32			xdigest_murmur32::str(xcchars const& _str)
+	xdigest32			xdigest_murmur32::str(xcuchars const& _str)
 	{
 		return gGetMurmurHash32(_str.buffer(), 0);
 	}
 
-	xdigest32			xdigest_murmur32::str(xcchars const& _str, xdigest32 inPrevious)
+	xdigest32			xdigest_murmur32::str(xcuchars const& _str, xdigest32 inPrevious)
 	{
 		return gGetMurmurHash32(_str.buffer(), inPrevious);
 	}

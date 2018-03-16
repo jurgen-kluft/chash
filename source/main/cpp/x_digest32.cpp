@@ -10,9 +10,9 @@
 
 namespace xcore
 {
-	xdigest32		x_Hash32(const char* inBuffer, u32 inLength)
+	xdigest32		x_Hash32(xcbuffer const& buffer)
 	{
-		return xdigest_murmur32::buf(inBuffer, inLength, 0);
+		return xdigest_murmur32::buf(buffer, 0);
 	}
 
 }
