@@ -1,7 +1,7 @@
 #include "xbase/x_target.h"
 #include "xbase/x_string_ascii.h"
 
-#include "xhash/x_skein.h"
+#include "xhash/x_hash.h"
 
 #include "xunittest/xunittest.h"
 
@@ -37,7 +37,7 @@ namespace SkeinTestVectors
 
 	static u32 TextMsgToByteMsg(char const* _textmsg, u32 _length, xbyte* _bytemsg)
 	{
-		for (s32 j = 0; j < _length; ++j)
+		for (u32 j = 0; j < _length; ++j)
 			_bytemsg[j] = 0;
 
 		u32 i = 0;
@@ -49,7 +49,7 @@ namespace SkeinTestVectors
 				break;
 
 			xbyte const b = CharToByte(ch);
-			for (s32 j = 0; j < _length - 1; j++)
+			for (u32 j = 0; j < _length - 1; j++)
 				_bytemsg[j] = (_bytemsg[j] << 4) | (_bytemsg[j + 1] >> 4);
 			_bytemsg[_length - 1] = (_bytemsg[_length - 1] << 4) | b;
 			d++;
@@ -95,7 +95,8 @@ UNITTEST_SUITE_BEGIN(xskein)
 		UNITTEST_TEST(test1)
 		{
 			u8 message[] = { 0xFF };
-			xskein256 hash = x_skein256Hash256(xcbuffer(1, message));
+			xbytes<32> hash;
+			x_skein256Hash256(xcbuffer(1, message), hash);
 
 			u8 vhash[] =
 			{
@@ -104,13 +105,14 @@ UNITTEST_SUITE_BEGIN(xskein)
 			};
 
 			for (u32 i = 0; i < hash.size(); ++i)
-				CHECK_EQUAL(vhash[i], hash.data()[i]);
+				CHECK_EQUAL(vhash[i], hash[i]);
 		}
 
 		UNITTEST_TEST(test2)
 		{
 			xbyte message[] = { 0xFB,0xD1,0x7C,0x26 };
-			xskein256 hash = x_skein256Hash256(xcbuffer(4, message));
+			xbytes<32> hash;
+			x_skein256Hash256(xcbuffer(4, message), hash);
 
 			u8 vhash[] =
 			{
@@ -119,12 +121,11 @@ UNITTEST_SUITE_BEGIN(xskein)
 			};
 
 			for (u32 i = 0; i < hash.size(); ++i)
-				CHECK_EQUAL(vhash[i], hash.data()[i]);
+				CHECK_EQUAL(vhash[i], hash[i]);
 		}
 
 		UNITTEST_TEST(test_vectors)
 		{
-			xuchars128 digest_str;
 			xbyte* bytemsg = SkeinTestVectors::ByteMsg;
 			SkeinTestVectors::Vector* test = SkeinTestVectors::Tests;
 			while (test->Msg != NULL)
@@ -132,10 +133,12 @@ UNITTEST_SUITE_BEGIN(xskein)
 				u32 const test_bytelen = (test->Len + 7) / 8;
 				u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
 				CHECK_EQUAL(test_bytelen, len);
-				xskein512 digest = x_skein512Hash512B(xcbuffer(512, bytemsg), test->Len);
-				digest.toString(digest_str.chars());
 
-				s32 c = ascii::compare(ascii::crunes(test->Digest), digest_str.cchars());
+				xbytes<65> hash;
+				hash.m_mutable[64] = '\0';
+				x_skein512Hash512B(xcbuffer(512, bytemsg), test->Len, hash);
+
+				s32 c = ascii::compare(ascii::crunes(test->Digest), ascii::crunes((const char*)hash.m_const));
 				CHECK_EQUAL(0, c);
 				test = test + 1;
 			}

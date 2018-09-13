@@ -16,10 +16,10 @@ UNITTEST_SUITE_DECLARE(xHashUnitTest, xhash64);
 class UnitTestAllocator : public UnitTest::Allocator
 {
 public:
-	xcore::x_iallocator*	mAllocator;
+	xcore::xalloc*	mAllocator;
 	int						mNumAllocations;
 
-	UnitTestAllocator(xcore::x_iallocator* allocator)
+	UnitTestAllocator(xcore::xalloc* allocator)
 		: mNumAllocations(0)
 	{
 		mAllocator = allocator;
@@ -37,7 +37,7 @@ public:
 	}
 	void	Release()
 	{
-		mAllocator->release();
+		
 	}
 };
 

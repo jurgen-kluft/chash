@@ -42,8 +42,8 @@ namespace xcore
 	 */
 	u32	xcrc::crc32(xcbuffer const& buffer, u32 inInitVal)
 	{
-		ASSERT(buffer.m_data);
-		u8 const* p_in = (u8 const*)buffer.m_data;
+		ASSERT(buffer.m_const);
+		u8 const* p_in = (u8 const*)buffer.m_const;
 		u32	crc  = ~inInitVal;
 
 		// Create CRC32 table
@@ -97,7 +97,7 @@ namespace xcore
 		u32 a1 = inInitVal & 0xFFFF;							///< Adler sum parts
 		u32 a2 = inInitVal >> 16;
 
-		u8 const* p_in = (u8 const*)buffer.m_data;
+		u8 const* p_in = (u8 const*)buffer.m_const;
 
 		// Go on doing bits and pieces of the area until we're done
 		s64 len = buffer.size();
@@ -127,7 +127,7 @@ namespace xcore
 		u32 a1 = inInitVal & 0xFF;								// Adler sum parts
 		u32 a2 = inInitVal >> 8;
 
-		u8 const* p_in = (u8 const*)buffer.m_data;
+		u8 const* p_in = (u8 const*)buffer.m_const;
 
 		// Go on doing bits and pieces of the area until we're done
 		s64 len = buffer.size();

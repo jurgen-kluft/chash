@@ -1,5 +1,5 @@
 #include "xbase/x_target.h"
-#include "xhash/x_uuid.h"
+#include "xhash/x_hash.h"
 
 #include "xunittest/xunittest.h"
 
