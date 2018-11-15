@@ -42,8 +42,8 @@ namespace xcore
 	 */
 	u32	xcrc::crc32(xcbuffer const& buffer, u32 inInitVal)
 	{
-		ASSERT(buffer.m_data);
-		u8 const* p_in = (u8 const*)buffer.m_data;
+		ASSERT(buffer.m_const);
+		u8 const* p_in = (u8 const*)buffer.m_const;
 		u32	crc  = ~inInitVal;
 
 		// Create CRC32 table
@@ -97,13 +97,13 @@ namespace xcore
 		u32 a1 = inInitVal & 0xFFFF;							///< Adler sum parts
 		u32 a2 = inInitVal >> 16;
 
-		u8 const* p_in = (u8 const*)buffer.m_data;
+		u8 const* p_in = (u8 const*)buffer.m_const;
 
 		// Go on doing bits and pieces of the area until we're done
-		s32 len = buffer.size();
+		s64 len = buffer.size();
 		while (len)
 		{
-			s32 max_do = (len < (s32)CRCAdler::NMAX32) ? len : ((s32)CRCAdler::NMAX32);
+			s64 max_do = (len < (s32)CRCAdler::NMAX32) ? len : ((s32)CRCAdler::NMAX32);
 
 			len -= max_do;
 			while (max_do >= 16) { CRCAdler::ADO16(p_in, a1, a2); max_do-=16; }
@@ -127,13 +127,13 @@ namespace xcore
 		u32 a1 = inInitVal & 0xFF;								// Adler sum parts
 		u32 a2 = inInitVal >> 8;
 
-		u8 const* p_in = (u8 const*)buffer.m_data;
+		u8 const* p_in = (u8 const*)buffer.m_const;
 
 		// Go on doing bits and pieces of the area until we're done
-		s32 len = buffer.size();
+		s64 len = buffer.size();
 		while (len)
 		{
-			s32 max_do = (len < (s32)CRCAdler::NMAX16) ? len : ((s32)CRCAdler::NMAX16);
+			s64 max_do = (len < (s32)CRCAdler::NMAX16) ? len : ((s32)CRCAdler::NMAX16);
 
 			len -= max_do;
 			while (max_do >= 16) { CRCAdler::ADO16(p_in, a1, a2); max_do-=16; }

@@ -11,7 +11,7 @@
 #include "xbase/x_memory_std.h"
 #include "xbase/x_endian.h"
 
-#include "xhash/x_sha1.h"
+#include "xhash/x_hash.h"
 
 namespace xcore
 {
@@ -47,6 +47,19 @@ namespace xcore
 	 * 
 	 *  Code: From the implementation of Git
 	 */
+
+	struct xsha1_ctx
+	{
+		u64		size;
+		u32		H[5];
+		u32		W[16];
+	};
+
+	struct sha1ctx : public xsha1_ctx
+	{
+		bool	mComputed;
+
+	};
 
 	#define SHA_ROT(X,l,r)	(((X) << (l)) | ((X) >> (r)))
 	#define SHA_ROL(X,n)	SHA_ROT(X,n,32-(n))
@@ -90,27 +103,27 @@ namespace xcore
 	#define T_40_59(t, A, B, C, D, E) SHA_ROUND(t, SHA_MIX, ((B&C)+(D&(B^C))) , 0x8f1bbcdc, A, B, C, D, E )
 	#define T_60_79(t, A, B, C, D, E) SHA_ROUND(t, SHA_MIX, (B^C^D) ,  0xca62c1d6, A, B, C, D, E )
 
-	void	xsha1_ctx_init(xsha1_ctx& ctx)
+	void	xsha1_ctx_init(xsha1_ctx* ctx)
 	{
-		ctx.size = 0;
+		ctx->size = 0;
 
 		// Initialize H with the magic constants (see FIPS180 for constants)
-		ctx.H[0] = 0x67452301;
-		ctx.H[1] = 0xefcdab89;
-		ctx.H[2] = 0x98badcfe;
-		ctx.H[3] = 0x10325476;
-		ctx.H[4] = 0xc3d2e1f0;
+		ctx->H[0] = 0x67452301;
+		ctx->H[1] = 0xefcdab89;
+		ctx->H[2] = 0x98badcfe;
+		ctx->H[3] = 0x10325476;
+		ctx->H[4] = 0xc3d2e1f0;
 	}
 
-	void	xsha1_ctx_block(xsha1_ctx& ctx, const u32* data)
+	void	xsha1_ctx_block(xsha1_ctx* ctx, const u32* data)
 	{
 		u32 array[16];
 
-		u32 A = ctx.H[0];
-		u32 B = ctx.H[1];
-		u32 C = ctx.H[2];
-		u32 D = ctx.H[3];
-		u32 E = ctx.H[4];
+		u32 A = ctx->H[0];
+		u32 B = ctx->H[1];
+		u32 C = ctx->H[2];
+		u32 D = ctx->H[3];
+		u32 E = ctx->H[4];
 
 		// Round 1 - iterations 0-16 take their input from 'data'
 		T_0_15( 0, A, B, C, D, E);
@@ -202,20 +215,20 @@ namespace xcore
 		T_60_79(78, C, D, E, A, B);
 		T_60_79(79, B, C, D, E, A);
 
-		ctx.H[0] += A;
-		ctx.H[1] += B;
-		ctx.H[2] += C;
-		ctx.H[3] += D;
-		ctx.H[4] += E;
+		ctx->H[0] += A;
+		ctx->H[1] += B;
+		ctx->H[2] += C;
+		ctx->H[3] += D;
+		ctx->H[4] += E;
 	}
 
-	void	xsha1_ctx_update(xsha1_ctx& ctx, xcbuffer const& buffer)
+	void	xsha1_ctx_update(xsha1_ctx* ctx, xcbuffer const& buffer)
 	{
-		u32 lenW = ctx.size & 63;
+		u32 lenW = ctx->size & 63;
 
-		u32 len = buffer.size();
-		xbyte const* data = buffer.m_data;
-		ctx.size += len;
+		u32 len = (u32)buffer.size();
+		xbyte const* data = buffer.m_const;
+		ctx->size += len;
 
 		// Read the data into W and process blocks as they get full
 		if (lenW) 
@@ -223,13 +236,13 @@ namespace xcore
 			u32 left = 64 - lenW;
 			if (len < left)
 				left = len;
-			x_memcpy(lenW + (char *)ctx.W, data, left);
+			x_memcpy(lenW + (char *)ctx->W, data, left);
 			lenW = (lenW + left) & 63;
 			len -= left;
 			data = ((const xbyte *)data + left);
 			if (lenW)
 				return;
-			xsha1_ctx_block(ctx, ctx.W);
+			xsha1_ctx_block(ctx, ctx->W);
 		}
 		while (len >= 64)
 		{
@@ -238,53 +251,30 @@ namespace xcore
 			len -= 64;
 		}
 		if (len)
-			x_memcpy(ctx.W, data, len);
+			x_memcpy(ctx->W, data, len);
 	}
 
-	void	xsha1_ctx_close(xsha1_ctx& ctx)
+	void	xsha1_ctx_close(xsha1_ctx* ctx)
 	{
 		static const u8 pad[64] = { 0x80 };
 
 		// Pad with a binary 1 (ie 0x80), then zeroes, then length
 		u32 padlen[2];
-		padlen[0] = xhtonl((u32)(ctx.size >> 29));
-		padlen[1] = xhtonl((u32)(ctx.size << 3));
+		padlen[0] = xhtonl((u32)(ctx->size >> 29));
+		padlen[1] = xhtonl((u32)(ctx->size << 3));
 
-		s32 i = ctx.size & 63;
+		s32 i = ctx->size & 63;
 		//xsha1_ctx_update(ctx, pad, 1 + (63 & (55 - i)));
 		xsha1_ctx_update(ctx, xcbuffer(1 + (63 & (55 - i)), pad));
 		xsha1_ctx_update(ctx, xcbuffer(8, (xbyte const*)padlen));
 	}
 
-	xdigest_engine_sha1::xdigest_engine_sha1()
+	sha1ctx*	sha1_begin(xalloc* alloc)
 	{
-		
-	}
-
-	/**
-	 *  Reset
-	 *
-	 *  Description:
-	 *      This function will initialize the sha1 class member variables
-	 *      in preparation for computing a new message digest.
-	 *
-	 *  Parameters:
-	 *      None.
-	 *
-	 *  Returns:
-	 *      Nothing.
-	 *
-	 *  Comments:
-	 *
-	 */
-	void xdigest_engine_sha1::reset2()
-	{
-		xsha1_ctx_init(mCtx);
-		mComputed    = false;
-	}
-	void xdigest_engine_sha1::reset()
-	{
-		reset2();
+		sha1ctx* ctx = (sha1ctx*)alloc->allocate(sizeof(sha1ctx), X_ALIGNMENT_DEFAULT);
+		xsha1_ctx_init(ctx);
+		ctx->mComputed = false;
+		return ctx;
 	}
 
 	/**
@@ -309,36 +299,25 @@ namespace xcore
 	{
 		p = xhtonl(p);
 		xbyte const* src = (xbyte const*)&p;
-		bytes[i++] = *src++;
-		bytes[i++] = *src++;
-		bytes[i++] = *src++;
-		bytes[i++] = *src++;
+		xbinary_writer writer(bytes);
+		writer.write(*src++);
+		writer.write(*src++);
+		writer.write(*src++);
+		writer.write(*src++);
 		return i;
 	}
 
-	void xdigest_engine_sha1::digest(xbuffer & digest)
+	void sha1_end(sha1ctx* ctx, xbuffer & hash)
 	{
-		if (!mComputed)
+		if (!ctx->mComputed)
 		{
-			xsha1_ctx_close(mCtx);
-			mComputed = true;
+			xsha1_ctx_close(ctx);
+			ctx->mComputed = true;
 		}
 
 		u32 idx = 0;
 		for (s32 i=0; i<5; ++i)
-			to_bytes(digest, idx, mCtx.H[i]);
-	}
-
-	bool xdigest_engine_sha1::digest(xsha1& hash)
-	{
-		if (!mComputed)
-		{
-			xsha1_ctx_close(mCtx);
-			mComputed = true;
-		}
-
-		hash.set(xhtonl(mCtx.H[0]), xhtonl(mCtx.H[1]), xhtonl(mCtx.H[2]), xhtonl(mCtx.H[3]), xhtonl(mCtx.H[4]));
-		return true;
+			to_bytes(hash, idx, ctx->H[i]);
 	}
 
 	/**
@@ -359,22 +338,19 @@ namespace xcore
 	 *  Comments:
 	 *
 	 */
-	void xdigest_engine_sha1::update(xcbuffer const& buffer)
+	void sha1_hash(sha1ctx* ctx, xcbuffer const& buffer)
 	{
-		xsha1_ctx_update(mCtx, buffer);
+		xsha1_ctx_update(ctx, buffer);
 	}
 
 
-	xsha1	x_Sha1Hash(xcbuffer const& buffer)
+	void	x_Sha1Hash(xcbuffer const& buffer, xbuffer & hash)
 	{
-		xdigest_engine_sha1 g;
-		g.reset();
-		g.update(buffer);
-		xsha1 h;
-		if (g.digest(h))
-			return h;
-		h.clear();
-		return h;
+		sha1ctx ctx;
+		xsha1_ctx_init(&ctx);
+		ctx.mComputed = false;
+		sha1_hash(&ctx, buffer);
+		sha1_end(&ctx, hash);
 	}
 
 }
