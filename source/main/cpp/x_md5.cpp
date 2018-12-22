@@ -1,18 +1,8 @@
-/**
- * @file x_md5.cpp
- *
- * Core MD5 hash value 
- */
-
-// x_md5.cpp - Core MD5 hash value 
 #include "xbase/x_target.h"
-#include "xbase/x_va_list.h"
-#include "xbase/x_memory_std.h"
+#include "xbase/x_allocator.h"
 #include "xbase/x_endian.h"
 #include "xbase/x_buffer.h"
-
 #include "xhash/x_hash.h"
-#include "xbase/x_chars.h"
 
 namespace xcore
 {
@@ -39,6 +29,7 @@ namespace xcore
 			void		digest(xbuffer & hash);
 			void		finalize(xbuffer & hash);
 
+			XCORE_CLASS_PLACEMENT_NEW_DELETE
 		private:
 			void				transform();
 
@@ -348,28 +339,41 @@ namespace xcore
 			mMD5[3] += d;
 		}
 
-
-
-		/**
-		 * @ingroup xhash
-		 * @brief	Get MD5 digest of a block of data
-
-		 * 		This function is a single-shot MD5 digest generator. It takes a block of
-		 * 		data bytes and returns its MD5 digest. It uses the MD5 digest engine
-		 *      class internally to produce its result.
-
-		 * @see	xmd5 xctx
-		 */
-		void		x_MD5Hash(xcbuffer const& buffer, xbuffer& hash)
-		{
-			xctx md5;
-			md5.reset();
-			md5.update(buffer);
-			md5.digest(hash);
-		}
-
 	}
 
+	md5ctx*		md5_begin(xalloc* _alloc)
+	{
+		xheap heap(_alloc);
+		xmd5::xctx* ctx = heap.construct<xmd5::xctx>();
+		return (md5ctx*)ctx;
+	}
 
+	s32			md5_size(md5ctx* _ctx)
+	{
+		xmd5::xctx* ctx = (xmd5::xctx*)_ctx;
+		return ctx->length();
+	}
 
+	void		md5_reset(md5ctx* _ctx)
+	{
+		xmd5::xctx* ctx = (xmd5::xctx*)_ctx;
+		ctx->reset();
+	}
+
+	void		md5_hash(md5ctx* _ctx, xcbuffer const& _buffer)
+	{
+		xmd5::xctx* ctx = (xmd5::xctx*)_ctx;
+		ctx->update(_buffer);
+	}
+
+	void		md5_end(md5ctx* _ctx, xbuffer& _hash)
+	{
+		xmd5::xctx* ctx = (xmd5::xctx*)_ctx;
+		ctx->finalize(_hash);
+	}
+
+	void		md5_close(xalloc* _alloc, md5ctx* _ctx)
+	{
+		_alloc->deallocate(_ctx);
+	}
 }

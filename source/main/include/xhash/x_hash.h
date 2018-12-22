@@ -11,30 +11,42 @@
 namespace xcore
 {
 	struct md5ctx;
-	s32			md5_size();
-	md5ctx*		md5_begin(xalloc* alloc);
-	void		md5_hash(md5ctx* ctx, xbuffer& data);
+	md5ctx*		md5_begin(xalloc*);
+	s32			md5_size(md5ctx*);
+	void 		md5_reset(md5ctx*);
+	void		md5_hash(md5ctx* ctx, xcbuffer const& data);
 	void		md5_end(md5ctx* ctx, xbuffer& hash);
+	void		md5_close(xalloc*, md5ctx*);
 
 	struct sha1ctx;
-	s32			sha1_size();
-	sha1ctx*	sha1_begin(xalloc* alloc);
-	void		sha1_hash(sha1ctx* ctx, xbuffer& data);
+	sha1ctx*	sha1_begin(xalloc*);
+	s32			sha1_size(sha1ctx*);
+	void 		sha1_reset(sha1ctx*);
+	void		sha1_hash(sha1ctx* ctx, xcbuffer const& data);
 	void		sha1_end(sha1ctx* ctx, xbuffer& hash);
+	void		sha1_close(xalloc*, sha1ctx*);
 
 	struct skeinctx;
-	skeinctx*	skein_create(xalloc* alloc);
+	skeinctx*	skein256_begin(xalloc*);
+	s32			skein256_size(skeinctx*);
+	void 		skein256_reset(skeinctx*);
+	void		skein256_hash(skeinctx* ctx, xcbuffer const& data);
+	void		skein256_end(skeinctx* ctx, xbuffer& hash);
+	void		skein256_close(xalloc*, skeinctx*);
 
-	s32			skein_size();
-	void		skein_begin(skeinctx* ctx);
-	void		skein_hash(skeinctx* ctx, xbuffer& data);
-	void		skein_end(skeinctx* ctx, xbuffer& hash);
+	skeinctx*	skein512_begin(xalloc*);
+	s32			skein512_size(skeinctx*);
+	void 		skein512_reset(skeinctx*);
+	void		skein512_hash(skeinctx* ctx, xcbuffer const& data);
+	void		skein512_end(skeinctx* ctx, xbuffer& hash);
+	void		skein512_close(xalloc*, skeinctx*);
 
-	void		x_skein256Hash256(xcbuffer const& buffer, xbuffer& hash);
-	void		x_skein256Hash256B(xcbuffer const& buffer, u32 inLengthInBits, xbuffer& hash);
-
-	void		x_skein512Hash256B(xcbuffer const& buffer, u32 inLengthInBits, xbuffer& hash);
-	void		x_skein512Hash512B(xcbuffer const& buffer, u32 inLengthInBits, xbuffer& hash);
+	skeinctx*	skein1024_begin(xalloc*);
+	s32			skein1024_size(skeinctx*);
+	void 		skein1024_reset(skeinctx*);
+	void		skein1024_hash(skeinctx* ctx, xcbuffer const& data);
+	void		skein1024_end(skeinctx* ctx, xbuffer& hash);
+	void		skein1024_close(xalloc*, skeinctx*);
 
 	u32			murmur32_hash(xcbuffer const& data, u32 seed = 0);
 	u64			murmur64_hash(xcbuffer const& data, u64 seed = 0);

@@ -1,15 +1,7 @@
-/**
- * @file x_digest_murmur32.cpp
- *
- * xCore Hash functions
- */
-
-// x_digest_murmur32.cpp - xCore Hash functions 
 #include "xbase/x_target.h"
 #include "xbase/x_endian.h"
-#include "xbase/x_memory_std.h"
-#include "xbase/x_string_ascii.h"
-#include "xbase/x_chars.h"
+#include "xbase/x_memory.h"
+#include "xbase/x_buffer.h"
 
 #include "xhash/x_hash.h"
 

@@ -1,6 +1,7 @@
 #include "xbase/x_target.h"
+#include "xbase/x_allocator.h"
 #include "xbase/x_buffer.h"
-#include "xbase/x_memory_std.h"
+#include "xbase/x_memory.h"
 
 
 namespace xcore
@@ -2003,184 +2004,242 @@ namespace xcore
 
 	struct skeinctx
 	{
-		enum ESettings
-		{
-			HASHSIZE = 256
-		};
+		
+	};
 
-		enum EState
-		{
-			OPEN = 0,
-			CLOSED = 1
-		};
-
+	// -----------------------------------------------------------------------------------------------------------------
+	// Skein 256
+	// -----------------------------------------------------------------------------------------------------------------
+	struct skein256ctx : public skeinctx
+	{
+		bool mOpen;
 		skein::Skein_256_Ctxt_t	mCtx;
-		EState							mState;
 
 		void	init()
 		{
-			mState = OPEN;
-			skein::Skein_256_Init(&mCtx, HASHSIZE);
+			mOpen = true;
+			skein::Skein_256_Init(&mCtx, 256);
+		}
+
+		void	reset()
+		{
+			mOpen = true;
+			skein::Skein_256_Init(&mCtx, 256);
+		}
+
+		void	hash(xcbuffer const& data)
+		{
+			if (mOpen)
+				skein::Skein_256_Update(&mCtx, (skein::u08b_t const*)data.m_const, (xcore::skein::size_t)data.size());
+		}
+
+		void	end(xbuffer& hash)
+		{
+			if (mOpen)
+			{
+				mOpen = false;
+				ASSERT(hash.size() >= size());
+				skein::Skein_256_Final(&mCtx, hash.m_mutable);
+			}
 		}
 
 		s32		size() const
 		{
-			return skeinctx::HASHSIZE / 8;
+			return 256 / 8;
 		}
 	};
 
-	s32			skein_size()
+	skeinctx* 	skein256_begin(xalloc* _alloc)
 	{
-		return skeinctx::HASHSIZE / 8;
-	}
-
-	skeinctx*	skein_create(xalloc* alloc)
-	{
-		skeinctx* ctx = (skeinctx*)alloc->allocate(sizeof(skeinctx), X_ALIGNMENT_DEFAULT);
+		skein256ctx* ctx = (skein256ctx*)_alloc->allocate(sizeof(skein256ctx), X_ALIGNMENT_DEFAULT);
 		ctx->init();
 		return ctx;
 	}
 
-	void		skein_begin(skeinctx* ctx)
+	s32			skein256_size(skeinctx* _ctx)
 	{
+		skein256ctx* ctx = (skein256ctx*)_ctx;
+		return ctx->size();
+	}
+
+	void 		skein256_reset(skeinctx* _ctx)
+	{
+		skein256ctx* ctx = (skein256ctx*)_ctx;
+		ctx->reset();
+	}
+
+	void		skein256_hash(skeinctx* _ctx, xcbuffer const& data)
+	{
+		skein256ctx* ctx = (skein256ctx*)_ctx;
+		ctx->hash(data);
+	}
+
+	void		skein256_end(skeinctx* _ctx, xbuffer& hash)
+	{
+		skein256ctx* ctx = (skein256ctx*)_ctx;
+		ctx->end(hash);
+	}
+
+	void 		skein256_close(xalloc* _alloc, skeinctx* _ctx)
+	{
+		_alloc->deallocate(_ctx);
+	}
+
+
+	// -----------------------------------------------------------------------------------------------------------------
+	// Skein 512
+	// -----------------------------------------------------------------------------------------------------------------
+	struct skein512ctx : public skeinctx
+	{
+		bool mOpen;
+		skein::Skein_512_Ctxt_t	mCtx;
+
+		void	init()
+		{
+			mOpen = true;
+			skein::Skein_512_Init(&mCtx, 512);
+		}
+
+		void	reset()
+		{
+			mOpen = true;
+			skein::Skein_512_Init(&mCtx, 512);
+		}
+
+		void	hash(xcbuffer const& data)
+		{
+			if (mOpen)
+				skein::Skein_512_Update(&mCtx, (skein::u08b_t const*)data.m_const, (xcore::skein::size_t)data.size());
+		}
+
+		void	end(xbuffer& hash)
+		{
+			if (mOpen)
+			{
+				mOpen = false;
+				ASSERT(hash.size() >= size());
+				skein::Skein_512_Final(&mCtx, hash.m_mutable);
+			}
+		}
+
+		s32		size() const
+		{
+			return 512 / 8;
+		}
+	};
+
+	skeinctx* 	skein512_begin(xalloc* _alloc)
+	{
+		skein512ctx* ctx = (skein512ctx*)_alloc->allocate(sizeof(skein512ctx), X_ALIGNMENT_DEFAULT);
 		ctx->init();
+		return ctx;
 	}
 
-	void		skein_hash(skeinctx* ctx, xbuffer& data)
+	s32			skein512_size(skeinctx* _ctx)
 	{
-
-		if (ctx->mState == skeinctx::OPEN)
-			skein::Skein_256_Update(&ctx->mCtx, (skein::u08b_t const*)data.m_const, (xcore::skein::size_t)data.size());
+		skein512ctx* ctx = (skein512ctx*)_ctx;
+		return ctx->size();
 	}
 
-	void		skein_end(skeinctx* ctx, xbuffer& hash)
+	void 		skein512_reset(skeinctx* _ctx)
 	{
-		if (ctx->mState == skeinctx::OPEN)
+		skein512ctx* ctx = (skein512ctx*)_ctx;
+		ctx->reset();
+	}
+
+	void		skein512_hash(skeinctx* _ctx, xcbuffer const& data)
+	{
+		skein512ctx* ctx = (skein512ctx*)_ctx;
+		ctx->hash(data);
+	}
+
+	void		skein512_end(skeinctx* _ctx, xbuffer& hash)
+	{
+		skein512ctx* ctx = (skein512ctx*)_ctx;
+		ctx->end(hash);
+	}
+
+	void 		skein512_close(xalloc* _alloc, skeinctx* _ctx)
+	{
+		_alloc->deallocate(_ctx);
+	}
+
+
+	// -----------------------------------------------------------------------------------------------------------------
+	// Skein 1024
+	// -----------------------------------------------------------------------------------------------------------------
+	struct skein1024ctx : public skeinctx
+	{
+		bool mOpen;
+		skein::Skein1024_Ctxt_t	mCtx;
+
+		void	init()
 		{
-			ctx->mState = skeinctx::CLOSED;
-			ASSERT(ctx->size() > hash.size());
-			skein::Skein_256_Final(&ctx->mCtx, hash.m_mutable);
+			mOpen = true;
+			skein::Skein_1024_Init(&mCtx, 1024);
 		}
-	}
 
-
-	/**
-	 *	Utilities
-	 */
-	void	x_skein256Hash256(xcbuffer const& buffer, xbuffer& hash)
-	{
-		skein::Skein_256_Ctxt_t ctx;
-		skein::Skein_256_Init(&ctx, 256);
-		skein::Skein_256_Update(&ctx, (skein::u08b_t*)buffer.m_const, (skein::size_t)buffer.size());
-		ASSERT(hash.size() >= 32);
-		skein::Skein_256_Final(&ctx, hash.m_mutable);
-	}
-
-	void	x_skein512Hash256(xcbuffer const& buffer, xbuffer& hash)
-	{
-		skein::Skein_512_Ctxt_t ctx;
-		skein::Skein_512_Init(&ctx, 256);
-		skein::Skein_512_Update(&ctx, (skein::u08b_t*)buffer.m_const, (skein::size_t)buffer.size());
-		ASSERT(hash.size() >= 32);
-		skein::Skein_512_Final(&ctx, hash.m_mutable);
-	}
-
-	void	x_skein512Hash512(xcbuffer const& buffer, xbuffer& hash)
-	{
-		skein::Skein_512_Ctxt_t ctx;
-		skein::Skein_512_Init(&ctx, 512);
-		skein::Skein_512_Update(&ctx, (skein::u08b_t*)buffer.m_const, (xcore::skein::size_t)buffer.size());
-		ASSERT(hash.size() >= 64);
-		skein::Skein_512_Final(&ctx, hash.m_mutable);
-	}
-
-	void	x_skein256Hash256B(xcbuffer const& buffer, u32 inLengthInBits, xbuffer& hash)
-	{
-		ASSERT(buffer.size() >= ((inLengthInBits + 7) / 8));
-
-		skein::Skein_256_Ctxt_t ctx;
-		skein::Skein_256_Init(&ctx, 256);
-
-		u8 const* data = (u8 const*)buffer.m_const;
-		if ((inLengthInBits & 7) == 0)  /* partial bytes? */
+		void	reset()
 		{
-			skein::Skein_256_Update(&ctx, data, inLengthInBits >> 3);
-		}
-		else
-		{   /* handle partial final byte */
-			skein::size_t bCnt = (inLengthInBits >> 3) + 1;			// number of bytes to handle (nonzero here!)
-			u8 b, mask;
-
-			mask = (u8)(1u << (7 - (inLengthInBits & 7)));		// partial byte bit mask
-			b = (u8)((data[bCnt - 1] & (0 - mask)) | mask);		// apply bit padding on final byte
-
-			skein::Skein_256_Update(&ctx, data, bCnt - 1);		// process all but the final byte
-			skein::Skein_256_Update(&ctx, &b, 1);		// process the (masked) partial byte
-
-			Skein_Set_Bit_Pad_Flag(ctx.h);                    /* set tweak flag for the final call */
+			mOpen = true;
+			skein::Skein_1024_Init(&mCtx, 1024);
 		}
 
-		ASSERT(hash.size() >= 32);
-		skein::Skein_256_Final(&ctx, hash.m_mutable);
+		void	hash(xcbuffer const& data)
+		{
+			if (mOpen)
+				skein::Skein_1024_Update(&mCtx, (skein::u08b_t const*)data.m_const, (xcore::skein::size_t)data.size());
+		}
+
+		void	end(xbuffer& hash)
+		{
+			if (mOpen)
+			{
+				mOpen = false;
+				ASSERT(hash.size() >= size());
+				skein::Skein_1024_Final(&mCtx, hash.m_mutable);
+			}
+		}
+
+		s32		size() const
+		{
+			return 1024 / 8;
+		}
+	};
+
+	skeinctx* 	skein1024_begin(xalloc* _alloc)
+	{
+		skein1024ctx* ctx = (skein1024ctx*)_alloc->allocate(sizeof(skein1024ctx), X_ALIGNMENT_DEFAULT);
+		ctx->init();
+		return ctx;
 	}
 
-	void		x_skein512Hash256B(xcbuffer const& buffer, u32 inLengthInBits, xbuffer& hash)
+	s32			skein1024_size(skeinctx* _ctx)
 	{
-		ASSERT(buffer.size() >= ((inLengthInBits + 7) / 8));
-
-		skein::Skein_512_Ctxt_t ctx;
-		skein::Skein_512_Init(&ctx, 256);
-
-		u8 const* data = (u8 const*)buffer.m_const;
-		if ((inLengthInBits & 7) == 0)  /* partial bytes? */
-		{
-			skein::Skein_512_Update(&ctx, data, inLengthInBits >> 3);
-		}
-		else
-		{   /* handle partial final byte */
-			skein::size_t bCnt = (inLengthInBits >> 3) + 1;			// number of bytes to handle (nonzero here!)
-			u8 b, mask;
-
-			mask = (u8)(1u << (7 - (inLengthInBits & 7)));		// partial byte bit mask
-			b = (u8)((data[bCnt - 1] & (0 - mask)) | mask);		// apply bit padding on final byte
-
-			skein::Skein_512_Update(&ctx, data, bCnt - 1);		// process all but the final byte
-			skein::Skein_512_Update(&ctx, &b, 1);		// process the (masked) partial byte
-
-			Skein_Set_Bit_Pad_Flag(ctx.h);                    /* set tweak flag for the final call */
-		}
-
-		ASSERT(hash.size() >= 64);
-		skein::Skein_512_Final(&ctx, hash.m_mutable);
+		skein1024ctx* ctx = (skein1024ctx*)_ctx;
+		return ctx->size();
 	}
 
-	void		x_skein512Hash512B(xcbuffer const& buffer, u32 inLengthInBits, xbuffer& hash)
+	void 		skein1024_reset(skeinctx* _ctx)
 	{
-		ASSERT(buffer.size() >= ((inLengthInBits + 7) / 8));
+		skein1024ctx* ctx = (skein1024ctx*)_ctx;
+		ctx->reset();
+	}
 
-		skein::Skein_512_Ctxt_t ctx;
-		skein::Skein_512_Init(&ctx, 512);
+	void		skein1024_hash(skeinctx* _ctx, xcbuffer const& data)
+	{
+		skein1024ctx* ctx = (skein1024ctx*)_ctx;
+		ctx->hash(data);
+	}
 
-		u8 const* data = (u8 const*)buffer.m_const;
-		if ((inLengthInBits & 7) == 0)  /* partial bytes? */
-		{
-			skein::Skein_512_Update(&ctx, data, inLengthInBits >> 3);
-		}
-		else
-		{   /* handle partial final byte */
-			skein::size_t bCnt = (inLengthInBits >> 3) + 1;			// number of bytes to handle (nonzero here!)
-			u8 b, mask;
+	void		skein1024_end(skeinctx* _ctx, xbuffer& hash)
+	{
+		skein1024ctx* ctx = (skein1024ctx*)_ctx;
+		ctx->end(hash);
+	}
 
-			mask = (u8)(1u << (7 - (inLengthInBits & 7)));		// partial byte bit mask
-			b = (u8)((data[bCnt - 1] & (0 - mask)) | mask);		// apply bit padding on final byte
-
-			skein::Skein_512_Update(&ctx, data, bCnt - 1);		// process all but the final byte
-			skein::Skein_512_Update(&ctx, &b, 1);		// process the (masked) partial byte
-
-			Skein_Set_Bit_Pad_Flag(ctx.h);                    /* set tweak flag for the final call */
-		}
-
-		ASSERT(hash.size() >= 64);
-		skein::Skein_512_Final(&ctx, hash.m_mutable);
+	void 		skein1024_close(xalloc* _alloc, skeinctx* _ctx)
+	{
+		_alloc->deallocate(_ctx);
 	}
 }

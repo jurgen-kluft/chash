@@ -1,11 +1,13 @@
 #include "xbase/x_target.h"
-#include "xbase/x_string_ascii.h"
+#include "xbase/x_runes.h"
 
 #include "xhash/x_hash.h"
 
 #include "xunittest/xunittest.h"
 
 using namespace xcore;
+
+extern xalloc* gTestAllocator;
 
 namespace SkeinTestVectors
 {
@@ -94,9 +96,12 @@ UNITTEST_SUITE_BEGIN(xskein)
 
 		UNITTEST_TEST(test1)
 		{
+			skeinctx* ctx = skein256_begin(gTestAllocator);
+
 			u8 message[] = { 0xFF };
 			xbytes<32> hash;
-			x_skein256Hash256(xcbuffer(1, message), hash);
+			skein256_hash(ctx, xcbuffer(1, message));
+			skein256_end(ctx, hash);
 
 			u8 vhash[] =
 			{
@@ -105,14 +110,19 @@ UNITTEST_SUITE_BEGIN(xskein)
 			};
 
 			for (u32 i = 0; i < hash.size(); ++i)
-				CHECK_EQUAL(vhash[i], hash[i]);
+				CHECK_EQUAL(vhash[i], hash.m_mutable[i]);
+
+			skein256_close(gTestAllocator, ctx);
 		}
 
 		UNITTEST_TEST(test2)
 		{
+			skeinctx* ctx = skein256_begin(gTestAllocator);
+
 			xbyte message[] = { 0xFB,0xD1,0x7C,0x26 };
 			xbytes<32> hash;
-			x_skein256Hash256(xcbuffer(4, message), hash);
+			skein256_hash(ctx, xcbuffer(4, message));
+			skein256_end(ctx, hash);
 
 			u8 vhash[] =
 			{
@@ -121,11 +131,15 @@ UNITTEST_SUITE_BEGIN(xskein)
 			};
 
 			for (u32 i = 0; i < hash.size(); ++i)
-				CHECK_EQUAL(vhash[i], hash[i]);
+				CHECK_EQUAL(vhash[i], hash.m_mutable[i]);
+
+			skein256_close(gTestAllocator, ctx);
 		}
 
 		UNITTEST_TEST(test_vectors)
 		{
+			skeinctx* ctx = skein512_begin(gTestAllocator);
+
 			xbyte* bytemsg = SkeinTestVectors::ByteMsg;
 			SkeinTestVectors::Vector* test = SkeinTestVectors::Tests;
 			while (test->Msg != NULL)
@@ -134,14 +148,23 @@ UNITTEST_SUITE_BEGIN(xskein)
 				u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
 				CHECK_EQUAL(test_bytelen, len);
 
-				xbytes<65> hash;
-				hash.m_mutable[64] = '\0';
-				x_skein512Hash512B(xcbuffer(512, bytemsg), test->Len, hash);
+				xbytes<64> hash;
+				skein512_reset(ctx);
+				skein512_hash(ctx, xcbuffer(test_bytelen, bytemsg));
+				skein512_end(ctx, hash);
 
-				s32 c = ascii::compare(ascii::crunes(test->Digest), ascii::crunes((const char*)hash.m_const));
-				CHECK_EQUAL(0, c);
+				u32 const verify_len = SkeinTestVectors::TextMsgToByteMsg(test->Digest, 64, bytemsg);
+				CHECK_EQUAL(hash.size(), verify_len);
+				for (u32 i = 0; i < hash.size(); ++i)
+				{
+					// TODO: This needs to be inspected with a debugger, current assumption is that the TextMsgToByteMsg is not working 
+					CHECK_EQUAL(hash.m_mutable[i], bytemsg[i]);
+				}
+
 				test = test + 1;
 			}
+
+			skein512_close(gTestAllocator, ctx);
 		}
 	}
 }

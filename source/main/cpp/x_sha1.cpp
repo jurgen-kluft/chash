@@ -1,14 +1,7 @@
-/**
- * @file x_sha1.cpp
- *
- * Core MD5 hash value 
- */
-
-// x_md5.cpp - Core MD5 hash value 
 #include "xbase/x_target.h"
 #include "xbase/x_va_list.h"
 #include "xbase/x_integer.h"
-#include "xbase/x_memory_std.h"
+#include "xbase/x_memory.h"
 #include "xbase/x_endian.h"
 
 #include "xhash/x_hash.h"
@@ -277,6 +270,35 @@ namespace xcore
 		return ctx;
 	}
 
+	s32 sha1_size(sha1ctx* ctx)
+	{
+		return 160 / 8;
+	}
+
+	/**
+	 *  Input
+	 *
+	 *  Description:
+	 *      This function accepts an array of octets as the next portion of
+	 *      the message.
+	 *
+	 *  Parameters:
+	 *      message_array: [in]
+	 *          An array of characters representing the next portion of the
+	 *          message.
+	 *
+	 *  Returns:
+	 *      Nothing.
+	 *
+	 *  Comments:
+	 *
+	 */
+	void sha1_hash(sha1ctx* ctx, xcbuffer const& buffer)
+	{
+		xsha1_ctx_update(ctx, buffer);
+	}
+
+
 	/**
 	 *  Result
 	 *
@@ -320,37 +342,8 @@ namespace xcore
 			to_bytes(hash, idx, ctx->H[i]);
 	}
 
-	/**
-	 *  Input
-	 *
-	 *  Description:
-	 *      This function accepts an array of octets as the next portion of
-	 *      the message.
-	 *
-	 *  Parameters:
-	 *      message_array: [in]
-	 *          An array of characters representing the next portion of the
-	 *          message.
-	 *
-	 *  Returns:
-	 *      Nothing.
-	 *
-	 *  Comments:
-	 *
-	 */
-	void sha1_hash(sha1ctx* ctx, xcbuffer const& buffer)
+	void sha1_close(xalloc* _alloc, sha1ctx* _ctx)
 	{
-		xsha1_ctx_update(ctx, buffer);
+		_alloc->deallocate(_ctx);
 	}
-
-
-	void	x_Sha1Hash(xcbuffer const& buffer, xbuffer & hash)
-	{
-		sha1ctx ctx;
-		xsha1_ctx_init(&ctx);
-		ctx.mComputed = false;
-		sha1_hash(&ctx, buffer);
-		sha1_end(&ctx, hash);
-	}
-
 }

@@ -7,8 +7,7 @@
 // x_digest_murmur64.cpp - xCore Hash functions 
 #include "xbase/x_target.h"
 #include "xbase/x_endian.h"
-#include "xbase/x_string_ascii.h"
-#include "xbase/x_chars.h"
+#include "xbase/x_buffer.h"
 
 #include "xhash/x_hash.h"
 
