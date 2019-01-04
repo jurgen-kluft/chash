@@ -34,7 +34,7 @@ namespace xcore
 	void		skein256_end(skeinctx* ctx, xbuffer& hash);
 	void		skein256_close(xalloc*, skeinctx*);
 
-	skeinctx*	skein512_begin(xalloc*);
+	skeinctx*	skein512_begin(xalloc*, u32 hashbits = 512);
 	s32			skein512_size(skeinctx*);
 	void 		skein512_reset(skeinctx*);
 	void		skein512_hash(skeinctx* ctx, xcbuffer const& data);
