@@ -11,37 +11,31 @@ namespace xcore
 #define memcpy x_memcpy
 #define memcmp x_memcmp
 
-		typedef xcore::u32        uint_t;             /* native unsigned integer */
-		typedef xcore::u8         u08b_t;             /*  8-bit unsigned integer */
-		typedef xcore::u64        u64b_t;             /* 64-bit unsigned integer */
-		typedef xcore::u32        size_t;
+        typedef xcore::u32 uint_t; /* native unsigned integer */
+        typedef xcore::u8  u08b_t; /*  8-bit unsigned integer */
+        typedef xcore::u64 u64b_t; /* 64-bit unsigned integer */
+        typedef xcore::u32 size_t;
 
 #define SKEIN_MK_64(hi32, lo32) ((lo32) + (((u64)(hi32)) << 32))
 
-            /*
-            ***************** Pre-computed Skein IVs *******************
-            **
-            ** NOTE: these values are not "magic" constants, but
-            ** are generated using the Threefish block function.
-            ** They are pre-computed here only for speed; i.e., to
-            ** avoid the need for a Threefish call during Init().
-            **
-            ** The IV for any fixed hash length may be pre-computed.
-            ** Only the most common values are included here.
-            **
-            ************************************************************
-            **/
+        /*
+        ***************** Pre-computed Skein IVs *******************
+        **
+        ** NOTE: these values are not "magic" constants, but
+        ** are generated using the Threefish block function.
+        ** They are pre-computed here only for speed; i.e., to
+        ** avoid the need for a Threefish call during Init().
+        **
+        ** The IV for any fixed hash length may be pre-computed.
+        ** Only the most common values are included here.
+        **
+        ************************************************************
+        **/
 
 #define MK_64 SKEIN_MK_64
 
         /* blkSize =  256 bits. hashSize =  128 bits */
-        const u64 SKEIN_256_IV_128[] = 
-		{
-			MK_64(0xE1111906, 0x964D7260), 
-			MK_64(0x883DAAA7, 0x7C8D811C), 
-			MK_64(0x10080DF4, 0x91960F7A), 
-			MK_64(0xCCF7DDE5, 0xB45BC1C2)
-		};
+        const u64 SKEIN_256_IV_128[] = {MK_64(0xE1111906, 0x964D7260), MK_64(0x883DAAA7, 0x7C8D811C), MK_64(0x10080DF4, 0x91960F7A), MK_64(0xCCF7DDE5, 0xB45BC1C2)};
 
         /* blkSize =  256 bits. hashSize =  160 bits */
         const u64 SKEIN_256_IV_160[] = {MK_64(0x14202314, 0x72825E98), MK_64(0x2AC4E9A2, 0x5A77E590), MK_64(0xD47A5856, 0x8838D63E), MK_64(0x2DD2E496, 0x8586AB7D)};
@@ -94,7 +88,6 @@ namespace xcore
                                          MK_64(0xD6D14AF9, 0xC6329AB5), MK_64(0x6A9B0BFC, 0x6EB67E0D), MK_64(0x9243C60D, 0xCCFF1332), MK_64(0x1A1F1DDE, 0x743F02D4),
                                          MK_64(0x0996753C, 0x10ED0BB8), MK_64(0x6572DD22, 0xF2B4969A), MK_64(0x61FD3062, 0xD00A579A), MK_64(0x1DE0536E, 0x8682E539)};
 
-
         enum
         {
             SKEIN_SUCCESS     = 0, /* return codes from Skein calls */
@@ -137,28 +130,28 @@ namespace xcore
 #define SKEIN_512_BLOCK_BYTES (8 * SKEIN_512_STATE_WORDS)
 #define SKEIN1024_BLOCK_BYTES (8 * SKEIN1024_STATE_WORDS)
 
-        typedef struct
+        typedef struct // 24 bytes
         {
             u32 hashBitLen;              /* size of hash result, in bits */
             u32 bCnt;                    /* current byte count in buffer b[] */
             u64 T[SKEIN_MODIFIER_WORDS]; /* tweak words: T[0]=byte cnt, T[1]=flags */
         } Skein_Ctxt_Hdr_t;
 
-        typedef struct /*  256-bit Skein hash context structure */
+        typedef struct /*  256-bit Skein hash context structure, 24 + 32 + 32=88 */
         {
             Skein_Ctxt_Hdr_t h;                        /* common header context variables */
             u64              X[SKEIN_256_STATE_WORDS]; /* chaining variables */
             u8               b[SKEIN_256_BLOCK_BYTES]; /* partial block buffer (8-byte aligned) */
         } Skein_256_Ctxt_t;
 
-        typedef struct /*  512-bit Skein hash context structure */
+        typedef struct /*  512-bit Skein hash context structure, 24 + 64 + 64=152 */
         {
             Skein_Ctxt_Hdr_t h;                        /* common header context variables */
             u64              X[SKEIN_512_STATE_WORDS]; /* chaining variables */
             u8               b[SKEIN_512_BLOCK_BYTES]; /* partial block buffer (8-byte aligned) */
         } Skein_512_Ctxt_t;
 
-        typedef struct /* 1024-bit Skein hash context structure */
+        typedef struct /* 1024-bit Skein hash context structure, 24 + 128 + 128=280 = */
         {
             Skein_Ctxt_Hdr_t h;                        /* common header context variables */
             u64              X[SKEIN1024_STATE_WORDS]; /* chaining variables */
@@ -349,7 +342,7 @@ namespace xcore
 
 #ifndef Skein_Swap64 /* swap for big-endian, nop for little-endian */
 #if SKEIN_NEED_SWAP
-#define Skein_Swap64(w64)                                                                                                                                               \
+#define Skein_Swap64(w64)                                                                                                                                   \
     (((((u64)(w64)) & 0xFF) << 56) | (((((u64)(w64)) >> 8) & 0xFF) << 48) | (((((u64)(w64)) >> 16) & 0xFF) << 40) | (((((u64)(w64)) >> 24) & 0xFF) << 32) | \
      (((((u64)(w64)) >> 32) & 0xFF) << 24) | (((((u64)(w64)) >> 40) & 0xFF) << 16) | (((((u64)(w64)) >> 48) & 0xFF) << 8) | (((((u64)(w64)) >> 56) & 0xFF)))
 #else
@@ -1162,13 +1155,11 @@ namespace xcore
 
 #endif
 
-
         /*****************************************************************/
         /* External function to process blkCnt (nonzero) full block(s) of data. */
         void Skein_256_Process_Block(Skein_256_Ctxt_t* ctx, const u8* blkPtr, u32 blkCnt, u32 byteCntAdd);
         void Skein_512_Process_Block(Skein_512_Ctxt_t* ctx, const u8* blkPtr, u32 blkCnt, u32 byteCntAdd);
         void Skein1024_Process_Block(Skein1024_Ctxt_t* ctx, const u8* blkPtr, u32 blkCnt, u32 byteCntAdd);
-
 
         /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
         /* init the context for a straight hashing operation  */
@@ -1539,7 +1530,7 @@ namespace xcore
                 ((u64*)ctx->b)[0] = Skein_Swap64((u64)i); /* build the counter block */
                 Skein_Start_New_Type(ctx, OUT_FINAL);
                 Skein1024_Process_Block(ctx, ctx->b, 1, sizeof(u64)); /* run "counter mode" */
-                n = byteCnt - i * SKEIN1024_BLOCK_BYTES;                 /* number of output bytes left to go */
+                n = byteCnt - i * SKEIN1024_BLOCK_BYTES;              /* number of output bytes left to go */
                 if (n >= SKEIN1024_BLOCK_BYTES)
                     n = SKEIN1024_BLOCK_BYTES;
                 Skein_Put64_LSB_First(hashVal + i * SKEIN1024_BLOCK_BYTES, ctx->X, n); /* "output" the ctr mode bytes */
@@ -1640,13 +1631,13 @@ namespace xcore
     struct skein512ctx : public skeinctx
     {
         bool                    mOpen;
-		u32 mHashBitsLen;
+        u32                     mHashBitsLen;
         skein::Skein_512_Ctxt_t mCtx;
 
         void init(u32 hashbits)
         {
-            mOpen = true;
-			mHashBitsLen = hashbits;
+            mOpen        = true;
+            mHashBitsLen = hashbits;
             skein::Skein_512_Init(&mCtx, mHashBitsLen);
         }
 

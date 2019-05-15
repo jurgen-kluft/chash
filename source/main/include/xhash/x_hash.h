@@ -5,50 +5,174 @@
 #pragma once
 #endif
 
-#include "xbase/x_allocator.h"
 #include "xbase/x_buffer.h"
 
 namespace xcore
 {
-	struct md5ctx;
-	md5ctx*		md5_begin(xalloc*);
-	s32			md5_size(md5ctx*);
-	void 		md5_reset(md5ctx*);
-	void		md5_hash(md5ctx* ctx, xcbuffer const& data);
-	void		md5_end(md5ctx* ctx, xbuffer& hash);
-	void		md5_close(xalloc*, md5ctx*);
+    class xhash
+    {
+    public:
+        struct xmd5
+        {
+            const s32 SIZE = 16;
 
-	struct sha1ctx;
-	sha1ctx*	sha1_begin(xalloc*);
-	s32			sha1_size(sha1ctx*);
-	void 		sha1_reset(sha1ctx*);
-	void		sha1_hash(sha1ctx* ctx, xcbuffer const& data);
-	void		sha1_end(sha1ctx* ctx, xbuffer& hash);
-	void		sha1_close(xalloc*, sha1ctx*);
+            struct hash
+            {
+                xbyte   m_data[SIZE];
+                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
+            };
 
-	struct skeinctx;
-	skeinctx*	skein256_begin(xalloc*);
-	s32			skein256_size(skeinctx*);
-	void 		skein256_reset(skeinctx*);
-	void		skein256_hash(skeinctx* ctx, xcbuffer const& data);
-	void		skein256_end(skeinctx* ctx, xbuffer& hash);
-	void		skein256_close(xalloc*, skeinctx*);
+            void reset();
+            void hash(xcbuffer const& data);
+            void end(hash&);
 
-	skeinctx*	skein512_begin(xalloc*, u32 hashbits = 512);
-	s32			skein512_size(skeinctx*);
-	void 		skein512_reset(skeinctx*);
-	void		skein512_hash(skeinctx* ctx, xcbuffer const& data);
-	void		skein512_end(skeinctx* ctx, xbuffer& hash);
-	void		skein512_close(xalloc*, skeinctx*);
+            void compute(xcbuffer const& data, hash&);
+            hash compute(xcbuffer const& data);
 
-	skeinctx*	skein1024_begin(xalloc*);
-	s32			skein1024_size(skeinctx*);
-	void 		skein1024_reset(skeinctx*);
-	void		skein1024_hash(skeinctx* ctx, xcbuffer const& data);
-	void		skein1024_end(skeinctx* ctx, xbuffer& hash);
-	void		skein1024_close(xalloc*, skeinctx*);
+            u64 m_ctxt[12];
+        };
+        static xmd5 md5;
 
-	u32			murmur32_hash(xcbuffer const& data, u32 seed = 0);
-	u64			murmur64_hash(xcbuffer const& data, u64 seed = 0);
-}
+        struct xsha1
+        {
+            const s32 SIZE = 20;
+
+            struct hash
+            {
+                xbyte   m_data[SIZE];
+                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
+            };
+
+            sha1();
+            void reset();
+            void hash(xcbuffer const& data);
+            void end(hash&);
+
+            void compute(xcbuffer const& data, hash&);
+            hash compute(xcbuffer const& data);
+
+            u64 m_ctxt[12];
+        };
+        static xsha1 sha1;
+
+        struct xskein256
+        {
+            const s32 SIZE = 32;
+
+            struct hash
+            {
+                xbyte   m_data[SIZE];
+                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
+            };
+
+            xskein256();
+            void reset();
+            void hash(xcbuffer const& data);
+            void end(hash&);
+
+            void compute(xcbuffer const& data, hash&);
+            hash compute(xcbuffer const& data);
+
+            u64 m_ctxt[11];
+        };
+        static xskein256 skein256;
+
+        struct xskein512
+        {
+            const s32 SIZE = 64;
+
+            struct hash
+            {
+                xbyte   m_data[SIZE];
+                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
+            };
+
+            xskein512();
+            void reset();
+            void hash(xcbuffer const& data);
+            void end(hash&);
+
+            void compute(xcbuffer const& data, hash&);
+            hash compute(xcbuffer const& data);
+
+            u64 m_ctxt[19];
+        };
+        static xskein512 skein512;
+
+        struct xskein1024
+        {
+            const s32 SIZE = 128;
+
+            struct hash
+            {
+                xbyte   m_data[SIZE];
+                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
+            };
+
+            xskein1024();
+            void reset();
+            void hash(xcbuffer const& data);
+            void end(hash&);
+
+            void compute(xcbuffer const& data, hash&);
+            hash compute(xcbuffer const& data);
+
+            u64 m_ctxt[35];
+        };
+        static xskein1024 skein1024;
+
+        struct xmurmur32
+        {
+            const s32 SIZE = 4;
+
+            struct hash
+            {
+                xbyte   m_data[SIZE];
+                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
+            };
+
+            murmur32(u32 seed = 0);
+            void reset();
+            void hash(xcbuffer const& data);
+            void end(hash&);
+
+            void compute(xcbuffer const& data, hash&);
+            hash compute(xcbuffer const& data);
+
+            u32 m_seed;
+            u32 m_hash;
+        };
+        static xmurmur32 murmur32;
+
+        struct xmurmur64
+        {
+            const s32 SIZE = 8;
+
+            struct hash
+            {
+                xbyte   m_data[SIZE];
+                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
+            };
+
+            murmur64(u32 seed = 0);
+            void reset();
+            void hash(xcbuffer const& data);
+            void end(hash&);
+
+            void compute(xcbuffer const& data, hash&);
+            hash compute(xcbuffer const& data);
+
+            u64 m_seed;
+        };
+        static xmurmur64 murmur64;
+    };
+
+    static void UseCase()
+    {
+        using namespace xhash;
+        const char* mystring = "this is a string that i want to hash";
+        xsha1.hash  myhash   = sha1.compute(xcbuffer::from_ascii_string(mystring));
+    }
+} // namespace xcore
+
 #endif
