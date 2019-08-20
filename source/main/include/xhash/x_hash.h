@@ -12,22 +12,61 @@ namespace xcore
     class xhash
     {
     public:
+        class hash
+        {
+        public:
+            struct md5
+            {
+                const s32 SIZE = 16;
+                xbyte     m_data[SIZE];
+                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+            };
+            struct sha1
+            {
+                const s32 SIZE = 20;
+                xbyte     m_data[SIZE];
+                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+            };
+            struct xskein256
+            {
+                const s32 SIZE = 32;
+                xbyte     m_data[SIZE];
+                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+            };
+            struct xskein512
+            {
+                const s32 SIZE = 64;
+                xbyte     m_data[SIZE];
+                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+            };
+            struct xskein1024
+            {
+                const s32 SIZE = 128;
+                xbyte     m_data[SIZE];
+                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+            };
+            struct xmurmur32
+            {
+                const s32 SIZE = 4;
+                xbyte     m_data[SIZE];
+                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+            };
+            struct xmurmur64
+            {
+                const s32 SIZE = 8;
+                xbyte     m_data[SIZE];
+                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+            };
+        };
+
         struct xmd5
         {
-            const s32 SIZE = 16;
-
-            struct hash
-            {
-                xbyte   m_data[SIZE];
-                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
-            };
-
             void reset();
             void hash(xcbuffer const& data);
-            void end(hash&);
+            void end(hash::md5&);
 
-            void compute(xcbuffer const& data, hash&);
-            hash compute(xcbuffer const& data);
+            void      compute(xcbuffer const& data, hash::md5&);
+            hash::md5 compute(xcbuffer const& data);
 
             u64 m_ctxt[12];
         };
@@ -35,21 +74,13 @@ namespace xcore
 
         struct xsha1
         {
-            const s32 SIZE = 20;
-
-            struct hash
-            {
-                xbyte   m_data[SIZE];
-                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
-            };
-
-            sha1();
+            xsha1();
             void reset();
             void hash(xcbuffer const& data);
-            void end(hash&);
+            void end(hash::sha1&);
 
-            void compute(xcbuffer const& data, hash&);
-            hash compute(xcbuffer const& data);
+            void       compute(xcbuffer const& data, hash::sha1&);
+            hash::sha1 compute(xcbuffer const& data);
 
             u64 m_ctxt[12];
         };
@@ -57,87 +88,59 @@ namespace xcore
 
         struct xskein256
         {
-            const s32 SIZE = 32;
-
-            struct hash
-            {
-                xbyte   m_data[SIZE];
-                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
-            };
-
             xskein256();
+
             void reset();
             void hash(xcbuffer const& data);
-            void end(hash&);
+            void end(hash::skein256&);
 
-            void compute(xcbuffer const& data, hash&);
-            hash compute(xcbuffer const& data);
+            void           compute(xcbuffer const& data, hash::skein256&);
+            hash::skein256 compute(xcbuffer const& data);
 
-            u64 m_ctxt[11];
+            bool m_initialized;
+            u64  m_ctxt[11];
         };
         static xskein256 skein256;
 
         struct xskein512
         {
-            const s32 SIZE = 64;
-
-            struct hash
-            {
-                xbyte   m_data[SIZE];
-                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
-            };
-
             xskein512();
             void reset();
             void hash(xcbuffer const& data);
-            void end(hash&);
+            void end(hash::skein512&);
 
-            void compute(xcbuffer const& data, hash&);
-            hash compute(xcbuffer const& data);
+            void           compute(xcbuffer const& data, hash::skein512&);
+            hash::skein512 compute(xcbuffer const& data);
 
-            u64 m_ctxt[19];
+            bool m_initialized;
+            u64  m_ctxt[19];
         };
         static xskein512 skein512;
 
         struct xskein1024
         {
-            const s32 SIZE = 128;
-
-            struct hash
-            {
-                xbyte   m_data[SIZE];
-                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
-            };
-
             xskein1024();
             void reset();
             void hash(xcbuffer const& data);
-            void end(hash&);
+            void end(hash::skein1024&);
 
-            void compute(xcbuffer const& data, hash&);
-            hash compute(xcbuffer const& data);
+            void            compute(xcbuffer const& data, hash::skein1024&);
+            hash::skein1024 compute(xcbuffer const& data);
 
-            u64 m_ctxt[35];
+            bool m_initialized;
+            u64  m_ctxt[35];
         };
         static xskein1024 skein1024;
 
         struct xmurmur32
         {
-            const s32 SIZE = 4;
-
-            struct hash
-            {
-                xbyte   m_data[SIZE];
-                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
-            };
-
             murmur32(u32 seed = 0);
             void reset();
             void hash(xcbuffer const& data);
-            void end(hash&);
+            void end(hash::murmur32&);
 
-            void compute(xcbuffer const& data, hash&);
-            hash compute(xcbuffer const& data);
+            void           compute(xcbuffer const& data, hash::murmur32&);
+            hash::murmur32 compute(xcbuffer const& data);
 
             u32 m_seed;
             u32 m_hash;
@@ -146,21 +149,13 @@ namespace xcore
 
         struct xmurmur64
         {
-            const s32 SIZE = 8;
-
-            struct hash
-            {
-                xbyte   m_data[SIZE];
-                xbuffer buffer() const { return xbuffer(SIZE, m_data); }
-            };
-
             murmur64(u32 seed = 0);
             void reset();
             void hash(xcbuffer const& data);
-            void end(hash&);
+            void end(hash::murmur64&);
 
-            void compute(xcbuffer const& data, hash&);
-            hash compute(xcbuffer const& data);
+            void           compute(xcbuffer const& data, hash::murmur64&);
+            hash::murmur64 compute(xcbuffer const& data);
 
             u64 m_seed;
         };
@@ -171,7 +166,7 @@ namespace xcore
     {
         using namespace xhash;
         const char* mystring = "this is a string that i want to hash";
-        xsha1.hash  myhash   = sha1.compute(xcbuffer::from_ascii_string(mystring));
+        hash::sha1  myhash   = sha1.compute(xcbuffer::from_ascii_string(mystring));
     }
 } // namespace xcore
 

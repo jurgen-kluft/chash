@@ -229,13 +229,13 @@ namespace xcore
         mMD5[3] = 0x10325476;
     }
 
-        // The four core functions - F1 is optimized somewhat
+    // The four core functions - F1 is optimized somewhat
 #define MD5F1(x, y, z) (z ^ (x & (y ^ z)))
 #define MD5F2(x, y, z) MD5F1(z, x, y)
 #define MD5F3(x, y, z) (x ^ y ^ z)
 #define MD5F4(x, y, z) (y ^ (x | ~z))
 
-        // This is the central step in the MD5 algorithm
+    // This is the central step in the MD5 algorithm
 #define MD5STEP(f, w, x, y, z, in, s) (w += f(x, y, z) + in, w = (w << s | w >> (32 - s)) + x)
 
     /**
@@ -349,4 +349,19 @@ namespace xcore
         xmd5_ctx* ctx = (xmd5_ctx*)&this->m_ctxt;
         ctx->finalize(_hash);
     }
-}
+
+    void xhash::md5::compute(xcbuffer const& data, hash::md5& hash)
+    {
+        reset();
+        hash(data);
+        end(hash.buffer());
+    }
+
+    hash::md5 xhash::md5::compute(xcbuffer const& data)
+    {
+        hash::md5 hash;
+        compute(data, hash);
+        return hash;
+    }
+
+} // namespace xcore

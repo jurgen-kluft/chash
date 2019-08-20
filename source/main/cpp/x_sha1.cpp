@@ -306,4 +306,19 @@ namespace xcore
         for (s32 i = 0; i < 5; ++i)
             to_bytes(hash, idx, ctx->H[i]);
     }
-}
+
+    void xhash::sha1::compute(xcbuffer const& data, hash::sha1& hash)
+    {
+        reset();
+        hash(data);
+        end(hash.buffer());
+    }
+
+    hash::sha1 xhash::sha1::compute(xcbuffer const& data)
+    {
+        hash::sha1 hash;
+        compute(data, hash);
+        return hash;
+    }
+
+} // namespace xcore
