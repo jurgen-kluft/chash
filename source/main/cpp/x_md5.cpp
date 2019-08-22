@@ -19,7 +19,7 @@ namespace xcore
 
     public:
         ///@name Construction/Destruction
-        xctx();
+        xmd5_ctx();
 
         ///@name Updating
         u32  length() const { return 16; }
@@ -116,7 +116,7 @@ namespace xcore
         * @see		Update GetHash
         */
     xmd5_ctx::xmd5_ctx()
-        : mState(xctx::CLOSED)
+        : mState(xmd5_ctx::CLOSED)
         , mLength(0)
     {
     }
@@ -326,12 +326,6 @@ namespace xcore
         mMD5[3] += d;
     }
 
-    s32 xhash::xmd5::size() const
-    {
-        xmd5_ctx const* ctx = (xmd5_ctx const*)&this->m_ctxt;
-        return ctx->length();
-    }
-
     void xhash::xmd5::reset()
     {
         xmd5_ctx* ctx = (xmd5_ctx*)&this->m_ctxt;
@@ -344,20 +338,20 @@ namespace xcore
         ctx->update(_buffer);
     }
 
-    void xhash::xmd5::end(xbuffer& _hash)
+    void xhash::xmd5::end(hash::md5& out_hash)
     {
         xmd5_ctx* ctx = (xmd5_ctx*)&this->m_ctxt;
-        ctx->finalize(_hash);
+        ctx->finalize(out_hash.buffer());
     }
 
-    void xhash::md5::compute(xcbuffer const& data, hash::md5& hash)
+    void xhash::xmd5::compute(xcbuffer const& data, xhash::hash::md5& out_hash)
     {
         reset();
         hash(data);
-        end(hash.buffer());
+        end(out_hash);
     }
 
-    hash::md5 xhash::md5::compute(xcbuffer const& data)
+    xhash::hash::md5 xhash::xmd5::compute(xcbuffer const& data)
     {
         hash::md5 hash;
         compute(data, hash);

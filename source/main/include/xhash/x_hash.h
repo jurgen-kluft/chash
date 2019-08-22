@@ -17,50 +17,89 @@ namespace xcore
         public:
             struct md5
             {
-                const s32 SIZE = 16;
+                static const u32 SIZE = 16;
+				s32       size() const { return SIZE; }
                 xbyte     m_data[SIZE];
-                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+                xbuffer   buffer() const { return xbuffer(SIZE, (xbyte*)m_data); }
             };
             struct sha1
             {
-                const s32 SIZE = 20;
+                static const s32 SIZE = 20;
+				s32       size() const { return SIZE; }
                 xbyte     m_data[SIZE];
-                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+                xbuffer   buffer() const { return xbuffer(SIZE, (xbyte*)m_data); }
             };
-            struct xskein256
+            struct skein256
             {
-                const s32 SIZE = 32;
+                static const s32 SIZE = 32;
+				s32       size() const { return SIZE; }
                 xbyte     m_data[SIZE];
-                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+                xbuffer   buffer() const { return xbuffer(SIZE, (xbyte*)m_data); }
             };
-            struct xskein512
+            struct skein512
             {
-                const s32 SIZE = 64;
+                static const s32 SIZE = 64;
+				s32       size() const { return SIZE; }
                 xbyte     m_data[SIZE];
-                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+                xbuffer   buffer() const { return xbuffer(SIZE, (xbyte*)m_data); }
             };
-            struct xskein1024
+            struct skein1024
             {
-                const s32 SIZE = 128;
+                static const s32 SIZE = 128;
+				s32       size() const { return SIZE; }
                 xbyte     m_data[SIZE];
-                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+                xbuffer   buffer() const { return xbuffer(SIZE, (xbyte*)m_data); }
             };
-            struct xmurmur32
+            struct murmur32
             {
-                const s32 SIZE = 4;
+                static const s32 SIZE = 4;
+				s32       size() const { return SIZE; }
                 xbyte     m_data[SIZE];
-                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+                xbuffer   buffer() const { return xbuffer(SIZE, (xbyte*)m_data); }
             };
-            struct xmurmur64
+            struct murmur64
             {
-                const s32 SIZE = 8;
+                static const s32 SIZE = 8;
+				s32       size() const { return SIZE; }
                 xbyte     m_data[SIZE];
-                xbuffer   buffer() const { return xbuffer(SIZE, m_data); }
+                xbuffer   buffer() const { return xbuffer(SIZE, (xbyte*)m_data); }
             };
-        };
+
+			template<class T>
+			inline bool equal(const T& a, const T& b)
+			{
+				bool equal = true;
+				for (s32 i=0; i<a.size() && equal; ++i)
+				{
+					equal = a.m_data[i] == b.m_data[i];
+				}
+				return equal;
+			}
+			template<class T>
+			inline bool not_equal(const T& a, const T& b)
+			{
+				bool not_equal = true;
+				for (s32 i=0; i<a.size() && not_equal; ++i)
+				{
+					not_equal = a.m_data[i] != b.m_data[i];
+				}
+				return not_equal;
+			}
+			template<class T>
+			inline s32 compare(const T& a, const T& b)
+			{
+				for (s32 i=0; i<a.size(); ++i)
+				{
+					if (a.m_data[i] < b.m_data[i]) return -1;
+					else if (a.m_data[i] > b.m_data[i]) return 1;
+				}
+				return 0;
+			}
+		};
 
         struct xmd5
         {
+			s32 size() const { return sizeof(hash::md5); }
             void reset();
             void hash(xcbuffer const& data);
             void end(hash::md5&);
@@ -75,7 +114,9 @@ namespace xcore
         struct xsha1
         {
             xsha1();
-            void reset();
+
+			s32 size() const { return sizeof(hash::sha1); }
+			void reset();
             void hash(xcbuffer const& data);
             void end(hash::sha1&);
 
@@ -90,6 +131,7 @@ namespace xcore
         {
             xskein256();
 
+			s32 size() const { return sizeof(hash::skein256); }
             void reset();
             void hash(xcbuffer const& data);
             void end(hash::skein256&);
@@ -105,6 +147,7 @@ namespace xcore
         struct xskein512
         {
             xskein512();
+			s32 size() const { return sizeof(hash::skein512); }
             void reset();
             void hash(xcbuffer const& data);
             void end(hash::skein512&);
@@ -120,6 +163,7 @@ namespace xcore
         struct xskein1024
         {
             xskein1024();
+			s32 size() const { return sizeof(hash::skein1024); }
             void reset();
             void hash(xcbuffer const& data);
             void end(hash::skein1024&);
@@ -134,8 +178,10 @@ namespace xcore
 
         struct xmurmur32
         {
-            murmur32(u32 seed = 0);
-            void reset();
+			xmurmur32(u32 seed = 0);
+
+			s32 size() const { return sizeof(hash::murmur32); }
+			void reset();
             void hash(xcbuffer const& data);
             void end(hash::murmur32&);
 
@@ -149,8 +195,10 @@ namespace xcore
 
         struct xmurmur64
         {
-            murmur64(u32 seed = 0);
-            void reset();
+            xmurmur64(u64 seed = 0);
+
+			s32 size() const { return sizeof(hash::murmur64); }
+			void reset();
             void hash(xcbuffer const& data);
             void end(hash::murmur64&);
 
@@ -158,16 +206,11 @@ namespace xcore
             hash::murmur64 compute(xcbuffer const& data);
 
             u64 m_seed;
+            u64 m_hash;
         };
         static xmurmur64 murmur64;
     };
 
-    static void UseCase()
-    {
-        using namespace xhash;
-        const char* mystring = "this is a string that i want to hash";
-        hash::sha1  myhash   = sha1.compute(xcbuffer::from_ascii_string(mystring));
-    }
 } // namespace xcore
 
 #endif

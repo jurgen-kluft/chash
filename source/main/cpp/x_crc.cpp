@@ -1,21 +1,9 @@
-/**
- * @file x_crc.cpp
- *
- * Core CRC functions 
- */
-
-// x_crc.cpp - Core CRC functions 
 #include "xbase/x_target.h"
 #include "xbase/x_debug.h"
 #include "xhash/x_crc.h"
 
 namespace xcore
 {
-
-	/**
-	 *	CRC32 check
-	 */
-
 	class CRC32
 	{
 	public:
@@ -60,7 +48,7 @@ namespace xcore
 			CRC32::mIsEmpty = false;
 		}
 
-		for (s32 i=0; i<buffer.size(); i++)
+		for (u32 i=0; i<buffer.size(); i++)
 			crc = CRC32::mTable[(crc ^ (*p_in++)) & 0xff] ^ (crc >> 8);
 
 		return ~crc;

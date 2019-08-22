@@ -13,6 +13,15 @@ UNITTEST_SUITE_BEGIN(xhash32)
 		UNITTEST_FIXTURE_SETUP() {}
 		UNITTEST_FIXTURE_TEARDOWN() {}
 
+		static u32 murmur32_hash(xcbuffer const& b, u32 seed = 0)
+		{
+			xhash::hash::murmur32 h1 = xhash::murmur32.compute(b);
+			xbinary_reader reader(h1.m_data, h1.SIZE);
+			u32 h2;
+			reader.read(h2);
+			return h2;
+		}
+
 		UNITTEST_TEST(xhash_generator_murmur_Hash)
 		{
 			xbyte indata[]={1,2,3,4,5,6,7,8,9,13},indata2[]={0xff,0xfe,0xfd,0xfc,0xfb,0,1,2,3,4};
@@ -20,7 +29,7 @@ UNITTEST_SUITE_BEGIN(xhash32)
 			u32 ruhash=murmur32_hash(xcbuffer(len, indata),100),ruhash2=murmur32_hash(xcbuffer(len, indata),100);
 			CHECK_EQUAL(ruhash>0,true);
 			CHECK_EQUAL(ruhash,ruhash2);
-			ruhash2=murmur32_hash(xcbuffer(9,indata),100);
+			ruhash2 = murmur32_hash(xcbuffer(9,indata),100);
 			CHECK_NOT_EQUAL(ruhash,ruhash2);
 			ruhash2=murmur32_hash(xcbuffer(len, indata2),100);
 			CHECK_NOT_EQUAL(ruhash,ruhash2);

@@ -102,7 +102,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 
 		UNITTEST_TEST(test_256_256)
 		{
-			skeinctx* ctx = skein256_begin(gTestAllocator);
+			xhash::xskein256 ctx;
 
 			xbyte* bytemsg = SkeinTestVectors::ByteMsg;
 			SkeinTestVectors::Vector* test = SkeinTestVectors::Tests_256_256;
@@ -114,51 +114,21 @@ UNITTEST_SUITE_BEGIN(xskein)
 				u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
 				CHECK_EQUAL(test_bytelen, len);
 
-				xbytes<32> hash;
-				skein256_reset(ctx);
-				skein256_hash(ctx, xcbuffer(test_bytelen, bytemsg));
-				skein256_end(ctx, hash);
+				xhash::hash::skein256 hash;
+				ctx.reset();
+				ctx.hash(xcbuffer(test_bytelen, bytemsg));
+				ctx.end(hash);
 
 				u32 const verify_len = SkeinTestVectors::TextMsgToByteMsg(test->Digest, 32, bytemsg);
 				CHECK_EQUAL(hash.size(), verify_len);
-				CHECK_TRUE(x_memcmp(bytemsg, hash.m_mutable, 32) == 0);
+				CHECK_TRUE(x_memcmp(bytemsg, hash.m_data, 32) == 0);
 				test = test + 1;
 			}
-
-			skein256_close(gTestAllocator, ctx);
-		}
-
-		UNITTEST_TEST(test_512_256)
-		{
-			skeinctx* ctx = skein512_begin(gTestAllocator, 256);
-
-			xbyte* bytemsg = SkeinTestVectors::ByteMsg;
-			SkeinTestVectors::Vector* test = SkeinTestVectors::Tests_512_256;
-			while (test->Msg != NULL)
-			{
-				x_memset(bytemsg, 0, sizeof(SkeinTestVectors::ByteMsg));
-
-				u32 const test_bytelen = (test->Len + 7) / 8;
-				u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
-				CHECK_EQUAL(test_bytelen, len);
-
-				xbytes<32> hash;
-				skein512_reset(ctx);
-				skein512_hash(ctx, xcbuffer(test_bytelen, bytemsg));
-				skein512_end(ctx, hash);
-
-				u32 const verify_len = SkeinTestVectors::TextMsgToByteMsg(test->Digest, 32, bytemsg);
-				CHECK_EQUAL(hash.size(), verify_len);
-				CHECK_TRUE(x_memcmp(bytemsg, hash.m_mutable, 32) == 0);
-				test = test + 1;
-			}
-
-			skein512_close(gTestAllocator, ctx);
 		}
 
 		UNITTEST_TEST(test_512_512)
 		{
-			skeinctx* ctx = skein512_begin(gTestAllocator);
+			xhash::xskein512 ctx;
 
 			xbyte* bytemsg = SkeinTestVectors::ByteMsg;
 			SkeinTestVectors::Vector* test = SkeinTestVectors::Tests_512_512;
@@ -170,18 +140,16 @@ UNITTEST_SUITE_BEGIN(xskein)
 				u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
 				CHECK_EQUAL(test_bytelen, len);
 
-				xbytes<64> hash;
-				skein512_reset(ctx);
-				skein512_hash(ctx, xcbuffer(test_bytelen, bytemsg));
-				skein512_end(ctx, hash);
+				xhash::hash::skein512 hash;
+				ctx.reset();
+				ctx.hash(xcbuffer(test_bytelen, bytemsg));
+				ctx.end(hash);
 
 				u32 const verify_len = SkeinTestVectors::TextMsgToByteMsg(test->Digest, 64, bytemsg);
 				CHECK_EQUAL(hash.size(), verify_len);
-				CHECK_TRUE(x_memcmp(bytemsg, hash.m_mutable, 64) == 0);
+				CHECK_TRUE(x_memcmp(bytemsg, hash.m_data, 64) == 0);
 				test = test + 1;
 			}
-
-			skein512_close(gTestAllocator, ctx);
 		}
 	}
 }

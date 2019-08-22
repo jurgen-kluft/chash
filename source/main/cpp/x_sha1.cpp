@@ -263,11 +263,9 @@ namespace xcore
 
     xhash::xsha1::xsha1()
     {
-        xsha1_ctx const* ctx = (xsha1_ctx const*)&this->m_ctxt;
+        xsha1_ctx* ctx = (xsha1_ctx *)&this->m_ctxt;
         xsha1_ctx_init(ctx);
     }
-
-    s32 xhash::xsha1::size() const { return 160 / 8; }
 
     void xhash::xsha1::reset()
     {
@@ -281,19 +279,18 @@ namespace xcore
         xsha1_ctx_update(ctx, _buffer);
     }
 
-    inline u32 to_bytes(xbuffer& bytes, u32 i, u32 p)
+    inline void to_bytes(xbuffer& bytes, u32 p)
     {
-        p                  = xhtonl(p);
+        p   = x_NetworkEndian::swap(p);
         xbyte const*   src = (xbyte const*)&p;
         xbinary_writer writer(bytes);
         writer.write(*src++);
         writer.write(*src++);
         writer.write(*src++);
         writer.write(*src++);
-        return i;
     }
 
-    void xhash::xsha1::end(xbuffer& _hash)
+    void xhash::xsha1::end(xhash::hash::sha1& _hash)
     {
         xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
         if (ctx->computed == 0)
@@ -303,18 +300,19 @@ namespace xcore
         }
 
         u32 idx = 0;
+		xbuffer h = _hash.buffer();
         for (s32 i = 0; i < 5; ++i)
-            to_bytes(hash, idx, ctx->H[i]);
+            to_bytes(h, ctx->H[i]);
     }
 
-    void xhash::sha1::compute(xcbuffer const& data, hash::sha1& hash)
+    void xhash::xsha1::compute(xcbuffer const& data, xhash::hash::sha1& hash)
     {
         reset();
-        hash(data);
-        end(hash.buffer());
+        compute(data);
+        end(hash);
     }
 
-    hash::sha1 xhash::sha1::compute(xcbuffer const& data)
+    xhash::hash::sha1 xhash::xsha1::compute(xcbuffer const& data)
     {
         hash::sha1 hash;
         compute(data, hash);

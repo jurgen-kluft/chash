@@ -1,13 +1,8 @@
-/**
- * @file x_digest_murmur64.cpp
- *
- * xCore Hash functions
- */
-
-// x_digest_murmur64.cpp - xCore Hash functions
 #include "xbase/x_target.h"
+#include "xbase/x_va_list.h"
+#include "xbase/x_integer.h"
+#include "xbase/x_memory.h"
 #include "xbase/x_endian.h"
-#include "xbase/x_buffer.h"
 
 #include "xhash/x_hash.h"
 
@@ -87,24 +82,37 @@ namespace xcore
         return h;
     }
 
-    xhash::murmur64::murmur64(u64 seed = 0)
+    xhash::xmurmur64::xmurmur64(u64 seed)
         : m_seed(seed)
         , m_hash(seed)
     {
     }
 
-    s32 xhash::xmurmur64::size() const { return 64; }
-
     void xhash::xmurmur64::reset() { m_hash = m_seed; }
 
     void xhash::xmurmur64::hash(xcbuffer const& _buffer) { m_hash = gGetMurmurHash64(_buffer, m_hash); }
 
-    void xhash::xmurmur64::end(xbuffer& _hash)
+    void xhash::xmurmur64::end(xhash::hash::murmur64& _hash)
     {
-        u64            p   = xhtonl(m_hash);
+        u64            p   = x_NetworkEndian::swap(m_hash);
         xbyte const*   src = (xbyte const*)&p;
-        xbinary_writer writer(_hash);
+        xbinary_writer writer(_hash.buffer());
         for (int i = 0; i < 8; i++)
             writer.write(*src++);
     }
+
+    void xhash::xmurmur64::compute(xcbuffer const& data, xhash::hash::murmur64& out_hash)
+    {
+        reset();
+        hash(data);
+        end(out_hash);
+    }
+
+    xhash::hash::murmur64 xhash::xmurmur64::compute(xcbuffer const& data)
+    {
+        hash::murmur64 hash;
+        compute(data, hash);
+        return hash;
+    }
+
 }

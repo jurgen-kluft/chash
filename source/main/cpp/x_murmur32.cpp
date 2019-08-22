@@ -1,7 +1,8 @@
 #include "xbase/x_target.h"
-#include "xbase/x_endian.h"
+#include "xbase/x_va_list.h"
+#include "xbase/x_integer.h"
 #include "xbase/x_memory.h"
-#include "xbase/x_buffer.h"
+#include "xbase/x_endian.h"
 
 #include "xhash/x_hash.h"
 
@@ -57,26 +58,39 @@ namespace xcore
         return h;
     }
 
-    xhash::murmur32::murmur32(u32 seed = 0)
+    xhash::xmurmur32::xmurmur32(u32 seed)
         : m_seed(seed)
         , m_hash(seed)
     {
     }
 
-    s32 xhash::xmurmur32::size() const { return 32; }
-
     void xhash::xmurmur32::reset() { m_hash = m_seed; }
 
     void xhash::xmurmur32::hash(xcbuffer const& _buffer) { m_hash = gGetMurmurHash32(_buffer, m_hash); }
 
-    void xhash::xmurmur32::end(xbuffer& _hash)
+    void xhash::xmurmur32::end(xhash::hash::murmur32& _hash)
     {
-        u32            p   = xhtonl(m_hash);
+        u32            p   = x_NetworkEndian::swap(m_hash);
         xbyte const*   src = (xbyte const*)&p;
-        xbinary_writer writer(bytes);
+        xbinary_writer writer(_hash.buffer());
         writer.write(*src++);
         writer.write(*src++);
         writer.write(*src++);
         writer.write(*src++);
     }
+
+    void xhash::xmurmur32::compute(xcbuffer const& data, xhash::hash::murmur32& out_hash)
+    {
+        reset();
+        hash(data);
+        end(out_hash);
+    }
+
+    xhash::hash::murmur32 xhash::xmurmur32::compute(xcbuffer const& data)
+    {
+        hash::murmur32 hash;
+        compute(data, hash);
+        return hash;
+    }
+
 }

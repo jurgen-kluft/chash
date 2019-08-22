@@ -13,6 +13,15 @@ UNITTEST_SUITE_BEGIN(xhash64)
 		UNITTEST_FIXTURE_SETUP() {}
 		UNITTEST_FIXTURE_TEARDOWN() {}
 
+		static u64 murmur64_hash(xcbuffer const& b, u64 seed = 0)
+		{
+			xhash::hash::murmur64 h1 = xhash::murmur64.compute(b);
+			xbinary_reader reader(h1.m_data, h1.SIZE);
+			u64 h2;
+			reader.read(h2);
+			return h2;
+		}
+
 		UNITTEST_TEST(xhash_generator_murmur_Hash)
 		{
 			xbyte indata[]={1,2,3,4,5,6,7,8,9,13},indata2[]={0xff,0xfe,0xfd,0xfc,0xfb,0,1,2,3,4};
