@@ -14,4 +14,6 @@ namespace xcore
 
     xhash::xmurmur32 xhash::murmur32;
     xhash::xmurmur64 xhash::murmur64;
+
+	xhash::xxhash64 xhash::xxhash;
 }

@@ -12,8 +12,9 @@ UNITTEST_SUITE_DECLARE(xHashUnitTest, xmd5);
 UNITTEST_SUITE_DECLARE(xHashUnitTest, xsha1);
 UNITTEST_SUITE_DECLARE(xHashUnitTest, xskein);
 UNITTEST_SUITE_DECLARE(xHashUnitTest, xuuid);
-UNITTEST_SUITE_DECLARE(xHashUnitTest, xhash32);
-UNITTEST_SUITE_DECLARE(xHashUnitTest, xhash64);
+UNITTEST_SUITE_DECLARE(xHashUnitTest, xmurmur32);
+UNITTEST_SUITE_DECLARE(xHashUnitTest, xmurmur64);
+UNITTEST_SUITE_DECLARE(xHashUnitTest, xxhash64);
 
 namespace xcore
 {

@@ -26,7 +26,6 @@ namespace xcore
         void reset();
         void update(xcbuffer const& buffer);
         void digest(xbuffer& hash);
-        void finalize(xbuffer& hash);
 
         XCORE_CLASS_PLACEMENT_NEW_DELETE
     private:
@@ -326,6 +325,12 @@ namespace xcore
         mMD5[3] += d;
     }
 
+    xhash::xmd5::xmd5()
+    {
+        xmd5_ctx* ctx = (xmd5_ctx*)&this->m_ctxt;
+        ctx->reset();
+    }
+
     void xhash::xmd5::reset()
     {
         xmd5_ctx* ctx = (xmd5_ctx*)&this->m_ctxt;
@@ -341,7 +346,7 @@ namespace xcore
     void xhash::xmd5::end(hash::md5& out_hash)
     {
         xmd5_ctx* ctx = (xmd5_ctx*)&this->m_ctxt;
-        ctx->finalize(out_hash.buffer());
+        ctx->digest(out_hash.buffer());
     }
 
     void xhash::xmd5::compute(xcbuffer const& data, xhash::hash::md5& out_hash)

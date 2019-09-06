@@ -6,7 +6,7 @@
 
 using namespace xcore;
 
-UNITTEST_SUITE_BEGIN(xhash32)
+UNITTEST_SUITE_BEGIN(xmurmur32)
 {
 	UNITTEST_FIXTURE(xdigest_murmur32)
 	{
@@ -16,7 +16,7 @@ UNITTEST_SUITE_BEGIN(xhash32)
 		static u32 murmur32_hash(xcbuffer const& b, u32 seed = 0)
 		{
 			xhash::hash::murmur32 h1 = xhash::murmur32.compute(b);
-			xbinary_reader reader(h1.m_data, h1.SIZE);
+			xbinary_reader reader(h1.cbuffer());
 			u32 h2;
 			reader.read(h2);
 			return h2;
