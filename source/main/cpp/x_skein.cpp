@@ -1605,7 +1605,7 @@ namespace xcore
     {
         skein::Skein_512_Ctxt_t* ctx = (skein::Skein_512_Ctxt_t*)&m_ctxt;
         m_initialized                = true;
-        skein::Skein_512_Init(ctx, 256);
+        skein::Skein_512_Init(ctx, 512);
     }
 
     void xhash::xskein512::hash(xcbuffer const& data)
