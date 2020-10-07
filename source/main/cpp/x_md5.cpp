@@ -22,10 +22,10 @@ namespace xcore
         xmd5_ctx();
 
         ///@name Updating
-        u32  length() const { return 16; }
+        u32 length() const { return 16; }
         void reset();
-        void update(xcbuffer const& buffer);
-        void digest(xbuffer& hash);
+        void update(xcbuffer const &buffer);
+        void digest(xbuffer hash);
 
         XCORE_CLASS_PLACEMENT_NEW_DELETE
     private:
@@ -38,7 +38,7 @@ namespace xcore
         struct buffer_t
         {
             u32 mInput[16]; ///< 64 byte input buffer
-            u8  mSlack[8];  ///< Slack space because internal memcopy copies gready (i.e. up to 7 bytes past mInput)
+            u8 mSlack[8];   ///< Slack space because internal memcopy copies gready (i.e. up to 7 bytes past mInput)
         };
         buffer_t mBuffer;
     };
@@ -97,7 +97,7 @@ namespace xcore
         * @param		ioBuffer	Pointer to data to swap
         * @param		inLength	Number of u32's to swap
         */
-    static void sByteSwap(u32* ioBuffer, s32 inLength)
+    static void sByteSwap(u32 *ioBuffer, s32 inLength)
     {
 #if !defined(X_LITTLE_ENDIAN)
         for (s32 i = 0; i < inLength; i++)
@@ -115,8 +115,7 @@ namespace xcore
         * @see		Update GetHash
         */
     xmd5_ctx::xmd5_ctx()
-        : mState(xmd5_ctx::CLOSED)
-        , mLength(0)
+        : mState(xmd5_ctx::CLOSED), mLength(0)
     {
     }
 
@@ -130,13 +129,13 @@ namespace xcore
      * @param inData	Buffer to update hash with
      * @param inLength	Length of buffer in bytes
      */
-    void xmd5_ctx::update(const xcbuffer& buffer)
+    void xmd5_ctx::update(const xcbuffer &buffer)
     {
         ASSERTS(mState == OPEN, "Can't compute hash value before Open() has been called!");
 
         // Calculate current offset in buffer and bytes left
-        u32 buffer_offset = (mLength & 63);     // Current offset in buffer
-        u32 space_left    = 64 - buffer_offset; // Space available in mBuffer.mInput (at least 1)
+        u32 buffer_offset = (mLength & 63);  // Current offset in buffer
+        u32 space_left = 64 - buffer_offset; // Space available in mBuffer.mInput (at least 1)
 
         // Update length
         u32 const len = (u32)buffer.size();
@@ -145,14 +144,14 @@ namespace xcore
         // If there's enough space in the buffer, just copy and exit
         if (len < space_left)
         {
-            x_memcopy((u8*)mBuffer.mInput + buffer_offset, buffer.m_const, len);
+            x_memcopy((u8 *)mBuffer.mInput + buffer_offset, buffer.m_const, len);
             return;
         }
 
         // Fill up current buffer until it's full
-        u8 const* data   = (u8 const*)buffer.m_const;
-        u32       length = len;
-        x_memcopy((u8*)mBuffer.mInput + buffer_offset, data, space_left);
+        u8 const *data = (u8 const *)buffer.m_const;
+        u32 length = len;
+        x_memcopy((u8 *)mBuffer.mInput + buffer_offset, data, space_left);
         sByteSwap(mBuffer.mInput, 16);
         transform();
         data += space_left;
@@ -161,7 +160,7 @@ namespace xcore
         // Process data in 64-byte chunks
         while (length >= 64)
         {
-            x_memcopy((u64*)mBuffer.mInput, (u64*)data, 64);
+            x_memcopy((u64 *)mBuffer.mInput, (u64 *)data, 64);
             sByteSwap(mBuffer.mInput, 16);
             transform();
             data += 64;
@@ -175,13 +174,13 @@ namespace xcore
     /**
      * @brief Get final hash value
      */
-    void xmd5_ctx::digest(xbuffer& digest)
+    void xmd5_ctx::digest(xbuffer digest)
     {
         // If this is the first time we call GetHash(), finish the last transform
         if (mState == OPEN)
         {
             u32 count = mLength & 63; // Number of bytes in mBuffer.mInput
-            u8* p     = (u8*)mBuffer.mInput + count;
+            u8 *p = (u8 *)mBuffer.mInput + count;
 
             // Set the first char of padding to 0x80.  There is always room.
             *p++ = 0x80;
@@ -195,7 +194,7 @@ namespace xcore
                 x_memzero(p, count + 8);
                 sByteSwap(mBuffer.mInput, 16);
                 transform();
-                p     = (u8*)mBuffer.mInput;
+                p = (u8 *)mBuffer.mInput;
                 count = 56;
             }
             x_memzero(p, count);
@@ -212,7 +211,7 @@ namespace xcore
         }
 
         // export digest
-        xbyte const*   src = (xbyte const*)&mMD5[0];
+        xbyte const *src = (xbyte const *)&mMD5[0];
         xbinary_writer w(digest);
         for (s32 i = 0; i < 16; ++i)
             w.write(*src++);
@@ -220,7 +219,7 @@ namespace xcore
 
     void xmd5_ctx::reset()
     {
-        mState  = OPEN;
+        mState = OPEN;
         mLength = 0;
         mMD5[0] = 0x67452301;
         mMD5[1] = 0xefcdab89;
@@ -327,36 +326,36 @@ namespace xcore
 
     xhash::xmd5::xmd5()
     {
-        xmd5_ctx* ctx = (xmd5_ctx*)&this->m_ctxt;
+        xmd5_ctx *ctx = (xmd5_ctx *)&this->m_ctxt;
         ctx->reset();
     }
 
     void xhash::xmd5::reset()
     {
-        xmd5_ctx* ctx = (xmd5_ctx*)&this->m_ctxt;
+        xmd5_ctx *ctx = (xmd5_ctx *)&this->m_ctxt;
         ctx->reset();
     }
 
-    void xhash::xmd5::hash(xcbuffer const& _buffer)
+    void xhash::xmd5::hash(xcbuffer const &_buffer)
     {
-        xmd5_ctx* ctx = (xmd5_ctx*)&this->m_ctxt;
+        xmd5_ctx *ctx = (xmd5_ctx *)&this->m_ctxt;
         ctx->update(_buffer);
     }
 
-    void xhash::xmd5::end(hash::md5& out_hash)
+    void xhash::xmd5::end(hash::md5 &out_hash)
     {
-        xmd5_ctx* ctx = (xmd5_ctx*)&this->m_ctxt;
+        xmd5_ctx *ctx = (xmd5_ctx *)&this->m_ctxt;
         ctx->digest(out_hash.buffer());
     }
 
-    void xhash::xmd5::compute(xcbuffer const& data, xhash::hash::md5& out_hash)
+    void xhash::xmd5::compute(xcbuffer const &data, xhash::hash::md5 &out_hash)
     {
         reset();
         hash(data);
         end(out_hash);
     }
 
-    xhash::hash::md5 xhash::xmd5::compute(xcbuffer const& data)
+    xhash::hash::md5 xhash::xmd5::compute(xcbuffer const &data)
     {
         hash::md5 hash;
         compute(data, hash);
