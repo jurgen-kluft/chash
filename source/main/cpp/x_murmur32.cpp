@@ -1,5 +1,5 @@
 #include "xbase/x_target.h"
-#include "xbase/x_va_list.h"
+#include "xbase/va_list_t.h"
 #include "xbase/x_integer.h"
 #include "xbase/x_memory.h"
 #include "xbase/x_endian.h"
@@ -8,7 +8,7 @@
 
 namespace xcore
 {
-    xcore::u32 gGetMurmurHash32(xcbuffer const& buffer, u32 seed)
+    xcore::u32 gGetMurmurHash32(cbuffer_t const& buffer, u32 seed)
     {
         // 'm' and 'r' are mixing constants generated offline.
         // They're not really 'magic', they just happen to work well.
@@ -58,35 +58,35 @@ namespace xcore
         return h;
     }
 
-    xhash::xmurmur32::xmurmur32(u32 seed)
+    xhash::murmur32_t::murmur32_t(u32 seed)
         : m_seed(seed)
         , m_hash(seed)
     {
     }
 
-    void xhash::xmurmur32::reset() { m_hash = m_seed; }
+    void xhash::murmur32_t::reset() { m_hash = m_seed; }
 
-    void xhash::xmurmur32::hash(xcbuffer const& _buffer) { m_hash = gGetMurmurHash32(_buffer, m_hash); }
+    void xhash::murmur32_t::hash(cbuffer_t const& _buffer) { m_hash = gGetMurmurHash32(_buffer, m_hash); }
 
-    void xhash::xmurmur32::end(xhash::hash::murmur32& _hash)
+    void xhash::murmur32_t::end(xhash::hash::murmur32& _hash)
     {
         u32            p   = x_NetworkEndian::swap(m_hash);
         xbyte const*   src = (xbyte const*)&p;
-        xbinary_writer writer(_hash.buffer());
+        binary_writer_t writer(_hash.buffer());
         writer.write(*src++);
         writer.write(*src++);
         writer.write(*src++);
         writer.write(*src++);
     }
 
-    void xhash::xmurmur32::compute(xcbuffer const& data, xhash::hash::murmur32& out_hash)
+    void xhash::murmur32_t::compute(cbuffer_t const& data, xhash::hash::murmur32& out_hash)
     {
         reset();
         hash(data);
         end(out_hash);
     }
 
-    xhash::hash::murmur32 xhash::xmurmur32::compute(xcbuffer const& data)
+    xhash::hash::murmur32 xhash::murmur32_t::compute(cbuffer_t const& data)
     {
         hash::murmur32 hash;
         compute(data, hash);

@@ -5,7 +5,7 @@
 
 using namespace xcore;
 
-UNITTEST_SUITE_BEGIN(xmd5)
+UNITTEST_SUITE_BEGIN(md5_t)
 {
 
 }

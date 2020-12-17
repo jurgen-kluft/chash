@@ -1,5 +1,5 @@
 #include "xbase/x_target.h"
-#include "xbase/x_va_list.h"
+#include "xbase/va_list_t.h"
 #include "xbase/x_integer.h"
 #include "xbase/x_memory.h"
 #include "xbase/x_endian.h"
@@ -215,7 +215,7 @@ namespace xcore
         ctx->H[4] += E;
     }
 
-    void xsha1_ctx_update(xsha1_ctx* ctx, xcbuffer const& buffer)
+    void xsha1_ctx_update(xsha1_ctx* ctx, cbuffer_t const& buffer)
     {
         u32 lenW = ctx->size & 63;
 
@@ -257,40 +257,40 @@ namespace xcore
 
         s32 i = ctx->size & 63;
         // xsha1_ctx_update(ctx, pad, 1 + (63 & (55 - i)));
-        xsha1_ctx_update(ctx, xcbuffer(1 + (63 & (55 - i)), xsha1_ctx_pad));
-        xsha1_ctx_update(ctx, xcbuffer(8, (xbyte const*)padlen));
+        xsha1_ctx_update(ctx, cbuffer_t(1 + (63 & (55 - i)), xsha1_ctx_pad));
+        xsha1_ctx_update(ctx, cbuffer_t(8, (xbyte const*)padlen));
     }
 
-    xhash::xsha1::xsha1()
+    xhash::sha1_t::sha1_t()
     {
         xsha1_ctx* ctx = (xsha1_ctx *)&this->m_ctxt;
         xsha1_ctx_init(ctx);
     }
 
-    void xhash::xsha1::reset()
+    void xhash::sha1_t::reset()
     {
         xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
         xsha1_ctx_init(ctx);
     }
 
-    void xhash::xsha1::hash(xcbuffer const& _buffer)
+    void xhash::sha1_t::hash(cbuffer_t const& _buffer)
     {
         xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
         xsha1_ctx_update(ctx, _buffer);
     }
 
-    inline void to_bytes(xbuffer& bytes, u32 p)
+    inline void to_bytes(buffer_t& bytes, u32 p)
     {
         p   = x_NetworkEndian::swap(p);
         xbyte const*   src = (xbyte const*)&p;
-        xbinary_writer writer(bytes);
+        binary_writer_t writer(bytes);
         writer.write(*src++);
         writer.write(*src++);
         writer.write(*src++);
         writer.write(*src++);
     }
 
-    void xhash::xsha1::end(xhash::hash::sha1& _hash)
+    void xhash::sha1_t::end(xhash::hash::sha1& _hash)
     {
         xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
         if (ctx->computed == 0)
@@ -300,19 +300,19 @@ namespace xcore
         }
 
         u32 idx = 0;
-		xbuffer h = _hash.buffer();
+		buffer_t h = _hash.buffer();
         for (s32 i = 0; i < 5; ++i)
             to_bytes(h, ctx->H[i]);
     }
 
-    void xhash::xsha1::compute(xcbuffer const& data, xhash::hash::sha1& hash)
+    void xhash::sha1_t::compute(cbuffer_t const& data, xhash::hash::sha1& hash)
     {
         reset();
         compute(data);
         end(hash);
     }
 
-    xhash::hash::sha1 xhash::xsha1::compute(xcbuffer const& data)
+    xhash::hash::sha1 xhash::sha1_t::compute(cbuffer_t const& data)
     {
         hash::sha1 hash;
         compute(data, hash);

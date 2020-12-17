@@ -23,10 +23,10 @@ namespace xcore
 	class xcrc
 	{
 	public:
-		static u32			crc32(xcbuffer const& buffer, u32 inInitVal = 0);
+		static u32			crc32(cbuffer_t const& buffer, u32 inInitVal = 0);
 
-		static u16			adler16(xcbuffer const& buffer, u16 inInitVal = 1);
-		static u32			adler32(xcbuffer const& buffer, u32 inInitVal = 1);
+		static u16			adler16(cbuffer_t const& buffer, u16 inInitVal = 1);
+		static u32			adler32(cbuffer_t const& buffer, u32 inInitVal = 1);
 	};
 
 

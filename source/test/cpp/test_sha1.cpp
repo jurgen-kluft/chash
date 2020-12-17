@@ -5,7 +5,7 @@
 
 using namespace xcore;
 
-UNITTEST_SUITE_BEGIN(xsha1)
+UNITTEST_SUITE_BEGIN(sha1_t)
 {
 	UNITTEST_FIXTURE(type)
 	{

@@ -7,7 +7,7 @@
 
 using namespace xcore;
 
-extern xalloc *gTestAllocator;
+extern alloc_t *gTestAllocator;
 
 namespace SkeinTestVectors
 {
@@ -92,7 +92,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 
 		UNITTEST_TEST(test_256_256)
 		{
-			xhash::xskein256 ctx;
+			xhash::skein256_t ctx;
 
 			xbyte *bytemsg = SkeinTestVectors::ByteMsg;
 			SkeinTestVectors::Vector *test = SkeinTestVectors::Tests_256_256;
@@ -106,7 +106,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 
 				xhash::hash::skein256 hash;
 				ctx.reset();
-				ctx.hash(xcbuffer(test_bytelen, bytemsg));
+				ctx.hash(cbuffer_t(test_bytelen, bytemsg));
 				ctx.end(hash);
 
 				u32 const verify_len = SkeinTestVectors::TextMsgToByteMsg(test->Digest, 32, bytemsg);
@@ -132,7 +132,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 
 				xhash::hash::skein512 hash;
 				ctx.reset();
-				ctx.hash(xcbuffer(test_bytelen, bytemsg));
+				ctx.hash(cbuffer_t(test_bytelen, bytemsg));
 				ctx.end(hash);
 
 				u32 const verify_len = SkeinTestVectors::TextMsgToByteMsg(test->Digest, 64, bytemsg);

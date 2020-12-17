@@ -1,5 +1,5 @@
 #include "xbase/x_target.h"
-#include "xbase/x_va_list.h"
+#include "xbase/va_list_t.h"
 #include "xbase/x_integer.h"
 #include "xbase/x_memory.h"
 #include "xbase/x_endian.h"
@@ -101,7 +101,7 @@ namespace xcore
 			return h64;
 		}
 
-		void update(xcbuffer const &_buffer)
+		void update(cbuffer_t const &_buffer)
 		{
 			const s32 len = _buffer.size();
 			const xbyte *p = (const xbyte *)_buffer.m_const;
@@ -200,7 +200,7 @@ namespace xcore
 			return avalanche(h64);
 		}
 
-		void digest(xbuffer &hash)
+		void digest(buffer_t &hash)
 		{
 			u64 h64;
 			if (m_total_len >= 32)
@@ -242,7 +242,7 @@ namespace xcore
 		}
 	};
 
-	xhash::xxhash64::xxhash64(u64 seed)
+	xhash::xxhash64_t::xxhash64_t(u64 seed)
 		: m_seed(seed)
 	{
 
@@ -250,35 +250,35 @@ namespace xcore
 		ctx->reset(m_seed);
 	}
 
-	void xhash::xxhash64::reset()
+	void xhash::xxhash64_t::reset()
 	{
 		xxhash64_ctxt *ctx = (xxhash64_ctxt *)&this->m_ctxt;
 		ctx->reset(m_seed);
 	}
 
-	void xhash::xxhash64::hash(xcbuffer const &_buffer)
+	void xhash::xxhash64_t::hash(cbuffer_t const &_buffer)
 	{
 		xxhash64_ctxt *ctx = (xxhash64_ctxt *)&this->m_ctxt;
 		ctx->update(_buffer);
 	}
 
-	void xhash::xxhash64::end(hash::xxhash64 &out_hash)
+	void xhash::xxhash64_t::end(hash::xxhash64_t &out_hash)
 	{
 		xxhash64_ctxt *ctx = (xxhash64_ctxt *)&this->m_ctxt;
-		xbuffer digest = out_hash.buffer();
+		buffer_t digest = out_hash.buffer();
 		ctx->digest(digest);
 	}
 
-	void xhash::xxhash64::compute(xcbuffer const &data, xhash::hash::xxhash64 &out_hash)
+	void xhash::xxhash64_t::compute(cbuffer_t const &data, xhash::hash::xxhash64_t &out_hash)
 	{
 		reset();
 		hash(data);
 		end(out_hash);
 	}
 
-	xhash::hash::xxhash64 xhash::xxhash64::compute(xcbuffer const &data)
+	xhash::hash::xxhash64_t xhash::xxhash64_t::compute(cbuffer_t const &data)
 	{
-		hash::xxhash64 hash;
+		hash::xxhash64_t hash;
 		compute(data, hash);
 		return hash;
 	}

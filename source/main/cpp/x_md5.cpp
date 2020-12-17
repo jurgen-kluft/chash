@@ -9,7 +9,7 @@ namespace xcore
     //---------------------------------------------------------------------------------------------------------------------
     //	MD5
     //---------------------------------------------------------------------------------------------------------------------
-    class xmd5_ctx
+    class md5_ctx_t
     {
         enum EState
         {
@@ -19,13 +19,13 @@ namespace xcore
 
     public:
         ///@name Construction/Destruction
-        xmd5_ctx();
+        md5_ctx_t();
 
         ///@name Updating
         u32 length() const { return 16; }
         void reset();
-        void update(xcbuffer const &buffer);
-        void digest(xbuffer hash);
+        void update(cbuffer_t const &buffer);
+        void digest(buffer_t hash);
 
         XCORE_CLASS_PLACEMENT_NEW_DELETE
     private:
@@ -114,8 +114,8 @@ namespace xcore
 
         * @see		Update GetHash
         */
-    xmd5_ctx::xmd5_ctx()
-        : mState(xmd5_ctx::CLOSED), mLength(0)
+    md5_ctx_t::md5_ctx_t()
+        : mState(md5_ctx_t::CLOSED), mLength(0)
     {
     }
 
@@ -129,7 +129,7 @@ namespace xcore
      * @param inData	Buffer to update hash with
      * @param inLength	Length of buffer in bytes
      */
-    void xmd5_ctx::update(const xcbuffer &buffer)
+    void md5_ctx_t::update(const cbuffer_t &buffer)
     {
         ASSERTS(mState == OPEN, "Can't compute hash value before Open() has been called!");
 
@@ -174,7 +174,7 @@ namespace xcore
     /**
      * @brief Get final hash value
      */
-    void xmd5_ctx::digest(xbuffer digest)
+    void md5_ctx_t::digest(buffer_t digest)
     {
         // If this is the first time we call GetHash(), finish the last transform
         if (mState == OPEN)
@@ -212,12 +212,12 @@ namespace xcore
 
         // export digest
         xbyte const *src = (xbyte const *)&mMD5[0];
-        xbinary_writer w(digest);
+        binary_writer_t w(digest);
         for (s32 i = 0; i < 16; ++i)
             w.write(*src++);
     }
 
-    void xmd5_ctx::reset()
+    void md5_ctx_t::reset()
     {
         mState = OPEN;
         mLength = 0;
@@ -243,7 +243,7 @@ namespace xcore
      * reflect the addition of 16 longwords of new data.  MD5Update blocks
      * the data and converts bytes into longwords for this routine.
      */
-    void xmd5_ctx::transform()
+    void md5_ctx_t::transform()
     {
         u32 a = mMD5[0];
         u32 b = mMD5[1];
@@ -324,38 +324,38 @@ namespace xcore
         mMD5[3] += d;
     }
 
-    xhash::xmd5::xmd5()
+    xhash::md5_t::md5_t()
     {
-        xmd5_ctx *ctx = (xmd5_ctx *)&this->m_ctxt;
+        md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
         ctx->reset();
     }
 
-    void xhash::xmd5::reset()
+    void xhash::md5_t::reset()
     {
-        xmd5_ctx *ctx = (xmd5_ctx *)&this->m_ctxt;
+        md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
         ctx->reset();
     }
 
-    void xhash::xmd5::hash(xcbuffer const &_buffer)
+    void xhash::md5_t::hash(cbuffer_t const &_buffer)
     {
-        xmd5_ctx *ctx = (xmd5_ctx *)&this->m_ctxt;
+        md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
         ctx->update(_buffer);
     }
 
-    void xhash::xmd5::end(hash::md5 &out_hash)
+    void xhash::md5_t::end(hash::md5 &out_hash)
     {
-        xmd5_ctx *ctx = (xmd5_ctx *)&this->m_ctxt;
+        md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
         ctx->digest(out_hash.buffer());
     }
 
-    void xhash::xmd5::compute(xcbuffer const &data, xhash::hash::md5 &out_hash)
+    void xhash::md5_t::compute(cbuffer_t const &data, xhash::hash::md5 &out_hash)
     {
         reset();
         hash(data);
         end(out_hash);
     }
 
-    xhash::hash::md5 xhash::xmd5::compute(xcbuffer const &data)
+    xhash::hash::md5 xhash::md5_t::compute(cbuffer_t const &data)
     {
         hash::md5 hash;
         compute(data, hash);

@@ -1,5 +1,5 @@
 #include "xbase/x_target.h"
-#include "xbase/x_va_list.h"
+#include "xbase/va_list_t.h"
 #include "xbase/x_integer.h"
 #include "xbase/x_memory.h"
 #include "xbase/x_endian.h"
@@ -14,7 +14,7 @@ namespace xcore
 #define MURMUR64_ENDIAN_SWAP(r) (((r >> 24) & 0x000000FF) | ((r >> 8) & 0x0000FF00) | ((r << 8) & 0x00FF0000) | ((r << 24) & 0xFF000000))
 #endif
 
-    xcore::u64 gGetMurmurHash64(xcbuffer const& buffer, u64 seed)
+    xcore::u64 gGetMurmurHash64(cbuffer_t const& buffer, u64 seed)
     {
         const xcore::u32 m = 0x5bd1e995;
         const xcore::s32 r = 24;
@@ -82,33 +82,33 @@ namespace xcore
         return h;
     }
 
-    xhash::xmurmur64::xmurmur64(u64 seed)
+    xhash::murmur64_t::murmur64_t(u64 seed)
         : m_seed(seed)
         , m_hash(seed)
     {
     }
 
-    void xhash::xmurmur64::reset() { m_hash = m_seed; }
+    void xhash::murmur64_t::reset() { m_hash = m_seed; }
 
-    void xhash::xmurmur64::hash(xcbuffer const& _buffer) { m_hash = gGetMurmurHash64(_buffer, m_hash); }
+    void xhash::murmur64_t::hash(cbuffer_t const& _buffer) { m_hash = gGetMurmurHash64(_buffer, m_hash); }
 
-    void xhash::xmurmur64::end(xhash::hash::murmur64& _hash)
+    void xhash::murmur64_t::end(xhash::hash::murmur64& _hash)
     {
         u64            p   = x_NetworkEndian::swap(m_hash);
         xbyte const*   src = (xbyte const*)&p;
-        xbinary_writer writer(_hash.buffer());
+        binary_writer_t writer(_hash.buffer());
         for (int i = 0; i < 8; i++)
             writer.write(*src++);
     }
 
-    void xhash::xmurmur64::compute(xcbuffer const& data, xhash::hash::murmur64& out_hash)
+    void xhash::murmur64_t::compute(cbuffer_t const& data, xhash::hash::murmur64& out_hash)
     {
         reset();
         hash(data);
         end(out_hash);
     }
 
-    xhash::hash::murmur64 xhash::xmurmur64::compute(xcbuffer const& data)
+    xhash::hash::murmur64 xhash::murmur64_t::compute(cbuffer_t const& data)
     {
         hash::murmur64 hash;
         compute(data, hash);

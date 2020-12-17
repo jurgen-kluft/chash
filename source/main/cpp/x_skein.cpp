@@ -1550,27 +1550,27 @@ namespace xcore
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
 
-    xhash::xskein256::xskein256()
+    xhash::skein256_t::skein256_t()
         : m_initialized(false)
     {
         reset();
     }
 
-    void xhash::xskein256::reset()
+    void xhash::skein256_t::reset()
     {
         skein::Skein_256_Ctxt_t* ctx = (skein::Skein_256_Ctxt_t*)&m_ctxt;
         m_initialized                = true;
         skein::Skein_256_Init(ctx, 256);
     }
 
-    void xhash::xskein256::hash(xcbuffer const& data)
+    void xhash::skein256_t::hash(cbuffer_t const& data)
     {
         skein::Skein_256_Ctxt_t* ctx = (skein::Skein_256_Ctxt_t*)&m_ctxt;
         if (m_initialized)
             skein::Skein_256_Update(ctx, (u8 const*)data.m_const, data.size());
     }
 
-    void xhash::xskein256::end(hash::skein256& hash)
+    void xhash::skein256_t::end(hash::skein256& hash)
     {
         skein::Skein_256_Ctxt_t* ctx = (skein::Skein_256_Ctxt_t*)&m_ctxt;
         if (m_initialized)
@@ -1581,14 +1581,14 @@ namespace xcore
         }
     }
 
-    void xhash::xskein256::compute(xcbuffer const& data, hash::skein256& h)
+    void xhash::skein256_t::compute(cbuffer_t const& data, hash::skein256& h)
     {
         reset();
         compute(data);
         end(h);
     }
 
-    xhash::hash::skein256 xhash::xskein256::compute(xcbuffer const& data)
+    xhash::hash::skein256 xhash::skein256_t::compute(cbuffer_t const& data)
     {
         hash::skein256 hash;
         compute(data, hash);
@@ -1608,7 +1608,7 @@ namespace xcore
         skein::Skein_512_Init(ctx, 512);
     }
 
-    void xhash::xskein512::hash(xcbuffer const& data)
+    void xhash::xskein512::hash(cbuffer_t const& data)
     {
         skein::Skein_512_Ctxt_t* ctx = (skein::Skein_512_Ctxt_t*)&m_ctxt;
         if (m_initialized)
@@ -1626,14 +1626,14 @@ namespace xcore
         }
     }
 
-    void xhash::xskein512::compute(xcbuffer const& data, hash::skein512& hash)
+    void xhash::xskein512::compute(cbuffer_t const& data, hash::skein512& hash)
     {
         reset();
         compute(data);
         end(hash);
     }
 
-    xhash::hash::skein512 xhash::xskein512::compute(xcbuffer const& data)
+    xhash::hash::skein512 xhash::xskein512::compute(cbuffer_t const& data)
     {
         hash::skein512 hash;
         compute(data, hash);
@@ -1653,7 +1653,7 @@ namespace xcore
         skein::Skein1024_Init(ctx, 256);
     }
 
-    void xhash::xskein1024::hash(xcbuffer const& data)
+    void xhash::xskein1024::hash(cbuffer_t const& data)
     {
         skein::Skein1024_Ctxt_t* ctx = (skein::Skein1024_Ctxt_t*)&m_ctxt;
         if (m_initialized)
@@ -1671,14 +1671,14 @@ namespace xcore
         }
     }
 
-    void xhash::xskein1024::compute(xcbuffer const& data, hash::skein1024& hash)
+    void xhash::xskein1024::compute(cbuffer_t const& data, hash::skein1024& hash)
     {
         reset();
         compute(data);
         end(hash);
     }
 
-    xhash::hash::skein1024 xhash::xskein1024::compute(xcbuffer const& data)
+    xhash::hash::skein1024 xhash::xskein1024::compute(cbuffer_t const& data)
     {
         hash::skein1024 hash;
         compute(data, hash);
