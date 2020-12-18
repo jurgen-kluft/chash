@@ -1,10 +1,9 @@
 
 #include "xbase/x_target.h"
-
 #include "xhash/x_hash.h"
-
 namespace xcore
 {
+    /*
     md5_t md5;
     sha1_t sha1;
 
@@ -16,4 +15,5 @@ namespace xcore
     murmur64_t murmur64;
 
 	xxhash64_t xxhash;
+    */
 }

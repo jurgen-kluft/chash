@@ -35,12 +35,12 @@ namespace xcore
         u32 mState;
         u32 mLength;
 
-        struct buffer_t
+        struct ctx_t
         {
             u32 mInput[16]; ///< 64 byte input buffer
             u8 mSlack[8];   ///< Slack space because internal memcopy copies gready (i.e. up to 7 bytes past mInput)
         };
-        buffer_t mBuffer;
+        ctx_t mBuffer;
     };
 
     //---------------------------------------------------------------------------------------------------------------------
