@@ -15,7 +15,7 @@ UNITTEST_SUITE_BEGIN(murmur64_t)
 
 		static u64 murmur64_hash(cbuffer_t const& b)
 		{
-			xhash::hash::murmur64 h1 = xhash::murmur64.compute(b);
+			xdigest::murmur64 h1 = murmur64.compute(b);
 			binary_reader_t reader(h1.cbuffer());
 			u64 h2;
 			reader.read(h2);

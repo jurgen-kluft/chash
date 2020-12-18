@@ -324,40 +324,40 @@ namespace xcore
         mMD5[3] += d;
     }
 
-    xhash::md5_t::md5_t()
+    md5_t::md5_t()
     {
         md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
         ctx->reset();
     }
 
-    void xhash::md5_t::reset()
+    void md5_t::reset()
     {
         md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
         ctx->reset();
     }
 
-    void xhash::md5_t::hash(cbuffer_t const &_buffer)
+    void md5_t::hash(cbuffer_t const &_buffer)
     {
         md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
         ctx->update(_buffer);
     }
 
-    void xhash::md5_t::end(hash::md5 &out_hash)
+    void md5_t::end(xdigest::md5 &out_hash)
     {
         md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
         ctx->digest(out_hash.buffer());
     }
 
-    void xhash::md5_t::compute(cbuffer_t const &data, xhash::hash::md5 &out_hash)
+    void md5_t::compute(cbuffer_t const &data, xdigest::md5 &out_hash)
     {
         reset();
         hash(data);
         end(out_hash);
     }
 
-    xhash::hash::md5 xhash::md5_t::compute(cbuffer_t const &data)
+    xdigest::md5 md5_t::compute(cbuffer_t const &data)
     {
-        hash::md5 hash;
+        xdigest::md5 hash;
         compute(data, hash);
         return hash;
     }

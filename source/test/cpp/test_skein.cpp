@@ -92,7 +92,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 
 		UNITTEST_TEST(test_256_256)
 		{
-			xhash::skein256_t ctx;
+			skein256_t ctx;
 
 			xbyte *bytemsg = SkeinTestVectors::ByteMsg;
 			SkeinTestVectors::Vector *test = SkeinTestVectors::Tests_256_256;
@@ -104,7 +104,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 				u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
 				CHECK_EQUAL(test_bytelen, len);
 
-				xhash::hash::skein256 hash;
+				xdigest::skein256 hash;
 				ctx.reset();
 				ctx.hash(cbuffer_t(test_bytelen, bytemsg));
 				ctx.end(hash);
@@ -118,7 +118,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 
 		UNITTEST_TEST(test_512_512)
 		{
-			xhash::xskein512 ctx;
+			xskein512 ctx;
 
 			xbyte *bytemsg = SkeinTestVectors::ByteMsg;
 			SkeinTestVectors::Vector *test = SkeinTestVectors::Tests_512_512;
@@ -130,7 +130,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 				u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
 				CHECK_EQUAL(test_bytelen, len);
 
-				xhash::hash::skein512 hash;
+				xdigest::skein512 hash;
 				ctx.reset();
 				ctx.hash(cbuffer_t(test_bytelen, bytemsg));
 				ctx.end(hash);

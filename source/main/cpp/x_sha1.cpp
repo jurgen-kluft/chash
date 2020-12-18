@@ -261,19 +261,19 @@ namespace xcore
         xsha1_ctx_update(ctx, cbuffer_t(8, (xbyte const*)padlen));
     }
 
-    xhash::sha1_t::sha1_t()
-    {
-        xsha1_ctx* ctx = (xsha1_ctx *)&this->m_ctxt;
-        xsha1_ctx_init(ctx);
-    }
-
-    void xhash::sha1_t::reset()
+    sha1_t::sha1_t()
     {
         xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
         xsha1_ctx_init(ctx);
     }
 
-    void xhash::sha1_t::hash(cbuffer_t const& _buffer)
+    void sha1_t::reset()
+    {
+        xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
+        xsha1_ctx_init(ctx);
+    }
+
+    void sha1_t::hash(cbuffer_t const& _buffer)
     {
         xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
         xsha1_ctx_update(ctx, _buffer);
@@ -281,8 +281,8 @@ namespace xcore
 
     inline void to_bytes(buffer_t& bytes, u32 p)
     {
-        p   = x_NetworkEndian::swap(p);
-        xbyte const*   src = (xbyte const*)&p;
+        p                   = x_NetworkEndian::swap(p);
+        xbyte const*    src = (xbyte const*)&p;
         binary_writer_t writer(bytes);
         writer.write(*src++);
         writer.write(*src++);
@@ -290,7 +290,7 @@ namespace xcore
         writer.write(*src++);
     }
 
-    void xhash::sha1_t::end(xhash::hash::sha1& _hash)
+    void sha1_t::end(xdigest::sha1& _hash)
     {
         xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
         if (ctx->computed == 0)
@@ -299,22 +299,22 @@ namespace xcore
             ctx->computed = 1;
         }
 
-        u32 idx = 0;
-		buffer_t h = _hash.buffer();
+        u32      idx = 0;
+        buffer_t h   = _hash.buffer();
         for (s32 i = 0; i < 5; ++i)
             to_bytes(h, ctx->H[i]);
     }
 
-    void xhash::sha1_t::compute(cbuffer_t const& data, xhash::hash::sha1& hash)
+    void sha1_t::compute(cbuffer_t const& data, xdigest::sha1& hash)
     {
         reset();
         compute(data);
         end(hash);
     }
 
-    xhash::hash::sha1 xhash::sha1_t::compute(cbuffer_t const& data)
+    xdigest::sha1 sha1_t::compute(cbuffer_t const& data)
     {
-        hash::sha1 hash;
+        xdigest::sha1 hash;
         compute(data, hash);
         return hash;
     }

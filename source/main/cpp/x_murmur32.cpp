@@ -58,20 +58,20 @@ namespace xcore
         return h;
     }
 
-    xhash::murmur32_t::murmur32_t(u32 seed)
+    murmur32_t::murmur32_t(u32 seed)
         : m_seed(seed)
         , m_hash(seed)
     {
     }
 
-    void xhash::murmur32_t::reset() { m_hash = m_seed; }
+    void murmur32_t::reset() { m_hash = m_seed; }
 
-    void xhash::murmur32_t::hash(cbuffer_t const& _buffer) { m_hash = gGetMurmurHash32(_buffer, m_hash); }
+    void murmur32_t::hash(cbuffer_t const& _buffer) { m_hash = gGetMurmurHash32(_buffer, m_hash); }
 
-    void xhash::murmur32_t::end(xhash::hash::murmur32& _hash)
+    void murmur32_t::end(xdigest::murmur32& _hash)
     {
-        u32            p   = x_NetworkEndian::swap(m_hash);
-        xbyte const*   src = (xbyte const*)&p;
+        u32             p   = x_NetworkEndian::swap(m_hash);
+        xbyte const*    src = (xbyte const*)&p;
         binary_writer_t writer(_hash.buffer());
         writer.write(*src++);
         writer.write(*src++);
@@ -79,18 +79,18 @@ namespace xcore
         writer.write(*src++);
     }
 
-    void xhash::murmur32_t::compute(cbuffer_t const& data, xhash::hash::murmur32& out_hash)
+    void murmur32_t::compute(cbuffer_t const& data, xdigest::murmur32& out_hash)
     {
         reset();
         hash(data);
         end(out_hash);
     }
 
-    xhash::hash::murmur32 xhash::murmur32_t::compute(cbuffer_t const& data)
+    xdigest::murmur32 murmur32_t::compute(cbuffer_t const& data)
     {
-        hash::murmur32 hash;
+        xdigest::murmur32 hash;
         compute(data, hash);
         return hash;
     }
 
-}
+} // namespace xcore

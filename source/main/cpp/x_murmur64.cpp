@@ -82,17 +82,17 @@ namespace xcore
         return h;
     }
 
-    xhash::murmur64_t::murmur64_t(u64 seed)
+    murmur64_t::murmur64_t(u64 seed)
         : m_seed(seed)
         , m_hash(seed)
     {
     }
 
-    void xhash::murmur64_t::reset() { m_hash = m_seed; }
+    void murmur64_t::reset() { m_hash = m_seed; }
 
-    void xhash::murmur64_t::hash(cbuffer_t const& _buffer) { m_hash = gGetMurmurHash64(_buffer, m_hash); }
+    void murmur64_t::hash(cbuffer_t const& _buffer) { m_hash = gGetMurmurHash64(_buffer, m_hash); }
 
-    void xhash::murmur64_t::end(xhash::hash::murmur64& _hash)
+    void murmur64_t::end(xdigest::murmur64& _hash)
     {
         u64            p   = x_NetworkEndian::swap(m_hash);
         xbyte const*   src = (xbyte const*)&p;
@@ -101,16 +101,16 @@ namespace xcore
             writer.write(*src++);
     }
 
-    void xhash::murmur64_t::compute(cbuffer_t const& data, xhash::hash::murmur64& out_hash)
+    void murmur64_t::compute(cbuffer_t const& data, xdigest::murmur64& out_hash)
     {
         reset();
         hash(data);
         end(out_hash);
     }
 
-    xhash::hash::murmur64 xhash::murmur64_t::compute(cbuffer_t const& data)
+    xdigest::murmur64 murmur64_t::compute(cbuffer_t const& data)
     {
-        hash::murmur64 hash;
+        xdigest::murmur64 hash;
         compute(data, hash);
         return hash;
     }
