@@ -8,8 +8,8 @@ source/test/builddir/
 tags
 
 #except the following files
-!tundra.lua
-
+!.gitignore
+!.clang-format
 !*.cpp
 !*.hpp
 !*.c
@@ -19,6 +19,7 @@ tags
 !*.pl
 
 !*.go
+!*.lua
 
 !*.cs
 !*.csproj
