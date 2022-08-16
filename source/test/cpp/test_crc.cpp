@@ -1,7 +1,7 @@
-#include "xbase/x_target.h"
-#include "xhash/x_crc.h"
+#include "cbase/c_target.h"
+#include "chash/c_crc.h"
 
-#include "xunittest/xunittest.h"
+#include "cunittest/xunittest.h"
 
 using namespace ncore;
 

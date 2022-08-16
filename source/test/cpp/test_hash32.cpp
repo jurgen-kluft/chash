@@ -1,8 +1,8 @@
-#include "xbase/x_target.h"
-#include "xbase/x_buffer.h"
-#include "xhash/x_hash.h"
+#include "cbase/c_target.h"
+#include "cbase/c_buffer.h"
+#include "chash/c_hash.h"
 
-#include "xunittest/xunittest.h"
+#include "cunittest/xunittest.h"
 
 using namespace ncore;
 
