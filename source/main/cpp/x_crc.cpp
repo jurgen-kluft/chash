@@ -2,7 +2,7 @@
 #include "xbase/x_debug.h"
 #include "xhash/x_crc.h"
 
-namespace xcore
+namespace ncore
 {
 	class CRC32
 	{

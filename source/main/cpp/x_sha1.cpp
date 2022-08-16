@@ -6,7 +6,7 @@
 
 #include "xhash/x_hash.h"
 
-namespace xcore
+namespace ncore
 {
     /**
      *  URL:
@@ -220,7 +220,7 @@ namespace xcore
         u32 lenW = ctx->size & 63;
 
         u32          len  = (u32)buffer.size();
-        xbyte const* data = buffer.m_const;
+        u8 const* data = buffer.m_const;
         ctx->size += len;
 
         // Read the data into W and process blocks as they get full
@@ -232,7 +232,7 @@ namespace xcore
             x_memcpy(lenW + (char*)ctx->W, data, left);
             lenW = (lenW + left) & 63;
             len -= left;
-            data = ((const xbyte*)data + left);
+            data = ((const u8*)data + left);
             if (lenW)
                 return;
             xsha1_ctx_block(ctx, ctx->W);
@@ -240,7 +240,7 @@ namespace xcore
         while (len >= 64)
         {
             xsha1_ctx_block(ctx, (u32 const*)data);
-            data = ((const xbyte*)data + 64);
+            data = ((const u8*)data + 64);
             len -= 64;
         }
         if (len)
@@ -258,7 +258,7 @@ namespace xcore
         s32 i = ctx->size & 63;
         // xsha1_ctx_update(ctx, pad, 1 + (63 & (55 - i)));
         xsha1_ctx_update(ctx, cbuffer_t(1 + (63 & (55 - i)), xsha1_ctx_pad));
-        xsha1_ctx_update(ctx, cbuffer_t(8, (xbyte const*)padlen));
+        xsha1_ctx_update(ctx, cbuffer_t(8, (u8 const*)padlen));
     }
 
     sha1_t::sha1_t()
@@ -282,7 +282,7 @@ namespace xcore
     inline void to_bytes(buffer_t& bytes, u32 p)
     {
         p                   = x_NetworkEndian::swap(p);
-        xbyte const*    src = (xbyte const*)&p;
+        u8 const*    src = (u8 const*)&p;
         binary_writer_t writer(bytes);
         writer.write(*src++);
         writer.write(*src++);
@@ -319,4 +319,4 @@ namespace xcore
         return hash;
     }
 
-} // namespace xcore
+} // namespace ncore

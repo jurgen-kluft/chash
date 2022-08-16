@@ -6,32 +6,32 @@
 
 #include "xhash/x_hash.h"
 
-namespace xcore
+namespace ncore
 {
-    xcore::u32 gGetMurmurHash32(cbuffer_t const& buffer, u32 seed)
+    ncore::u32 gGetMurmurHash32(cbuffer_t const& buffer, u32 seed)
     {
         // 'm' and 'r' are mixing constants generated offline.
         // They're not really 'magic', they just happen to work well.
 
-        const xcore::u32 m      = 0x5bd1e995;
-        const xcore::s32 r      = 24;
-        xcore::u32       length = (u32)buffer.size();
+        const ncore::u32 m      = 0x5bd1e995;
+        const ncore::s32 r      = 24;
+        ncore::u32       length = (u32)buffer.size();
 
         // Initialize the hash to a 'random' value
 
-        xcore::u32 h = seed ^ length;
+        ncore::u32 h = seed ^ length;
 
         // Mix 4 bytes at a time into the hash
 
-        const xcore::u8* data = (const xcore::u8*)buffer.m_const;
+        const ncore::u8* data = (const ncore::u8*)buffer.m_const;
         while (length >= 4)
         {
-            xcore::u32 k;
+            ncore::u32 k;
 
-            k = xcore::u32(data[0]);
-            k |= xcore::u32(data[1]) << 8;
-            k |= xcore::u32(data[2]) << 16;
-            k |= xcore::u32(data[3]) << 24;
+            k = ncore::u32(data[0]);
+            k |= ncore::u32(data[1]) << 8;
+            k |= ncore::u32(data[2]) << 16;
+            k |= ncore::u32(data[3]) << 24;
 
             k *= m;
             k ^= k >> r;
@@ -46,9 +46,9 @@ namespace xcore
 
         switch (length)
         {
-            case 3: h ^= xcore::u32(data[2]) << 16;
-            case 2: h ^= xcore::u32(data[1]) << 8;
-            case 1: h ^= xcore::u32(data[0]); h *= m;
+            case 3: h ^= ncore::u32(data[2]) << 16;
+            case 2: h ^= ncore::u32(data[1]) << 8;
+            case 1: h ^= ncore::u32(data[0]); h *= m;
         };
 
         h ^= h >> 13;
@@ -71,7 +71,7 @@ namespace xcore
     void murmur32_t::end(xdigest::murmur32& _hash)
     {
         u32             p   = x_NetworkEndian::swap(m_hash);
-        xbyte const*    src = (xbyte const*)&p;
+        u8 const*    src = (u8 const*)&p;
         binary_writer_t writer(_hash.buffer());
         writer.write(*src++);
         writer.write(*src++);
@@ -93,4 +93,4 @@ namespace xcore
         return hash;
     }
 
-} // namespace xcore
+} // namespace ncore

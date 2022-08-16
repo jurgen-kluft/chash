@@ -6,7 +6,7 @@
 
 #include "xhash/x_hash.h"
 
-namespace xcore
+namespace ncore
 {
     static constexpr u64 PRIME64_1 = 11400714785074694791ULL;
     static constexpr u64 PRIME64_2 = 14029467366897019727ULL;
@@ -43,8 +43,8 @@ namespace xcore
 
 #define XXH_COPY_MEMORY(dst, src, length)        \
     {                                            \
-        xbyte*       pdst = (xbyte*)(dst);       \
-        xbyte const* psrc = (xbyte const*)(src); \
+        u8*       pdst = (u8*)(dst);       \
+        u8 const* psrc = (u8 const*)(src); \
         for (s32 i = 0; i < (s32)(length); ++i)  \
         {                                        \
             pdst[i] = psrc[i];                   \
@@ -53,7 +53,7 @@ namespace xcore
 
         static u32 read32bits(const void* memPtr)
         {
-            xbyte const* bptr = (xbyte const*)memPtr;
+            u8 const* bptr = (u8 const*)memPtr;
             u32          val  = bptr[0];
             val               = val << 8 | bptr[1];
             val               = val << 8 | bptr[2];
@@ -63,7 +63,7 @@ namespace xcore
 
         static u64 read64bits(const void* memPtr)
         {
-            xbyte const* bptr = (xbyte const*)memPtr;
+            u8 const* bptr = (u8 const*)memPtr;
             u64          val  = bptr[0];
             val               = val << 8 | bptr[1];
             val               = val << 8 | bptr[2];
@@ -104,21 +104,21 @@ namespace xcore
         void update(cbuffer_t const& _buffer)
         {
             const s32          len  = _buffer.size();
-            const xbyte*       p    = (const xbyte*)_buffer.m_const;
-            const xbyte* const bEnd = p + len;
+            const u8*       p    = (const u8*)_buffer.m_const;
+            const u8* const bEnd = p + len;
 
             m_total_len += len;
 
             if (m_memsize + len < 32)
             { /* fill in tmp buffer */
-                XXH_COPY_MEMORY(((xbyte*)m_mem64) + m_memsize, p, len);
+                XXH_COPY_MEMORY(((u8*)m_mem64) + m_memsize, p, len);
                 m_memsize += (u32)len;
                 return;
             }
 
             if (m_memsize)
             { /* tmp buffer is full */
-                XXH_COPY_MEMORY(((xbyte*)m_mem64) + m_memsize, p, 32 - m_memsize);
+                XXH_COPY_MEMORY(((u8*)m_mem64) + m_memsize, p, 32 - m_memsize);
                 m_v1 = round(m_v1, read64bits(m_mem64 + 0));
                 m_v2 = round(m_v2, read64bits(m_mem64 + 1));
                 m_v3 = round(m_v3, read64bits(m_mem64 + 2));
@@ -129,7 +129,7 @@ namespace xcore
 
             if (p + 32 <= bEnd)
             {
-                const xbyte* const limit = bEnd - 32;
+                const u8* const limit = bEnd - 32;
                 u64                v1    = m_v1;
                 u64                v2    = m_v2;
                 u64                v3    = m_v3;
@@ -162,7 +162,7 @@ namespace xcore
 
         u64 finalize(u64 h64, const void* ptr, u32 len)
         {
-            const xbyte* p = (const xbyte*)ptr;
+            const u8* p = (const u8*)ptr;
 
 #define PROCESS1_64            \
     h64 ^= (*p++) * PRIME64_5; \
@@ -283,4 +283,4 @@ namespace xcore
         return hash;
     }
 
-} // namespace xcore
+} // namespace ncore

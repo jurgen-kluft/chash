@@ -7,7 +7,7 @@
 
 #include "xbase/x_buffer.h"
 
-namespace xcore
+namespace ncore
 {
     namespace xdigest
     {
@@ -15,65 +15,65 @@ namespace xcore
         {
             static const u32 SIZE = 16;
             s32 size() const { return SIZE; }
-            xbyte m_data[SIZE];
-            buffer_t buffer() const { return buffer_t(SIZE, (xbyte *)m_data); }
-            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (xbyte const *)m_data); }
+            u8 m_data[SIZE];
+            buffer_t buffer() const { return buffer_t(SIZE, (u8 *)m_data); }
+            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (u8 const *)m_data); }
         };
         struct sha1
         {
             static const s32 SIZE = 20;
             s32 size() const { return SIZE; }
-            xbyte m_data[SIZE];
-            buffer_t buffer() const { return buffer_t(SIZE, (xbyte *)m_data); }
-            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (xbyte const *)m_data); }
+            u8 m_data[SIZE];
+            buffer_t buffer() const { return buffer_t(SIZE, (u8 *)m_data); }
+            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (u8 const *)m_data); }
         };
         struct skein256
         {
             static const s32 SIZE = 32;
             s32 size() const { return SIZE; }
-            xbyte m_data[SIZE];
-            buffer_t buffer() const { return buffer_t(SIZE, (xbyte *)m_data); }
-            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (xbyte const *)m_data); }
+            u8 m_data[SIZE];
+            buffer_t buffer() const { return buffer_t(SIZE, (u8 *)m_data); }
+            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (u8 const *)m_data); }
         };
         struct skein512
         {
             static const s32 SIZE = 64;
             s32 size() const { return SIZE; }
-            xbyte m_data[SIZE];
-            buffer_t buffer() const { return buffer_t(SIZE, (xbyte *)m_data); }
-            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (xbyte const *)m_data); }
+            u8 m_data[SIZE];
+            buffer_t buffer() const { return buffer_t(SIZE, (u8 *)m_data); }
+            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (u8 const *)m_data); }
         };
         struct skein1024
         {
             static const s32 SIZE = 128;
             s32 size() const { return SIZE; }
-            xbyte m_data[SIZE];
-            buffer_t buffer() const { return buffer_t(SIZE, (xbyte *)m_data); }
-            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (xbyte const *)m_data); }
+            u8 m_data[SIZE];
+            buffer_t buffer() const { return buffer_t(SIZE, (u8 *)m_data); }
+            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (u8 const *)m_data); }
         };
         struct murmur32
         {
             static const s32 SIZE = 4;
             s32 size() const { return SIZE; }
             u32 m_data;
-            buffer_t buffer() const { return buffer_t(SIZE, (xbyte *)&m_data); }
-            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (xbyte const *)&m_data); }
+            buffer_t buffer() const { return buffer_t(SIZE, (u8 *)&m_data); }
+            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (u8 const *)&m_data); }
         };
         struct murmur64
         {
             static const s32 SIZE = 8;
             s32 size() const { return SIZE; }
             u64 m_data;
-            buffer_t buffer() const { return buffer_t(SIZE, (xbyte *)&m_data); }
-            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (xbyte const *)&m_data); }
+            buffer_t buffer() const { return buffer_t(SIZE, (u8 *)&m_data); }
+            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (u8 const *)&m_data); }
         };
         struct xxhash64
         {
             static const s32 SIZE = 8;
             s32 size() const { return SIZE; }
             u64 m_data;
-            buffer_t buffer() const { return buffer_t(SIZE, (xbyte *)&m_data); }
-            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (xbyte const *)&m_data); }
+            buffer_t buffer() const { return buffer_t(SIZE, (u8 *)&m_data); }
+            cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (u8 const *)&m_data); }
         };
 
         template <class T>
@@ -233,6 +233,6 @@ namespace xcore
     };
     static xxhash64_t xxhash64;
 
-} // namespace xcore
+} // namespace ncore
 
 #endif

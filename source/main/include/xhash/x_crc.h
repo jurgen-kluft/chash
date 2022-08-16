@@ -14,7 +14,7 @@
 
 #include "xbase/x_buffer.h"
 
-namespace xcore
+namespace ncore
 {
 	/**
 	 * @group		xhash

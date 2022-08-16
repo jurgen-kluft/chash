@@ -4,7 +4,7 @@
 #include "xbase/x_memory.h"
 #include "xhash/x_hash.h"
 
-namespace xcore
+namespace ncore
 {
     namespace skein
     {
@@ -12,10 +12,10 @@ namespace xcore
 #define memcpy x_memcpy
 #define memcmp x_memcmp
 
-        typedef xcore::u32 uint_t; /* native unsigned integer */
-        typedef xcore::u8  u08b_t; /*  8-bit unsigned integer */
-        typedef xcore::u64 u64b_t; /* 64-bit unsigned integer */
-        typedef xcore::u32 size_t;
+        typedef ncore::u32 uint_t; /* native unsigned integer */
+        typedef ncore::u8  u08b_t; /*  8-bit unsigned integer */
+        typedef ncore::u64 u64b_t; /* 64-bit unsigned integer */
+        typedef ncore::u32 size_t;
 
 #define SKEIN_MK_64(hi32, lo32) ((lo32) + (((u64)(hi32)) << 32))
 
@@ -1685,4 +1685,4 @@ namespace xcore
         return hash;
     }
 
-} // namespace xcore
+} // namespace ncore

@@ -4,7 +4,7 @@
 #include "xbase/x_buffer.h"
 #include "xhash/x_hash.h"
 
-namespace xcore
+namespace ncore
 {
     //---------------------------------------------------------------------------------------------------------------------
     //	MD5
@@ -211,7 +211,7 @@ namespace xcore
         }
 
         // export digest
-        xbyte const *src = (xbyte const *)&mMD5[0];
+        u8 const *src = (u8 const *)&mMD5[0];
         binary_writer_t w(digest);
         for (s32 i = 0; i < 16; ++i)
             w.write(*src++);
@@ -362,4 +362,4 @@ namespace xcore
         return hash;
     }
 
-} // namespace xcore
+} // namespace ncore

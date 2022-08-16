@@ -6,7 +6,7 @@
 
 #include "xhash/x_hash.h"
 
-namespace xcore
+namespace ncore
 {
 #ifdef X_LITTLE_ENDIAN
 #define MURMUR64_ENDIAN_SWAP(r) (r)
@@ -14,21 +14,21 @@ namespace xcore
 #define MURMUR64_ENDIAN_SWAP(r) (((r >> 24) & 0x000000FF) | ((r >> 8) & 0x0000FF00) | ((r << 8) & 0x00FF0000) | ((r << 24) & 0xFF000000))
 #endif
 
-    xcore::u64 gGetMurmurHash64(cbuffer_t const& buffer, u64 seed)
+    ncore::u64 gGetMurmurHash64(cbuffer_t const& buffer, u64 seed)
     {
-        const xcore::u32 m = 0x5bd1e995;
-        const xcore::s32 r = 24;
+        const ncore::u32 m = 0x5bd1e995;
+        const ncore::s32 r = 24;
 
         u32 len = (u32)buffer.size();
 
-        xcore::u32 h1 = xcore::u32(seed) ^ len;
-        xcore::u32 h2 = xcore::u32(seed >> 32);
+        ncore::u32 h1 = ncore::u32(seed) ^ len;
+        ncore::u32 h2 = ncore::u32(seed >> 32);
 
-        const xcore::u32* data = (const xcore::u32*)buffer.m_const;
+        const ncore::u32* data = (const ncore::u32*)buffer.m_const;
 
         while (len >= 8)
         {
-            xcore::u32 k1 = *data++;
+            ncore::u32 k1 = *data++;
             k1            = MURMUR64_ENDIAN_SWAP(k1);
             k1 *= m;
             k1 ^= k1 >> r;
@@ -37,7 +37,7 @@ namespace xcore
             h1 ^= k1;
             len -= 4;
 
-            xcore::u32 k2 = *data++;
+            ncore::u32 k2 = *data++;
             k2            = MURMUR64_ENDIAN_SWAP(k2);
             k2 *= m;
             k2 ^= k2 >> r;
@@ -49,7 +49,7 @@ namespace xcore
 
         if (len >= 4)
         {
-            xcore::u32 k1 = *data++;
+            ncore::u32 k1 = *data++;
             k1            = MURMUR64_ENDIAN_SWAP(k1);
             k1 *= m;
             k1 ^= k1 >> r;
@@ -61,9 +61,9 @@ namespace xcore
 
         switch (len)
         {
-            case 3: h2 ^= ((xcore::xbyte*)data)[2] << 16;
-            case 2: h2 ^= ((xcore::xbyte*)data)[1] << 8;
-            case 1: h2 ^= ((xcore::xbyte*)data)[0]; h2 *= m;
+            case 3: h2 ^= ((ncore::u8*)data)[2] << 16;
+            case 2: h2 ^= ((ncore::u8*)data)[1] << 8;
+            case 1: h2 ^= ((ncore::u8*)data)[0]; h2 *= m;
         };
 
         h1 ^= h2 >> 18;
@@ -75,7 +75,7 @@ namespace xcore
         h2 ^= h1 >> 19;
         h2 *= m;
 
-        xcore::u64 h = h1;
+        ncore::u64 h = h1;
 
         h = (h << 32) | h2;
 
@@ -95,7 +95,7 @@ namespace xcore
     void murmur64_t::end(xdigest::murmur64& _hash)
     {
         u64            p   = x_NetworkEndian::swap(m_hash);
-        xbyte const*   src = (xbyte const*)&p;
+        u8 const*   src = (u8 const*)&p;
         binary_writer_t writer(_hash.buffer());
         for (int i = 0; i < 8; i++)
             writer.write(*src++);

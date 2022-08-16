@@ -1,7 +1,7 @@
 
 #include "xbase/x_target.h"
 #include "xhash/x_hash.h"
-namespace xcore
+namespace ncore
 {
     /*
     md5_t md5;
