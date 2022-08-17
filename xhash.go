@@ -1,6 +1,11 @@
 package main
 
+import (
+	ccode "github.com/jurgen-kluft/ccode"
+	cpkg "github.com/jurgen-kluft/chash/package"
+)
+
 func main() {
-	xcode.Init()
-	xcode.Generate(xhash.GetPackage())
+	ccode.Init()
+	ccode.Generate(cpkg.GetPackage())
 }

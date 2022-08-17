@@ -1,32 +1,33 @@
 package xhash
 
 import (
+	cbase "github.com/jurgen-kluft/cbase/package"
 	"github.com/jurgen-kluft/ccode/denv"
-	"github.com/jurgen-kluft/xbase/package"
-	"github.com/jurgen-kluft/xentry/package"
+	centry "github.com/jurgen-kluft/centry/package"
+	cunittest "github.com/jurgen-kluft/cunittest/package"
 )
 
 // GetPackage returns the package object of 'xhash'
 func GetPackage() *denv.Package {
 	// Dependencies
-	xunittestpkg := xunittest.GetPackage()
-	xentrypkg := xentry.GetPackage()
-	xbasepkg := xbase.GetPackage()
+	cunittestpkg := cunittest.GetPackage()
+	centrypkg := centry.GetPackage()
+	xbasepkg := cbase.GetPackage()
 
 	// The main (xhash) package
-	mainpkg := denv.NewPackage("xhash")
-	mainpkg.AddPackage(xunittestpkg)
-	mainpkg.AddPackage(xentrypkg)
+	mainpkg := denv.NewPackage("chash")
+	mainpkg.AddPackage(cunittestpkg)
+	mainpkg.AddPackage(centrypkg)
 	mainpkg.AddPackage(xbasepkg)
 
 	// 'xhash' library
-	mainlib := denv.SetupDefaultCppLibProject("xhash", "github.com\\jurgen-kluft\\xhash")
+	mainlib := denv.SetupDefaultCppLibProject("chash", "github.com\\jurgen-kluft\\chash")
 	mainlib.Dependencies = append(mainlib.Dependencies, xbasepkg.GetMainLib())
 
 	// 'xhash' unittest project
-	maintest := denv.SetupDefaultCppTestProject("xhash_test", "github.com\\jurgen-kluft\\xhash")
-	maintest.Dependencies = append(maintest.Dependencies, xunittestpkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, xentrypkg.GetMainLib())
+	maintest := denv.SetupDefaultCppTestProject("chash_test", "github.com\\jurgen-kluft\\chash")
+	maintest.Dependencies = append(maintest.Dependencies, cunittestpkg.GetMainLib())
+	maintest.Dependencies = append(maintest.Dependencies, centrypkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, xbasepkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, mainlib)
 
