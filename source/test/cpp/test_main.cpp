@@ -3,7 +3,7 @@
 #include "cbase/c_console.h"
 #include "cbase/c_context.h"
 
-#include "cunittest/xunittest.h"
+#include "cunittest/cunittest.h"
 #include "cunittest/private/ut_ReportAssert.h"
 
 UNITTEST_SUITE_LIST(xHashUnitTest);
@@ -78,7 +78,7 @@ ncore::UnitTestAssertHandler gAssertHandler;
 
 bool gRunUnitTest(UnitTest::TestReporter &reporter)
 {
-	xbase::init();
+	cbase::init();
 
 #ifdef TARGET_DEBUG
 	ncore::context_t::set_assert_handler(&gAssertHandler);
@@ -101,7 +101,7 @@ bool gRunUnitTest(UnitTest::TestReporter &reporter)
 	int r = UNITTEST_SUITE_RUN(reporter, xHashUnitTest);
 	if (UnitTest::GetNumAllocations() != 0)
 	{
-		reporter.reportFailure(__FILE__, __LINE__, "xunittest", "memory leaks detected!");
+		reporter.reportFailure(__FILE__, __LINE__, "cunittest", "memory leaks detected!");
 		r = -1;
 	}
 
@@ -110,6 +110,6 @@ bool gRunUnitTest(UnitTest::TestReporter &reporter)
 	UnitTest::SetAllocator(nullptr);
 	ncore::context_t::set_system_alloc(systemAllocator);
 
-	xbase::exit();
+	cbase::exit();
 	return r == 0;
 }

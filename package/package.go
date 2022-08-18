@@ -1,4 +1,4 @@
-package xhash
+package chash
 
 import (
 	cbase "github.com/jurgen-kluft/cbase/package"
@@ -7,28 +7,28 @@ import (
 	cunittest "github.com/jurgen-kluft/cunittest/package"
 )
 
-// GetPackage returns the package object of 'xhash'
+// GetPackage returns the package object of 'chash'
 func GetPackage() *denv.Package {
 	// Dependencies
 	cunittestpkg := cunittest.GetPackage()
 	centrypkg := centry.GetPackage()
-	xbasepkg := cbase.GetPackage()
+	cbasepkg := cbase.GetPackage()
 
-	// The main (xhash) package
+	// The main (chash) package
 	mainpkg := denv.NewPackage("chash")
 	mainpkg.AddPackage(cunittestpkg)
 	mainpkg.AddPackage(centrypkg)
-	mainpkg.AddPackage(xbasepkg)
+	mainpkg.AddPackage(cbasepkg)
 
-	// 'xhash' library
+	// 'chash' library
 	mainlib := denv.SetupDefaultCppLibProject("chash", "github.com\\jurgen-kluft\\chash")
-	mainlib.Dependencies = append(mainlib.Dependencies, xbasepkg.GetMainLib())
+	mainlib.Dependencies = append(mainlib.Dependencies, cbasepkg.GetMainLib())
 
-	// 'xhash' unittest project
+	// 'chash' unittest project
 	maintest := denv.SetupDefaultCppTestProject("chash_test", "github.com\\jurgen-kluft\\chash")
 	maintest.Dependencies = append(maintest.Dependencies, cunittestpkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, centrypkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, xbasepkg.GetMainLib())
+	maintest.Dependencies = append(maintest.Dependencies, cbasepkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, mainlib)
 
 	mainpkg.AddMainLib(mainlib)
