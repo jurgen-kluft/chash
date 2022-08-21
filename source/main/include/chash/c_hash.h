@@ -1,5 +1,5 @@
-#ifndef __XHASH_HASH_H__
-#define __XHASH_HASH_H__
+#ifndef __CHASH_HASH_H__
+#define __CHASH_HASH_H__
 #include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
