@@ -103,7 +103,7 @@ namespace ncore
 
         void update(cbuffer_t const& _buffer)
         {
-            const s32          len  = _buffer.size();
+            const uint_t    len  = _buffer.size();
             const u8*       p    = (const u8*)_buffer.m_const;
             const u8* const bEnd = p + len;
 

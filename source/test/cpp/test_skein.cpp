@@ -98,7 +98,7 @@ UNITTEST_SUITE_BEGIN(xskein)
             SkeinTestVectors::Vector *test = SkeinTestVectors::Tests_256_256;
             while (test->Msg != nullptr)
             {
-                x_memset(bytemsg, 0, sizeof(SkeinTestVectors::ByteMsg));
+                nmem::memset(bytemsg, 0, sizeof(SkeinTestVectors::ByteMsg));
 
                 u32 const test_bytelen = (test->Len + 7) / 8;
                 u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
@@ -111,7 +111,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 
                 u32 const verify_len = SkeinTestVectors::TextMsgToByteMsg(test->Digest, 32, bytemsg);
                 CHECK_EQUAL(hash.size(), verify_len);
-                CHECK_TRUE(x_memcmp(bytemsg, hash.m_data, 32) == 0);
+                CHECK_TRUE(nmem::memcmp(bytemsg, hash.m_data, 32) == 0);
                 test = test + 1;
             }
         }
@@ -124,7 +124,7 @@ UNITTEST_SUITE_BEGIN(xskein)
             SkeinTestVectors::Vector *test = SkeinTestVectors::Tests_512_512;
             while (test->Msg != nullptr)
             {
-                x_memset(bytemsg, 0, sizeof(SkeinTestVectors::ByteMsg));
+                nmem::memset(bytemsg, 0, sizeof(SkeinTestVectors::ByteMsg));
 
                 u32 const test_bytelen = (test->Len + 7) / 8;
                 u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
@@ -137,7 +137,7 @@ UNITTEST_SUITE_BEGIN(xskein)
 
                 u32 const verify_len = SkeinTestVectors::TextMsgToByteMsg(test->Digest, 64, bytemsg);
                 CHECK_EQUAL(hash.size(), verify_len);
-                CHECK_TRUE(x_memcmp(bytemsg, hash.m_data, 64) == 0);
+                CHECK_TRUE(nmem::memcmp(bytemsg, hash.m_data, 64) == 0);
                 test = test + 1;
             }
         }

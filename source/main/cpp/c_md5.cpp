@@ -99,7 +99,7 @@ namespace ncore
         */
     static void sByteSwap(u32 *ioBuffer, s32 inLength)
     {
-#if !defined(X_LITTLE_ENDIAN)
+#if !defined(D_LITTLE_ENDIAN)
         for (s32 i = 0; i < inLength; i++)
             ioBuffer[i] = x_endian_swap::swap(ioBuffer[i]);
 #endif
@@ -144,14 +144,14 @@ namespace ncore
         // If there's enough space in the buffer, just copy and exit
         if (len < space_left)
         {
-            x_memcopy((u8 *)mBuffer.mInput + buffer_offset, buffer.m_const, len);
+            nmem::memcpy((u8 *)mBuffer.mInput + buffer_offset, buffer.m_const, len);
             return;
         }
 
         // Fill up current buffer until it's full
         u8 const *data = (u8 const *)buffer.m_const;
         u32 length = len;
-        x_memcopy((u8 *)mBuffer.mInput + buffer_offset, data, space_left);
+        nmem::memcpy((u8 *)mBuffer.mInput + buffer_offset, data, space_left);
         sByteSwap(mBuffer.mInput, 16);
         transform();
         data += space_left;
@@ -160,7 +160,7 @@ namespace ncore
         // Process data in 64-byte chunks
         while (length >= 64)
         {
-            x_memcopy((u64 *)mBuffer.mInput, (u64 *)data, 64);
+            nmem::memcpy((u64 *)mBuffer.mInput, (u64 *)data, 64);
             sByteSwap(mBuffer.mInput, 16);
             transform();
             data += 64;
@@ -168,7 +168,7 @@ namespace ncore
         }
 
         // Handle any remaining bytes of data
-        x_memcopy(mBuffer.mInput, data, length);
+        nmem::memcpy(mBuffer.mInput, data, length);
     }
 
     /**
@@ -191,13 +191,13 @@ namespace ncore
             // Check if padding causes an extra block
             if (count < 0)
             {
-                x_memzero(p, count + 8);
+                nmem::memclr(p, count + 8);
                 sByteSwap(mBuffer.mInput, 16);
                 transform();
                 p = (u8 *)mBuffer.mInput;
                 count = 56;
             }
-            x_memzero(p, count);
+            nmem::memclr(p, count);
             sByteSwap(mBuffer.mInput, 14);
 
             // Append length of message in bits

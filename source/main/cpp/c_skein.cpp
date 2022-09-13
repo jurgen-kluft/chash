@@ -8,9 +8,9 @@ namespace ncore
 {
     namespace skein
     {
-#define memset x_memset
-#define memcpy x_memcpy
-#define memcmp x_memcmp
+#define memset nmem::memset
+#define memcpy nmem::memcpy
+#define memcmp nmem::memcmp
 
         typedef ncore::u32 uint_t; /* native unsigned integer */
         typedef ncore::u8  u08b_t; /*  8-bit unsigned integer */
@@ -329,10 +329,10 @@ namespace ncore
 #define RotL_64(x, N) (((x) << (N)) | ((x) >> (64 - (N))))
 #endif
 
-#if defined(X_BIG_ENDIAN)
+#if defined(D_BIG_ENDIAN)
         /* here for big-endian CPUs */
 #define SKEIN_NEED_SWAP (1)
-#elif defined(X_LITTLE_ENDIAN)
+#elif defined(D_LITTLE_ENDIAN)
         /* here for x86 and x86-64 CPUs (and other detected little-endian CPUs) */
 #define SKEIN_NEED_SWAP (0)
 #define Skein_Put64_LSB_First(dst08, src64, bCnt) memcpy(dst08, src64, bCnt)

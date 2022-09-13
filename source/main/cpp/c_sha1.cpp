@@ -53,7 +53,7 @@ namespace ncore
 #define SHA_ROL(X, n) SHA_ROT(X, n, 32 - (n))
 #define SHA_ROR(X, n) SHA_ROT(X, 32 - (n), n)
 
-#ifdef X_LITTLE_ENDIAN
+#ifdef D_LITTLE_ENDIAN
 #define xntohl(x) ((((u32)(x)&0xff000000) >> 24) | (((u32)(x)&0x00ff0000) >> 8) | (((u32)(x)&0x0000ff00) << 8) | (((u32)(x)&0x000000ff) << 24))
 
 #define xhtonl(x) xntohl(x)
@@ -229,7 +229,7 @@ namespace ncore
             u32 left = 64 - lenW;
             if (len < left)
                 left = len;
-            x_memcpy(lenW + (char*)ctx->W, data, left);
+            nmem::memcpy(lenW + (char*)ctx->W, data, left);
             lenW = (lenW + left) & 63;
             len -= left;
             data = ((const u8*)data + left);
@@ -244,7 +244,7 @@ namespace ncore
             len -= 64;
         }
         if (len)
-            x_memcpy(ctx->W, data, len);
+            nmem::memcpy(ctx->W, data, len);
     }
 
     static const u8 xsha1_ctx_pad[64] = {0x80};

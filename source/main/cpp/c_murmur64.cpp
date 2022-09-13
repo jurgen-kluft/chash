@@ -8,7 +8,7 @@
 
 namespace ncore
 {
-#ifdef X_LITTLE_ENDIAN
+#ifdef D_LITTLE_ENDIAN
 #define MURMUR64_ENDIAN_SWAP(r) (r)
 #else
 #define MURMUR64_ENDIAN_SWAP(r) (((r >> 24) & 0x000000FF) | ((r >> 8) & 0x0000FF00) | ((r << 8) & 0x00FF0000) | ((r << 24) & 0xFF000000))
