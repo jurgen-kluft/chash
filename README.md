@@ -1,4 +1,4 @@
-# xcore hash library
+# hash library
 
 A simple crc and hash library
 
@@ -12,4 +12,4 @@ A simple crc and hash library
 
 ## Dependencies
 
-- xbase
+- cbase
