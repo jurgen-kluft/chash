@@ -290,7 +290,7 @@ namespace ncore
         writer.write(*src++);
     }
 
-    void sha1_t::end(xdigest::sha1& _hash)
+    void sha1_t::end(ndigest::sha1& _hash)
     {
         xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
         if (ctx->computed == 0)
@@ -305,16 +305,16 @@ namespace ncore
             to_bytes(h, ctx->H[i]);
     }
 
-    void sha1_t::compute(cbuffer_t const& data, xdigest::sha1& hash)
+    void sha1_t::compute(cbuffer_t const& data, ndigest::sha1& hash)
     {
         reset();
         compute(data);
         end(hash);
     }
 
-    xdigest::sha1 sha1_t::compute(cbuffer_t const& data)
+    ndigest::sha1 sha1_t::compute(cbuffer_t const& data)
     {
-        xdigest::sha1 hash;
+        ndigest::sha1 hash;
         compute(data, hash);
         return hash;
     }

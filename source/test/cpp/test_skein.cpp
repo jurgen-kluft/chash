@@ -104,7 +104,7 @@ UNITTEST_SUITE_BEGIN(xskein)
                 u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
                 CHECK_EQUAL(test_bytelen, len);
 
-                xdigest::skein256 hash;
+                ndigest::skein256 hash;
                 ctx.reset();
                 ctx.hash(cbuffer_t(test_bytelen, bytemsg));
                 ctx.end(hash);
@@ -130,7 +130,7 @@ UNITTEST_SUITE_BEGIN(xskein)
                 u32 len = SkeinTestVectors::TextMsgToByteMsg(test->Msg, test_bytelen, bytemsg);
                 CHECK_EQUAL(test_bytelen, len);
 
-                xdigest::skein512 hash;
+                ndigest::skein512 hash;
                 ctx.reset();
                 ctx.hash(cbuffer_t(test_bytelen, bytemsg));
                 ctx.end(hash);

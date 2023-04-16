@@ -262,23 +262,23 @@ namespace ncore
         ctx->update(_buffer);
     }
 
-    void xxhash64_t::end(xdigest::xxhash64& out_hash)
+    void xxhash64_t::end(ndigest::xxhash64& out_hash)
     {
         xxhash64_ctxt_t* ctx    = (xxhash64_ctxt_t*)&this->m_ctxt;
         buffer_t         digest = out_hash.buffer();
         ctx->digest(digest);
     }
 
-    void xxhash64_t::compute(cbuffer_t const& data, xdigest::xxhash64& out_hash)
+    void xxhash64_t::compute(cbuffer_t const& data, ndigest::xxhash64& out_hash)
     {
         reset();
         hash(data);
         end(out_hash);
     }
 
-    xdigest::xxhash64 xxhash64_t::compute(cbuffer_t const& data)
+    ndigest::xxhash64 xxhash64_t::compute(cbuffer_t const& data)
     {
-        xdigest::xxhash64 hash;
+        ndigest::xxhash64 hash;
         compute(data, hash);
         return hash;
     }

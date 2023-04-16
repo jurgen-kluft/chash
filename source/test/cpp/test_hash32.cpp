@@ -15,7 +15,7 @@ UNITTEST_SUITE_BEGIN(murmur32_t)
 
 		static u32 murmur32_hash(cbuffer_t const& b)
 		{
-			xdigest::murmur32 h1 = murmur32.compute(b);
+			ndigest::murmur32 h1 = murmur32.compute(b);
 			binary_reader_t reader(h1.cbuffer());
 			u32 h2;
 			reader.read(h2);
