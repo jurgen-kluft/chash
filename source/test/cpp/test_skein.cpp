@@ -73,7 +73,7 @@ namespace SkeinTestVectors
 
 }; // namespace SkeinTestVectors
 
-UNITTEST_SUITE_BEGIN(xskein)
+UNITTEST_SUITE_BEGIN(skein)
 {
     UNITTEST_FIXTURE(type)
     {

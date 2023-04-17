@@ -6,11 +6,11 @@
 #include "cunittest/cunittest.h"
 
 UNITTEST_SUITE_LIST(cUnitTest);
-UNITTEST_SUITE_DECLARE(cUnitTest, xcrc);
+UNITTEST_SUITE_DECLARE(cUnitTest, crc);
 UNITTEST_SUITE_DECLARE(cUnitTest, md5_t);
 UNITTEST_SUITE_DECLARE(cUnitTest, sha1_t);
-UNITTEST_SUITE_DECLARE(cUnitTest, xskein);
-UNITTEST_SUITE_DECLARE(cUnitTest, xuuid);
+UNITTEST_SUITE_DECLARE(cUnitTest, skein);
+UNITTEST_SUITE_DECLARE(cUnitTest, uuid);
 UNITTEST_SUITE_DECLARE(cUnitTest, murmur32_t);
 UNITTEST_SUITE_DECLARE(cUnitTest, murmur64_t);
 UNITTEST_SUITE_DECLARE(cUnitTest, xxhash64_t);

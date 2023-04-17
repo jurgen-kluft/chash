@@ -5,7 +5,7 @@
 
 using namespace ncore;
 
-UNITTEST_SUITE_BEGIN(xuuid)
+UNITTEST_SUITE_BEGIN(uuid)
 {
 	UNITTEST_FIXTURE(main)
 	{
