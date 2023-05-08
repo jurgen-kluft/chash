@@ -7,7 +7,7 @@
 // x_crc.h - Core Checksum functions 
 #ifndef __CHASH_CHECKSUM_H__
 #define __CHASH_CHECKSUM_H__
-#include "cbase/c_target.h"
+#include "ccore/c_target.h"
 #ifdef USE_PRAGMA_ONCE
 #pragma once
 #endif

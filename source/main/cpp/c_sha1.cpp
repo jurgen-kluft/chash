@@ -1,4 +1,4 @@
-#include "cbase/c_target.h"
+#include "ccore/c_target.h"
 #include "cbase/c_va_list.h"
 #include "cbase/c_integer.h"
 #include "cbase/c_memory.h"
@@ -54,12 +54,12 @@ namespace ncore
 #define SHA_ROR(X, n) SHA_ROT(X, 32 - (n), n)
 
 #ifdef D_LITTLE_ENDIAN
-#define xntohl(x) ((((u32)(x)&0xff000000) >> 24) | (((u32)(x)&0x00ff0000) >> 8) | (((u32)(x)&0x0000ff00) << 8) | (((u32)(x)&0x000000ff) << 24))
+#    define xntohl(x) ((((u32)(x)&0xff000000) >> 24) | (((u32)(x)&0x00ff0000) >> 8) | (((u32)(x)&0x0000ff00) << 8) | (((u32)(x)&0x000000ff) << 24))
 
-#define xhtonl(x) xntohl(x)
+#    define xhtonl(x) xntohl(x)
 #else
-#define xntohl(x) (x)
-#define xhtonl(x) (x)
+#    define xntohl(x) (x)
+#    define xhtonl(x) (x)
 #endif
 
 #define get_be32(p) xntohl(*(u32*)(p))
@@ -219,7 +219,7 @@ namespace ncore
     {
         u32 lenW = ctx->size & 63;
 
-        u32          len  = (u32)buffer.size();
+        u32       len  = (u32)buffer.size();
         u8 const* data = buffer.m_const;
         ctx->size += len;
 
@@ -281,8 +281,8 @@ namespace ncore
 
     inline void to_bytes(buffer_t& bytes, u32 p)
     {
-        p                   = x_NetworkEndian::swap(p);
-        u8 const*    src = (u8 const*)&p;
+        p                   = nendian_ne::swap(p);
+        u8 const*       src = (u8 const*)&p;
         binary_writer_t writer(bytes);
         writer.write(*src++);
         writer.write(*src++);

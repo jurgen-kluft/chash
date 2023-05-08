@@ -1,6 +1,6 @@
 #ifndef __CHASH_HASH_H__
 #define __CHASH_HASH_H__
-#include "cbase/c_target.h"
+#include "ccore/c_target.h"
 #ifdef USE_PRAGMA_ONCE
 #    pragma once
 #endif
@@ -18,26 +18,26 @@ namespace ncore
             u8               m_data[SIZE];
             inline buffer_t  buffer() const { return buffer_t(SIZE, (u8*)m_data); }
             inline cbuffer_t cbuffer() const { return cbuffer_t(SIZE, (u8 const*)m_data); }
-
-            inline bool equal(const T& a, const T& b)
-            {
-                cbuffer_t ba = a.cbuffer();
-                cbuffer_t bb = b.cbuffer();
-                return ba == bb;
-            }
-            inline bool not_equal(const T& a, const T& b)
-            {
-                cbuffer_t ba = a.cbuffer();
-                cbuffer_t bb = b.cbuffer();
-                return ba != bb;
-            }
-            inline s32 compare(const T& a, const T& b)
-            {
-                cbuffer_t ba = a.cbuffer();
-                cbuffer_t bb = b.cbuffer();
-                return ba.compare(bb);
-            }
         };
+
+        template <s32 N> inline bool equal(const digest_t<N>& a, const digest_t<N>& b)
+        {
+            cbuffer_t ba = a.cbuffer();
+            cbuffer_t bb = b.cbuffer();
+            return ba == bb;
+        }
+        template <s32 N> inline bool equal(const digest_t<N>& a, const digest_t<N>& b)
+        {
+            cbuffer_t ba = a.cbuffer();
+            cbuffer_t bb = b.cbuffer();
+            return ba != bb;
+        }
+        template <s32 N> inline s32 compare(const digest_t<N>& a, const digest_t<N>& b)
+        {
+            cbuffer_t ba = a.cbuffer();
+            cbuffer_t bb = b.cbuffer();
+            return ba.compare(bb);
+        }
 
         typedef digest_t<16>  md5;
         typedef digest_t<20>  sha1;
@@ -113,7 +113,7 @@ namespace ncore
         bool m_initialized;
         u64  m_ctxt[19];
     };
-    static skein512 _tskein512;
+    static skein512_t skein512;
 
     struct skein1024_t
     {
