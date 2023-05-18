@@ -2,7 +2,8 @@ package chash
 
 import (
 	cbase "github.com/jurgen-kluft/cbase/package"
-	"github.com/jurgen-kluft/ccode/denv"
+	denv "github.com/jurgen-kluft/ccode/denv"
+	ccore "github.com/jurgen-kluft/ccore/package"
 	cunittest "github.com/jurgen-kluft/cunittest/package"
 )
 
@@ -11,20 +12,24 @@ func GetPackage() *denv.Package {
 	// Dependencies
 	cunittestpkg := cunittest.GetPackage()
 	cbasepkg := cbase.GetPackage()
+	ccorepkg := ccore.GetPackage()
 
 	// The main (chash) package
 	mainpkg := denv.NewPackage("chash")
 	mainpkg.AddPackage(cunittestpkg)
 	mainpkg.AddPackage(cbasepkg)
+	mainpkg.AddPackage(ccorepkg)
 
 	// 'chash' library
 	mainlib := denv.SetupDefaultCppLibProject("chash", "github.com\\jurgen-kluft\\chash")
 	mainlib.Dependencies = append(mainlib.Dependencies, cbasepkg.GetMainLib())
+	mainlib.Dependencies = append(mainlib.Dependencies, ccorepkg.GetMainLib())
 
 	// 'chash' unittest project
 	maintest := denv.SetupDefaultCppTestProject("chash_test", "github.com\\jurgen-kluft\\chash")
 	maintest.Dependencies = append(maintest.Dependencies, cunittestpkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, cbasepkg.GetMainLib())
+	maintest.Dependencies = append(maintest.Dependencies, ccorepkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, mainlib)
 
 	mainpkg.AddMainLib(mainlib)

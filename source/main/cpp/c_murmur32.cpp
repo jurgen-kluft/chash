@@ -68,9 +68,9 @@ namespace ncore
 
     void murmur32_t::hash(cbuffer_t const& _buffer) { m_hash = gGetMurmurHash32(_buffer, m_hash); }
 
-    void murmur32_t::end(ndigest::murmur32& _hash)
+    void murmur32_t::end(nhash::murmur32& _hash)
     {
-        u32             p   = x_NetworkEndian::swap(m_hash);
+        u32             p   = nendian_ne::swap(m_hash);
         u8 const*    src = (u8 const*)&p;
         binary_writer_t writer(_hash.buffer());
         writer.write(*src++);
@@ -79,16 +79,16 @@ namespace ncore
         writer.write(*src++);
     }
 
-    void murmur32_t::compute(cbuffer_t const& data, ndigest::murmur32& out_hash)
+    void murmur32_t::compute(cbuffer_t const& data, nhash::murmur32& out_hash)
     {
         reset();
         hash(data);
         end(out_hash);
     }
 
-    ndigest::murmur32 murmur32_t::compute(cbuffer_t const& data)
+    nhash::murmur32 murmur32_t::compute(cbuffer_t const& data)
     {
-        ndigest::murmur32 hash;
+        nhash::murmur32 hash;
         compute(data, hash);
         return hash;
     }

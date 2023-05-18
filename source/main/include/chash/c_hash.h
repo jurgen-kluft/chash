@@ -9,7 +9,7 @@
 
 namespace ncore
 {
-    namespace ndigest
+    namespace nhash
     {
         template <s32 N> struct digest_t
         {
@@ -26,12 +26,6 @@ namespace ncore
             cbuffer_t bb = b.cbuffer();
             return ba == bb;
         }
-        template <s32 N> inline bool equal(const digest_t<N>& a, const digest_t<N>& b)
-        {
-            cbuffer_t ba = a.cbuffer();
-            cbuffer_t bb = b.cbuffer();
-            return ba != bb;
-        }
         template <s32 N> inline s32 compare(const digest_t<N>& a, const digest_t<N>& b)
         {
             cbuffer_t ba = a.cbuffer();
@@ -47,19 +41,19 @@ namespace ncore
         typedef digest_t<4>   murmur32;
         typedef digest_t<8>   murmur64;
         typedef digest_t<8>   xxhash64;
-    }; // namespace ndigest
+    }; // namespace nhash
 
     struct md5_t
     {
         md5_t();
 
-        s32  size() const { return sizeof(ndigest::md5); }
+        s32  size() const { return sizeof(nhash::md5); }
         void reset();
         void hash(cbuffer_t const& data);
-        void end(ndigest::md5&);
+        void end(nhash::md5&);
 
-        void         compute(cbuffer_t const& data, ndigest::md5&);
-        ndigest::md5 compute(cbuffer_t const& data);
+        void       compute(cbuffer_t const& data, nhash::md5&);
+        nhash::md5 compute(cbuffer_t const& data);
 
         u64 m_ctxt[12];
     };
@@ -69,13 +63,13 @@ namespace ncore
     {
         sha1_t();
 
-        s32  size() const { return sizeof(ndigest::sha1); }
+        s32  size() const { return sizeof(nhash::sha1); }
         void reset();
         void hash(cbuffer_t const& data);
-        void end(ndigest::sha1&);
+        void end(nhash::sha1&);
 
-        void          compute(cbuffer_t const& data, ndigest::sha1&);
-        ndigest::sha1 compute(cbuffer_t const& data);
+        void        compute(cbuffer_t const& data, nhash::sha1&);
+        nhash::sha1 compute(cbuffer_t const& data);
 
         u64 m_ctxt[12];
     };
@@ -85,13 +79,13 @@ namespace ncore
     {
         skein256_t();
 
-        s32  size() const { return sizeof(ndigest::skein256); }
+        s32  size() const { return sizeof(nhash::skein256); }
         void reset();
         void hash(cbuffer_t const& data);
-        void end(ndigest::skein256&);
+        void end(nhash::skein256&);
 
-        void              compute(cbuffer_t const& data, ndigest::skein256&);
-        ndigest::skein256 compute(cbuffer_t const& data);
+        void            compute(cbuffer_t const& data, nhash::skein256&);
+        nhash::skein256 compute(cbuffer_t const& data);
 
         bool m_initialized;
         u64  m_ctxt[11];
@@ -102,13 +96,13 @@ namespace ncore
     {
         skein512_t();
 
-        s32  size() const { return sizeof(ndigest::skein512); }
+        s32  size() const { return sizeof(nhash::skein512); }
         void reset();
         void hash(cbuffer_t const& data);
-        void end(ndigest::skein512&);
+        void end(nhash::skein512&);
 
-        void              compute(cbuffer_t const& data, ndigest::skein512&);
-        ndigest::skein512 compute(cbuffer_t const& data);
+        void            compute(cbuffer_t const& data, nhash::skein512&);
+        nhash::skein512 compute(cbuffer_t const& data);
 
         bool m_initialized;
         u64  m_ctxt[19];
@@ -119,13 +113,13 @@ namespace ncore
     {
         skein1024_t();
 
-        s32  size() const { return sizeof(ndigest::skein1024); }
+        s32  size() const { return sizeof(nhash::skein1024); }
         void reset();
         void hash(cbuffer_t const& data);
-        void end(ndigest::skein1024&);
+        void end(nhash::skein1024&);
 
-        void               compute(cbuffer_t const& data, ndigest::skein1024&);
-        ndigest::skein1024 compute(cbuffer_t const& data);
+        void             compute(cbuffer_t const& data, nhash::skein1024&);
+        nhash::skein1024 compute(cbuffer_t const& data);
 
         bool m_initialized;
         u64  m_ctxt[35];
@@ -136,13 +130,13 @@ namespace ncore
     {
         murmur32_t(u32 seed = 0);
 
-        s32  size() const { return sizeof(ndigest::murmur32); }
+        s32  size() const { return sizeof(nhash::murmur32); }
         void reset();
         void hash(cbuffer_t const& data);
-        void end(ndigest::murmur32&);
+        void end(nhash::murmur32&);
 
-        void              compute(cbuffer_t const& data, ndigest::murmur32&);
-        ndigest::murmur32 compute(cbuffer_t const& data);
+        void            compute(cbuffer_t const& data, nhash::murmur32&);
+        nhash::murmur32 compute(cbuffer_t const& data);
 
         u32 m_seed;
         u32 m_hash;
@@ -153,13 +147,13 @@ namespace ncore
     {
         murmur64_t(u64 seed = 0);
 
-        s32  size() const { return sizeof(ndigest::murmur64); }
+        s32  size() const { return sizeof(nhash::murmur64); }
         void reset();
         void hash(cbuffer_t const& data);
-        void end(ndigest::murmur64&);
+        void end(nhash::murmur64&);
 
-        void              compute(cbuffer_t const& data, ndigest::murmur64&);
-        ndigest::murmur64 compute(cbuffer_t const& data);
+        void            compute(cbuffer_t const& data, nhash::murmur64&);
+        nhash::murmur64 compute(cbuffer_t const& data);
 
         u64 m_seed;
         u64 m_hash;
@@ -170,13 +164,13 @@ namespace ncore
     {
         xxhash64_t(u64 seed = 0);
 
-        s32  size() const { return sizeof(ndigest::xxhash64); }
+        s32  size() const { return sizeof(nhash::xxhash64); }
         void reset();
         void hash(cbuffer_t const& data);
-        void end(ndigest::xxhash64&);
+        void end(nhash::xxhash64&);
 
-        void              compute(cbuffer_t const& data, ndigest::xxhash64&);
-        ndigest::xxhash64 compute(cbuffer_t const& data);
+        void            compute(cbuffer_t const& data, nhash::xxhash64&);
+        nhash::xxhash64 compute(cbuffer_t const& data);
 
         u64 m_seed;
         u64 m_ctxt[11];

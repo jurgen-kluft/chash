@@ -92,25 +92,25 @@ namespace ncore
 
     void murmur64_t::hash(cbuffer_t const& _buffer) { m_hash = gGetMurmurHash64(_buffer, m_hash); }
 
-    void murmur64_t::end(ndigest::murmur64& _hash)
+    void murmur64_t::end(nhash::murmur64& _hash)
     {
-        u64            p   = x_NetworkEndian::swap(m_hash);
+        u64            p   = nendian_ne::swap(m_hash);
         u8 const*   src = (u8 const*)&p;
         binary_writer_t writer(_hash.buffer());
         for (int i = 0; i < 8; i++)
             writer.write(*src++);
     }
 
-    void murmur64_t::compute(cbuffer_t const& data, ndigest::murmur64& out_hash)
+    void murmur64_t::compute(cbuffer_t const& data, nhash::murmur64& out_hash)
     {
         reset();
         hash(data);
         end(out_hash);
     }
 
-    ndigest::murmur64 murmur64_t::compute(cbuffer_t const& data)
+    nhash::murmur64 murmur64_t::compute(cbuffer_t const& data)
     {
-        ndigest::murmur64 hash;
+        nhash::murmur64 hash;
         compute(data, hash);
         return hash;
     }

@@ -342,22 +342,22 @@ namespace ncore
         ctx->update(_buffer);
     }
 
-    void md5_t::end(ndigest::md5 &out_hash)
+    void md5_t::end(nhash::md5 &out_hash)
     {
         md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
         ctx->digest(out_hash.buffer());
     }
 
-    void md5_t::compute(cbuffer_t const &data, ndigest::md5 &out_hash)
+    void md5_t::compute(cbuffer_t const &data, nhash::md5 &out_hash)
     {
         reset();
         hash(data);
         end(out_hash);
     }
 
-    ndigest::md5 md5_t::compute(cbuffer_t const &data)
+    nhash::md5 md5_t::compute(cbuffer_t const &data)
     {
-        ndigest::md5 hash;
+        nhash::md5 hash;
         compute(data, hash);
         return hash;
     }

@@ -1570,7 +1570,7 @@ namespace ncore
             skein::Skein_256_Update(ctx, (u8 const*)data.m_const, data.size());
     }
 
-    void skein256_t::end(ndigest::skein256& hash)
+    void skein256_t::end(nhash::skein256& hash)
     {
         skein::Skein_256_Ctxt_t* ctx = (skein::Skein_256_Ctxt_t*)&m_ctxt;
         if (m_initialized)
@@ -1581,16 +1581,16 @@ namespace ncore
         }
     }
 
-    void skein256_t::compute(cbuffer_t const& data, ndigest::skein256& h)
+    void skein256_t::compute(cbuffer_t const& data, nhash::skein256& h)
     {
         reset();
         compute(data);
         end(h);
     }
 
-    ndigest::skein256 skein256_t::compute(cbuffer_t const& data)
+    nhash::skein256 skein256_t::compute(cbuffer_t const& data)
     {
-        ndigest::skein256 hash;
+        nhash::skein256 hash;
         compute(data, hash);
         return hash;
     }
@@ -1615,7 +1615,7 @@ namespace ncore
             skein::Skein_512_Update(ctx, (u8 const*)data.m_const, data.size());
     }
 
-    void skein512_t::end(ndigest::skein512& hash)
+    void skein512_t::end(nhash::skein512& hash)
     {
         skein::Skein_512_Ctxt_t* ctx = (skein::Skein_512_Ctxt_t*)&m_ctxt;
         if (m_initialized)
@@ -1626,16 +1626,16 @@ namespace ncore
         }
     }
 
-    void skein512_t::compute(cbuffer_t const& data, ndigest::skein512& hash)
+    void skein512_t::compute(cbuffer_t const& data, nhash::skein512& hash)
     {
         reset();
         compute(data);
         end(hash);
     }
 
-    ndigest::skein512 skein512_t::compute(cbuffer_t const& data)
+    nhash::skein512 skein512_t::compute(cbuffer_t const& data)
     {
-        ndigest::skein512 hash;
+        nhash::skein512 hash;
         compute(data, hash);
         return hash;
     }
@@ -1660,7 +1660,7 @@ namespace ncore
             skein::Skein1024_Update(ctx, (u8 const*)data.m_const, data.size());
     }
 
-    void skein1024_t::end(ndigest::skein1024& hash)
+    void skein1024_t::end(nhash::skein1024& hash)
     {
         skein::Skein1024_Ctxt_t* ctx = (skein::Skein1024_Ctxt_t*)&m_ctxt;
         if (m_initialized)
@@ -1671,16 +1671,16 @@ namespace ncore
         }
     }
 
-    void skein1024_t::compute(cbuffer_t const& data, ndigest::skein1024& hash)
+    void skein1024_t::compute(cbuffer_t const& data, nhash::skein1024& hash)
     {
         reset();
         compute(data);
         end(hash);
     }
 
-    ndigest::skein1024 skein1024_t::compute(cbuffer_t const& data)
+    nhash::skein1024 skein1024_t::compute(cbuffer_t const& data)
     {
-        ndigest::skein1024 hash;
+        nhash::skein1024 hash;
         compute(data, hash);
         return hash;
     }
