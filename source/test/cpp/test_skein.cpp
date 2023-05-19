@@ -1,7 +1,9 @@
 #include "ccore/c_target.h"
+#include "cbase/c_memory.h"
 #include "cbase/c_runes.h"
 
 #include "chash/c_hash.h"
+#include "chash/private/c_internal_hash.h"
 
 #include "cunittest/cunittest.h"
 
@@ -106,8 +108,8 @@ UNITTEST_SUITE_BEGIN(skein)
 
                 nhash::skein256 hash;
                 ctx.reset();
-                ctx.hash(cbuffer_t(test_bytelen, bytemsg));
-                ctx.end(hash);
+                ctx.hash(bytemsg, test_bytelen);
+                ctx.end(hash.m_data);
 
                 u32 const verify_len = SkeinTestVectors::TextMsgToByteMsg(test->Digest, 32, bytemsg);
                 CHECK_EQUAL(hash.size(), verify_len);
@@ -132,8 +134,8 @@ UNITTEST_SUITE_BEGIN(skein)
 
                 nhash::skein512 hash;
                 ctx.reset();
-                ctx.hash(cbuffer_t(test_bytelen, bytemsg));
-                ctx.end(hash);
+                ctx.hash(bytemsg, test_bytelen);
+                ctx.end(hash.m_data);
 
                 u32 const verify_len = SkeinTestVectors::TextMsgToByteMsg(test->Digest, 64, bytemsg);
                 CHECK_EQUAL(hash.size(), verify_len);

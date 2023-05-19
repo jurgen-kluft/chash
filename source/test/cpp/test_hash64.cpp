@@ -1,6 +1,7 @@
 #include "ccore/c_target.h"
 #include "cbase/c_buffer.h"
 #include "chash/c_hash.h"
+#include "chash/private/c_internal_hash.h"
 
 #include "cunittest/cunittest.h"
 
@@ -15,8 +16,13 @@ UNITTEST_SUITE_BEGIN(murmur64_t)
 
 		static u64 murmur64_hash(cbuffer_t const& b)
 		{
-			nhash::murmur64 h1 = murmur64.compute(b);
-			binary_reader_t reader(h1.cbuffer());
+			murmur64_t murmur64;
+
+			nhash::murmur64 h1;
+			murmur64.reset();
+			murmur64.hash(b.m_const, b.m_len);
+			murmur64.end(h1.m_data);
+			binary_reader_t reader(h1.m_data, h1.SIZE);
 			u64 h2;
 			reader.read(h2);
 			return h2;

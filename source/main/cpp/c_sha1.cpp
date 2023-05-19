@@ -5,6 +5,7 @@
 #include "cbase/c_endian.h"
 
 #include "chash/c_hash.h"
+#include "chash/private/c_internal_hash.h"
 
 namespace ncore
 {
@@ -215,12 +216,12 @@ namespace ncore
         ctx->H[4] += E;
     }
 
-    void xsha1_ctx_update(xsha1_ctx* ctx, cbuffer_t const& buffer)
+    void xsha1_ctx_update(xsha1_ctx* ctx, u8 const* buffer, u32 buffer_size)
     {
         u32 lenW = ctx->size & 63;
 
-        u32       len  = (u32)buffer.size();
-        u8 const* data = buffer.m_const;
+        u32       len  = buffer_size;
+        u8 const* data = buffer;
         ctx->size += len;
 
         // Read the data into W and process blocks as they get full
@@ -257,8 +258,8 @@ namespace ncore
 
         s32 i = ctx->size & 63;
         // xsha1_ctx_update(ctx, pad, 1 + (63 & (55 - i)));
-        xsha1_ctx_update(ctx, cbuffer_t(1 + (63 & (55 - i)), xsha1_ctx_pad));
-        xsha1_ctx_update(ctx, cbuffer_t(8, (u8 const*)padlen));
+        xsha1_ctx_update(ctx, xsha1_ctx_pad, 1 + (63 & (55 - i)));
+        xsha1_ctx_update(ctx, (u8 const*)padlen, 8);
     }
 
     sha1_t::sha1_t()
@@ -273,24 +274,13 @@ namespace ncore
         xsha1_ctx_init(ctx);
     }
 
-    void sha1_t::hash(cbuffer_t const& _buffer)
+    void sha1_t::hash(u8 const* _buffer, u32 size)
     {
         xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
-        xsha1_ctx_update(ctx, _buffer);
+        xsha1_ctx_update(ctx, _buffer, size);
     }
 
-    inline void to_bytes(buffer_t& bytes, u32 p)
-    {
-        p                   = nendian_ne::swap(p);
-        u8 const*       src = (u8 const*)&p;
-        binary_writer_t writer(bytes);
-        writer.write(*src++);
-        writer.write(*src++);
-        writer.write(*src++);
-        writer.write(*src++);
-    }
-
-    void sha1_t::end(nhash::sha1& _hash)
+    void sha1_t::end(u8* _hash)
     {
         xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
         if (ctx->computed == 0)
@@ -299,24 +289,22 @@ namespace ncore
             ctx->computed = 1;
         }
 
-        u32      idx = 0;
-        buffer_t h   = _hash.buffer();
         for (s32 i = 0; i < 5; ++i)
-            to_bytes(h, ctx->H[i]);
+        {
+            u32 const* h = &ctx->H[i];
+#if defined(NCORE_BIG_ENDIAN)
+            _hash[4 * i + 0] = h[0];
+            _hash[4 * i + 1] = h[1];
+            _hash[4 * i + 2] = h[2];
+            _hash[4 * i + 3] = h[3];
+#else
+            _hash[4 * i + 0] = h[3];
+            _hash[4 * i + 1] = h[2];
+            _hash[4 * i + 2] = h[1];
+            _hash[4 * i + 3] = h[0];
+#endif
+        }
     }
 
-    void sha1_t::compute(cbuffer_t const& data, nhash::sha1& hash)
-    {
-        reset();
-        compute(data);
-        end(hash);
-    }
-
-    nhash::sha1 sha1_t::compute(cbuffer_t const& data)
-    {
-        nhash::sha1 hash;
-        compute(data, hash);
-        return hash;
-    }
 
 } // namespace ncore

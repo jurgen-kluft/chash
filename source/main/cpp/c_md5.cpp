@@ -3,6 +3,7 @@
 #include "cbase/c_endian.h"
 #include "cbase/c_buffer.h"
 #include "chash/c_hash.h"
+#include "chash/private/c_internal_hash.h"
 
 namespace ncore
 {
@@ -24,8 +25,8 @@ namespace ncore
         ///@name Updating
         u32 length() const { return 16; }
         void reset();
-        void update(cbuffer_t const &buffer);
-        void digest(buffer_t hash);
+        void update(const u8* data, u32 size);
+        void digest(u8* out_hash);
 
         DCORE_CLASS_PLACEMENT_NEW_DELETE
     private:
@@ -129,7 +130,7 @@ namespace ncore
      * @param inData	Buffer to update hash with
      * @param inLength	Length of buffer in bytes
      */
-    void md5_ctx_t::update(const cbuffer_t &buffer)
+    void md5_ctx_t::update(const u8* buffer, u32 size)
     {
         ASSERTS(mState == OPEN, "Can't compute hash value before Open() has been called!");
 
@@ -138,18 +139,18 @@ namespace ncore
         u32 space_left = 64 - buffer_offset; // Space available in mBuffer.mInput (at least 1)
 
         // Update length
-        u32 const len = (u32)buffer.size();
+        u32 const len = (u32)size;
         mLength += len;
 
         // If there's enough space in the buffer, just copy and exit
         if (len < space_left)
         {
-            nmem::memcpy((u8 *)mBuffer.mInput + buffer_offset, buffer.m_const, len);
+            nmem::memcpy((u8 *)mBuffer.mInput + buffer_offset, buffer, len);
             return;
         }
 
         // Fill up current buffer until it's full
-        u8 const *data = (u8 const *)buffer.m_const;
+        u8 const *data = (u8 const *)buffer;
         u32 length = len;
         nmem::memcpy((u8 *)mBuffer.mInput + buffer_offset, data, space_left);
         sByteSwap(mBuffer.mInput, 16);
@@ -174,7 +175,7 @@ namespace ncore
     /**
      * @brief Get final hash value
      */
-    void md5_ctx_t::digest(buffer_t digest)
+    void md5_ctx_t::digest(u8* digest)
     {
         // If this is the first time we call GetHash(), finish the last transform
         if (mState == OPEN)
@@ -212,9 +213,8 @@ namespace ncore
 
         // export digest
         u8 const *src = (u8 const *)&mMD5[0];
-        binary_writer_t w(digest);
         for (s32 i = 0; i < 16; ++i)
-            w.write(*src++);
+            digest[i] = src[i];
     }
 
     void md5_ctx_t::reset()
@@ -336,30 +336,16 @@ namespace ncore
         ctx->reset();
     }
 
-    void md5_t::hash(cbuffer_t const &_buffer)
+    void md5_t::hash(const u8* data, u32 size)
     {
         md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
-        ctx->update(_buffer);
+        ctx->update(data, size);
     }
 
-    void md5_t::end(nhash::md5 &out_hash)
+    void md5_t::end(u8* out_hash)
     {
         md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
-        ctx->digest(out_hash.buffer());
-    }
-
-    void md5_t::compute(cbuffer_t const &data, nhash::md5 &out_hash)
-    {
-        reset();
-        hash(data);
-        end(out_hash);
-    }
-
-    nhash::md5 md5_t::compute(cbuffer_t const &data)
-    {
-        nhash::md5 hash;
-        compute(data, hash);
-        return hash;
+        ctx->digest(out_hash);
     }
 
 } // namespace ncore

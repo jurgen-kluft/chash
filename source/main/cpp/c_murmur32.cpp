@@ -5,17 +5,18 @@
 #include "cbase/c_endian.h"
 
 #include "chash/c_hash.h"
+#include "chash/private/c_internal_hash.h"
 
 namespace ncore
 {
-    ncore::u32 gGetMurmurHash32(cbuffer_t const& buffer, u32 seed)
+    ncore::u32 gGetMurmurHash32(const u8* _data, u32 size, u32 seed)
     {
         // 'm' and 'r' are mixing constants generated offline.
         // They're not really 'magic', they just happen to work well.
 
         const ncore::u32 m      = 0x5bd1e995;
         const ncore::s32 r      = 24;
-        ncore::u32       length = (u32)buffer.size();
+        ncore::u32       length = size;
 
         // Initialize the hash to a 'random' value
 
@@ -23,7 +24,7 @@ namespace ncore
 
         // Mix 4 bytes at a time into the hash
 
-        const ncore::u8* data = (const ncore::u8*)buffer.m_const;
+        const ncore::u8* data = _data;
         while (length >= 4)
         {
             ncore::u32 k;
@@ -66,31 +67,16 @@ namespace ncore
 
     void murmur32_t::reset() { m_hash = m_seed; }
 
-    void murmur32_t::hash(cbuffer_t const& _buffer) { m_hash = gGetMurmurHash32(_buffer, m_hash); }
+    void murmur32_t::hash(const u8* _buffer, u32 size) { m_hash = gGetMurmurHash32(_buffer, size, m_hash); }
 
-    void murmur32_t::end(nhash::murmur32& _hash)
+    void murmur32_t::end(u8* _hash)
     {
-        u32             p   = nendian_ne::swap(m_hash);
-        u8 const*    src = (u8 const*)&p;
-        binary_writer_t writer(_hash.buffer());
-        writer.write(*src++);
-        writer.write(*src++);
-        writer.write(*src++);
-        writer.write(*src++);
-    }
-
-    void murmur32_t::compute(cbuffer_t const& data, nhash::murmur32& out_hash)
-    {
-        reset();
-        hash(data);
-        end(out_hash);
-    }
-
-    nhash::murmur32 murmur32_t::compute(cbuffer_t const& data)
-    {
-        nhash::murmur32 hash;
-        compute(data, hash);
-        return hash;
+        u32       p   = nendian_ne::swap(m_hash);
+        u8 const* src = (u8 const*)&p;
+        _hash[0]      = src[0];
+        _hash[1]      = src[1];
+        _hash[2]      = src[2];
+        _hash[3]      = src[3];
     }
 
 } // namespace ncore

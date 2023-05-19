@@ -5,26 +5,27 @@
 #include "cbase/c_endian.h"
 
 #include "chash/c_hash.h"
+#include "chash/private/c_internal_hash.h"
 
 namespace ncore
 {
 #ifdef D_LITTLE_ENDIAN
-#define MURMUR64_ENDIAN_SWAP(r) (r)
+#    define MURMUR64_ENDIAN_SWAP(r) (r)
 #else
-#define MURMUR64_ENDIAN_SWAP(r) (((r >> 24) & 0x000000FF) | ((r >> 8) & 0x0000FF00) | ((r << 8) & 0x00FF0000) | ((r << 24) & 0xFF000000))
+#    define MURMUR64_ENDIAN_SWAP(r) (((r >> 24) & 0x000000FF) | ((r >> 8) & 0x0000FF00) | ((r << 8) & 0x00FF0000) | ((r << 24) & 0xFF000000))
 #endif
 
-    ncore::u64 gGetMurmurHash64(cbuffer_t const& buffer, u64 seed)
+    ncore::u64 gGetMurmurHash64(const u8* buffer, u32 size, u64 seed)
     {
         const ncore::u32 m = 0x5bd1e995;
         const ncore::s32 r = 24;
 
-        u32 len = (u32)buffer.size();
+        u32 len = size;
 
         ncore::u32 h1 = ncore::u32(seed) ^ len;
         ncore::u32 h2 = ncore::u32(seed >> 32);
 
-        const ncore::u32* data = (const ncore::u32*)buffer.m_const;
+        const ncore::u32* data = (const ncore::u32*)buffer;
 
         while (len >= 8)
         {
@@ -90,29 +91,14 @@ namespace ncore
 
     void murmur64_t::reset() { m_hash = m_seed; }
 
-    void murmur64_t::hash(cbuffer_t const& _buffer) { m_hash = gGetMurmurHash64(_buffer, m_hash); }
+    void murmur64_t::hash(const u8* _buffer, u32 size) { m_hash = gGetMurmurHash64(_buffer, size, m_hash); }
 
-    void murmur64_t::end(nhash::murmur64& _hash)
+    void murmur64_t::end(u8* _hash)
     {
-        u64            p   = nendian_ne::swap(m_hash);
-        u8 const*   src = (u8 const*)&p;
-        binary_writer_t writer(_hash.buffer());
+        u64       p   = nendian_ne::swap(m_hash);
+        u8 const* src = (u8 const*)&p;
         for (int i = 0; i < 8; i++)
-            writer.write(*src++);
+            _hash[i] = *src++;
     }
 
-    void murmur64_t::compute(cbuffer_t const& data, nhash::murmur64& out_hash)
-    {
-        reset();
-        hash(data);
-        end(out_hash);
-    }
-
-    nhash::murmur64 murmur64_t::compute(cbuffer_t const& data)
-    {
-        nhash::murmur64 hash;
-        compute(data, hash);
-        return hash;
-    }
-
-}
+} // namespace ncore

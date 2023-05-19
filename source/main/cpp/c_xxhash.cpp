@@ -5,6 +5,7 @@
 #include "cbase/c_endian.h"
 
 #include "chash/c_hash.h"
+#include "chash/private/c_internal_hash.h"
 
 namespace ncore
 {
@@ -101,10 +102,10 @@ namespace ncore
             return h64;
         }
 
-        void update(cbuffer_t const& _buffer)
+        void update(const u8* _buffer, u32 size)
         {
-            const uint_t    len  = _buffer.size();
-            const u8*       p    = (const u8*)_buffer.m_const;
+            const uint_t    len  = size;
+            const u8*       p    = _buffer;
             const u8* const bEnd = p + len;
 
             m_total_len += len;
@@ -200,7 +201,7 @@ namespace ncore
             return avalanche(h64);
         }
 
-        void digest(buffer_t& hash)
+        void digest(u8* hash)
         {
             u64 h64;
             if (m_total_len >= 32)
@@ -224,21 +225,21 @@ namespace ncore
             h64 += (u64)m_total_len;
             u64 digest = finalize(h64, m_mem64, (u32)m_total_len);
 
-            hash.m_mutable[0] = (digest & 0xFF);
+            hash[0] = (digest & 0xFF);
             digest            = digest >> 8;
-            hash.m_mutable[1] = (digest & 0xFF);
+            hash[1] = (digest & 0xFF);
             digest            = digest >> 8;
-            hash.m_mutable[2] = (digest & 0xFF);
+            hash[2] = (digest & 0xFF);
             digest            = digest >> 8;
-            hash.m_mutable[3] = (digest & 0xFF);
+            hash[3] = (digest & 0xFF);
             digest            = digest >> 8;
-            hash.m_mutable[4] = (digest & 0xFF);
+            hash[4] = (digest & 0xFF);
             digest            = digest >> 8;
-            hash.m_mutable[5] = (digest & 0xFF);
+            hash[5] = (digest & 0xFF);
             digest            = digest >> 8;
-            hash.m_mutable[6] = (digest & 0xFF);
+            hash[6] = (digest & 0xFF);
             digest            = digest >> 8;
-            hash.m_mutable[7] = (digest & 0xFF);
+            hash[7] = (digest & 0xFF);
         }
     };
 
@@ -256,31 +257,17 @@ namespace ncore
         ctx->reset(m_seed);
     }
 
-    void xxhash64_t::hash(cbuffer_t const& _buffer)
+    void xxhash64_t::hash(const u8* _buffer, u32 size)
     {
         xxhash64_ctxt_t* ctx = (xxhash64_ctxt_t*)&this->m_ctxt;
-        ctx->update(_buffer);
+        ctx->update(_buffer, size);
     }
 
-    void xxhash64_t::end(nhash::xxhash64& out_hash)
+    void xxhash64_t::end(u8* out_hash)
     {
         xxhash64_ctxt_t* ctx    = (xxhash64_ctxt_t*)&this->m_ctxt;
-        buffer_t         digest = out_hash.buffer();
-        ctx->digest(digest);
+        ctx->digest(out_hash);
     }
 
-    void xxhash64_t::compute(cbuffer_t const& data, nhash::xxhash64& out_hash)
-    {
-        reset();
-        hash(data);
-        end(out_hash);
-    }
-
-    nhash::xxhash64 xxhash64_t::compute(cbuffer_t const& data)
-    {
-        nhash::xxhash64 hash;
-        compute(data, hash);
-        return hash;
-    }
 
 } // namespace ncore
