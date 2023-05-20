@@ -1551,13 +1551,7 @@ namespace ncore
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
 
-    skein256_t::skein256_t()
-        : m_initialized(false)
-    {
-        reset();
-    }
-
-    void skein256_t::reset()
+    void skein256_t::reset(u64 seed)
     {
         skein::Skein_256_Ctxt_t* ctx = (skein::Skein_256_Ctxt_t*)&m_ctxt;
         m_initialized                = true;
@@ -1581,14 +1575,7 @@ namespace ncore
         }
     }
 
-
-    skein512_t::skein512_t()
-        : m_initialized(false)
-    {
-        reset();
-    }
-
-    void skein512_t::reset()
+    void skein512_t::reset(u64 seed)
     {
         skein::Skein_512_Ctxt_t* ctx = (skein::Skein_512_Ctxt_t*)&m_ctxt;
         m_initialized                = true;
@@ -1613,13 +1600,7 @@ namespace ncore
     }
 
 
-    skein1024_t::skein1024_t()
-        : m_initialized(false)
-    {
-        reset();
-    }
-
-    void skein1024_t::reset()
+    void skein1024_t::reset(u64 seed)
     {
         skein::Skein1024_Ctxt_t* ctx = (skein::Skein1024_Ctxt_t*)&m_ctxt;
         m_initialized                = true;

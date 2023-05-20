@@ -24,7 +24,7 @@ namespace ncore
 
         ///@name Updating
         u32 length() const { return 16; }
-        void reset();
+        void reset(u64 seed = 0);
         void update(const u8* data, u32 size);
         void digest(u8* out_hash);
 
@@ -217,7 +217,7 @@ namespace ncore
             digest[i] = src[i];
     }
 
-    void md5_ctx_t::reset()
+    void md5_ctx_t::reset(u64 seed)
     {
         mState = OPEN;
         mLength = 0;
@@ -324,16 +324,10 @@ namespace ncore
         mMD5[3] += d;
     }
 
-    md5_t::md5_t()
+    void md5_t::reset(u64 seed)
     {
         md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
-        ctx->reset();
-    }
-
-    void md5_t::reset()
-    {
-        md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
-        ctx->reset();
+        ctx->reset(seed);
     }
 
     void md5_t::hash(const u8* data, u32 size)

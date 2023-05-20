@@ -59,14 +59,11 @@ namespace ncore
         return h;
     }
 
-    murmur32_t::murmur32_t(u32 seed)
-        : m_seed(seed)
-        , m_hash(seed)
+    void murmur32_t::reset(u64 seed)
     {
+        m_seed = (u32)seed;
+        m_hash = m_seed;
     }
-
-    void murmur32_t::reset() { m_hash = m_seed; }
-
     void murmur32_t::hash(const u8* _buffer, u32 size) { m_hash = gGetMurmurHash32(_buffer, size, m_hash); }
 
     void murmur32_t::end(u8* _hash)

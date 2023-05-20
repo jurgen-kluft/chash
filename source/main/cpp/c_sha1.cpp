@@ -9,38 +9,38 @@
 
 namespace ncore
 {
-    /**
-     *  URL:
-     *      http: * en.wikipedia.org/wiki/SHA-1
-     *
-     *  Description:
-     *      This class implements the Secure Hashing Standard as defined
-     *      in FIPS PUB 180-1 published April 17, 1995.
-     *
-     *      The Secure Hashing Standard, which uses the Secure Hashing
-     *      Algorithm (SHA), produces a 160-bit message digest for a
-     *      given data stream.  In theory, it is highly improbable that
-     *      two messages will produce the same message digest.  Therefore,
-     *      this algorithm can serve as a means of providing a "fingerprint"
-     *      for a message.
-     *
-     *  Portability Issues:
-     *      SHA-1 is defined in terms of 32-bit "words".  This code was
-     *      written with the expectation that the processor has at least
-     *      a 32-bit machine word size.  If the machine word size is larger,
-     *      the code should still function properly.  One caveat to that
-     *      is that the input functions taking characters and character arrays
-     *      assume that only 8 bits of information are stored in each character.
-     *
-     *  Caveats:
-     *      SHA-1 is designed to work with messages less than 2^64 bits long.
-     *      Although SHA-1 allows a message digest to be generated for
-     *      messages of any number of bits less than 2^64, this implementation
-     *      only works with messages with a length that is a multiple of 8
-     *      bits.
-     *
-     *  Code: From the implementation of Git
-     */
+    //
+    //  URL:
+    //      http: * en.wikipedia.org/wiki/SHA-1
+    //
+    //  Description:
+    //      This class implements the Secure Hashing Standard as defined
+    //      in FIPS PUB 180-1 published April 17, 1995.
+    //
+    //      The Secure Hashing Standard, which uses the Secure Hashing
+    //      Algorithm (SHA), produces a 160-bit message digest for a
+    //      given data stream.  In theory, it is highly improbable that
+    //      two messages will produce the same message digest.  Therefore,
+    //      this algorithm can serve as a means of providing a "fingerprint"
+    //      for a message.
+    //
+    //  Portability Issues:
+    //      SHA-1 is defined in terms of 32-bit "words".  This code was
+    //      written with the expectation that the processor has at least
+    //      a 32-bit machine word size.  If the machine word size is larger,
+    //      the code should still function properly.  One caveat to that
+    //      is that the input functions taking characters and character arrays
+    //      assume that only 8 bits of information are stored in each character.
+    //
+    //  Caveats:
+    //      SHA-1 is designed to work with messages less than 2^64 bits long.
+    //      Although SHA-1 allows a message digest to be generated for
+    //      messages of any number of bits less than 2^64, this implementation
+    //      only works with messages with a length that is a multiple of 8
+    //      bits.
+    //
+    //  Code: From the implementation of Git
+    //
 
     struct xsha1_ctx
     {
@@ -262,13 +262,7 @@ namespace ncore
         xsha1_ctx_update(ctx, (u8 const*)padlen, 8);
     }
 
-    sha1_t::sha1_t()
-    {
-        xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
-        xsha1_ctx_init(ctx);
-    }
-
-    void sha1_t::reset()
+    void sha1_t::reset(u64 seed)
     {
         xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
         xsha1_ctx_init(ctx);

@@ -42,37 +42,37 @@ namespace ncore
 #define XXH_rotl32(x, r) ((x << r) | (x >> (32 - r)))
 #define XXH_rotl64(x, r) ((x << r) | (x >> (64 - r)))
 
-#define XXH_COPY_MEMORY(dst, src, length)        \
-    {                                            \
-        u8*       pdst = (u8*)(dst);       \
-        u8 const* psrc = (u8 const*)(src); \
-        for (s32 i = 0; i < (s32)(length); ++i)  \
-        {                                        \
-            pdst[i] = psrc[i];                   \
-        }                                        \
+#define XXH_COPY_MEMORY(dst, src, length)       \
+    {                                           \
+        u8*       pdst = (u8*)(dst);            \
+        u8 const* psrc = (u8 const*)(src);      \
+        for (s32 i = 0; i < (s32)(length); ++i) \
+        {                                       \
+            pdst[i] = psrc[i];                  \
+        }                                       \
     }
 
         static u32 read32bits(const void* memPtr)
         {
             u8 const* bptr = (u8 const*)memPtr;
-            u32          val  = bptr[0];
-            val               = val << 8 | bptr[1];
-            val               = val << 8 | bptr[2];
-            val               = val << 8 | bptr[3];
+            u32       val  = bptr[0];
+            val            = val << 8 | bptr[1];
+            val            = val << 8 | bptr[2];
+            val            = val << 8 | bptr[3];
             return val;
         }
 
         static u64 read64bits(const void* memPtr)
         {
             u8 const* bptr = (u8 const*)memPtr;
-            u64          val  = bptr[0];
-            val               = val << 8 | bptr[1];
-            val               = val << 8 | bptr[2];
-            val               = val << 8 | bptr[3];
-            val               = val << 8 | bptr[4];
-            val               = val << 8 | bptr[5];
-            val               = val << 8 | bptr[6];
-            val               = val << 8 | bptr[7];
+            u64       val  = bptr[0];
+            val            = val << 8 | bptr[1];
+            val            = val << 8 | bptr[2];
+            val            = val << 8 | bptr[3];
+            val            = val << 8 | bptr[4];
+            val            = val << 8 | bptr[5];
+            val            = val << 8 | bptr[6];
+            val            = val << 8 | bptr[7];
             return val;
         }
 
@@ -131,10 +131,10 @@ namespace ncore
             if (p + 32 <= bEnd)
             {
                 const u8* const limit = bEnd - 32;
-                u64                v1    = m_v1;
-                u64                v2    = m_v2;
-                u64                v3    = m_v3;
-                u64                v4    = m_v4;
+                u64             v1    = m_v1;
+                u64             v2    = m_v2;
+                u64             v3    = m_v3;
+                u64             v4    = m_v4;
 
                 do
                 {
@@ -226,34 +226,27 @@ namespace ncore
             u64 digest = finalize(h64, m_mem64, (u32)m_total_len);
 
             hash[0] = (digest & 0xFF);
-            digest            = digest >> 8;
+            digest  = digest >> 8;
             hash[1] = (digest & 0xFF);
-            digest            = digest >> 8;
+            digest  = digest >> 8;
             hash[2] = (digest & 0xFF);
-            digest            = digest >> 8;
+            digest  = digest >> 8;
             hash[3] = (digest & 0xFF);
-            digest            = digest >> 8;
+            digest  = digest >> 8;
             hash[4] = (digest & 0xFF);
-            digest            = digest >> 8;
+            digest  = digest >> 8;
             hash[5] = (digest & 0xFF);
-            digest            = digest >> 8;
+            digest  = digest >> 8;
             hash[6] = (digest & 0xFF);
-            digest            = digest >> 8;
+            digest  = digest >> 8;
             hash[7] = (digest & 0xFF);
         }
     };
 
-    xxhash64_t::xxhash64_t(u64 seed)
-        : m_seed(seed)
-    {
-
-        xxhash64_ctxt_t* ctx = (xxhash64_ctxt_t*)&this->m_ctxt;
-        ctx->reset(m_seed);
-    }
-
-    void xxhash64_t::reset()
+    void xxhash64_t::reset(u64 seed)
     {
         xxhash64_ctxt_t* ctx = (xxhash64_ctxt_t*)&this->m_ctxt;
+        m_seed               = seed;
         ctx->reset(m_seed);
     }
 
@@ -265,9 +258,8 @@ namespace ncore
 
     void xxhash64_t::end(u8* out_hash)
     {
-        xxhash64_ctxt_t* ctx    = (xxhash64_ctxt_t*)&this->m_ctxt;
+        xxhash64_ctxt_t* ctx = (xxhash64_ctxt_t*)&this->m_ctxt;
         ctx->digest(out_hash);
     }
-
 
 } // namespace ncore

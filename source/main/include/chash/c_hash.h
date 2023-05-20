@@ -25,14 +25,15 @@ namespace ncore
         };
         u16 value;
     };
-    typedef void* hash_ctxt_t;
-    hash_ctxt_t   create_hash_ctxt(alloc_t* allocator, EHash type);
-    void          destroy_hash_ctxt(alloc_t* allocator, hash_ctxt_t ctxt);
-    s32           hash_size(EHash type);
 
-    void hash_begin(hash_ctxt_t ctxt);
-    void hash_update(hash_ctxt_t ctxt, const u8* data, s32 size);
-    void hash_end(hash_ctxt_t ctxt, u8* hash, s32 size);
+    typedef void* hashtype_t;
+
+    hashtype_t create_hash(alloc_t* allocator, EHash type);
+    void       destroy_hash(alloc_t* allocator, hashtype_t ctxt);
+    s32        hash_size(hashtype_t ctxt);
+    void       hash_begin(hashtype_t ctxt);
+    void       hash_update(hashtype_t ctxt, const u8* data, s32 size);
+    void       hash_end(hashtype_t ctxt, u8* hash, s32 size);
 
 } // namespace ncore
 
