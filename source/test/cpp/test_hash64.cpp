@@ -20,9 +20,9 @@ UNITTEST_SUITE_BEGIN(murmur64_t)
 
 			nhash::murmur64 h1;
 			murmur64.reset();
-			murmur64.hash(b.m_const, b.m_len);
+			murmur64.hash(b.m_begin, b.m_end);
 			murmur64.end(h1.m_data);
-			binary_reader_t reader(h1.m_data, h1.SIZE);
+			binary_reader_t reader(h1.m_data, h1.m_data + h1.SIZE);
 			u64 h2;
 			reader.read(h2);
 			return h2;
@@ -32,8 +32,8 @@ UNITTEST_SUITE_BEGIN(murmur64_t)
 		{
 			u8 indata[]={1,2,3,4,5,6,7,8,9,13},indata2[]={0xff,0xfe,0xfd,0xfc,0xfb,0,1,2,3,4};
 			u32 len=10;
-			u64 ruhash  = murmur64_hash(cbuffer_t(len,indata));
-			u64 ruhash2 = murmur64_hash(cbuffer_t(len,indata));
+			u64 ruhash  = murmur64_hash(cbuffer_t(indata, indata + len));
+			u64 ruhash2 = murmur64_hash(cbuffer_t(indata, indata + len));
 			CHECK_EQUAL(ruhash>0,true);
 			CHECK_EQUAL(ruhash,ruhash2);
 		}

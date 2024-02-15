@@ -108,7 +108,7 @@ UNITTEST_SUITE_BEGIN(skein)
 
                 nhash::skein256 hash;
                 ctx.reset();
-                ctx.hash(bytemsg, test_bytelen);
+                ctx.hash(bytemsg, bytemsg + test_bytelen);
                 ctx.end(hash.m_data);
 
                 u32 const verify_len = SkeinTestVectors::TextMsgToByteMsg(test->Digest, 32, bytemsg);
@@ -134,7 +134,7 @@ UNITTEST_SUITE_BEGIN(skein)
 
                 nhash::skein512 hash;
                 ctx.reset();
-                ctx.hash(bytemsg, test_bytelen);
+                ctx.hash(bytemsg, bytemsg + test_bytelen);
                 ctx.end(hash.m_data);
 
                 u32 const verify_len = SkeinTestVectors::TextMsgToByteMsg(test->Digest, 64, bytemsg);

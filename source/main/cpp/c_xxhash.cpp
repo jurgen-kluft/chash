@@ -250,10 +250,10 @@ namespace ncore
         ctx->reset(m_seed);
     }
 
-    void xxhash64_t::hash(const u8* _buffer, u32 size)
+    void xxhash64_t::hash(const u8* begin, const u8* end)
     {
         xxhash64_ctxt_t* ctx = (xxhash64_ctxt_t*)&this->m_ctxt;
-        ctx->update(_buffer, size);
+        ctx->update(begin, (u32)(end - begin));
     }
 
     void xxhash64_t::end(u8* out_hash)

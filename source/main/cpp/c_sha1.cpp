@@ -268,10 +268,10 @@ namespace ncore
         xsha1_ctx_init(ctx);
     }
 
-    void sha1_t::hash(u8 const* _buffer, u32 size)
+    void sha1_t::hash(const u8* begin, const u8* end)
     {
         xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
-        xsha1_ctx_update(ctx, _buffer, size);
+        xsha1_ctx_update(ctx, begin, (u32)(end - begin));
     }
 
     void sha1_t::end(u8* _hash)

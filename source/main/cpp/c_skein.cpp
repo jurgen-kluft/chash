@@ -1558,11 +1558,11 @@ namespace ncore
         skein::Skein_256_Init(ctx, 256);
     }
 
-    void skein256_t::hash(const u8* data, u32 size)
+    void skein256_t::hash(const u8* begin, const u8* end)
     {
         skein::Skein_256_Ctxt_t* ctx = (skein::Skein_256_Ctxt_t*)&m_ctxt;
         if (m_initialized)
-            skein::Skein_256_Update(ctx, data, size);
+            skein::Skein_256_Update(ctx, begin, (u32)(end - begin));
     }
 
     void skein256_t::end(u8* hash)
@@ -1582,11 +1582,11 @@ namespace ncore
         skein::Skein_512_Init(ctx, 512);
     }
 
-    void skein512_t::hash(const u8* data, u32 size)
+    void skein512_t::hash(const u8* begin, const u8* end)
     {
         skein::Skein_512_Ctxt_t* ctx = (skein::Skein_512_Ctxt_t*)&m_ctxt;
         if (m_initialized)
-            skein::Skein_512_Update(ctx, data, size);
+            skein::Skein_512_Update(ctx, begin, (u32)(end - begin));
     }
 
     void skein512_t::end(u8* hash)
@@ -1607,11 +1607,11 @@ namespace ncore
         skein::Skein1024_Init(ctx, 256);
     }
 
-    void skein1024_t::hash(const u8* data, u32 size)
+    void skein1024_t::hash(const u8* begin, const u8* end)
     {
         skein::Skein1024_Ctxt_t* ctx = (skein::Skein1024_Ctxt_t*)&m_ctxt;
         if (m_initialized)
-            skein::Skein1024_Update(ctx, data, size);
+            skein::Skein1024_Update(ctx, begin, (u32)(end - begin));
     }
 
     void skein1024_t::end(u8* hash)

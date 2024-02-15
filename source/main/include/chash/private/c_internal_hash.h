@@ -39,7 +39,7 @@ namespace ncore
 
         s32  size() const { return sizeof(nhash::md5); }
         void reset(u64 seed = 0x67452301efcdab89);
-        void hash(u8 const* data, u32 size);
+        void hash(u8 const* data, u8 const* end);
         void end(u8* hash);
 
         u64           m_ctxt[12];
@@ -51,7 +51,7 @@ namespace ncore
 
         s32  size() const { return sizeof(nhash::sha1); }
         void reset(u64 seed = 0);
-        void hash(u8 const* data, u32 size);
+        void hash(u8 const* data, u8 const* end);
         void end(u8* hash);
 
         u64 m_ctxt[12];
@@ -63,7 +63,7 @@ namespace ncore
 
         s32  size() const { return sizeof(nhash::skein256); }
         void reset(u64 seed = 0);
-        void hash(u8 const* data, u32 size);
+        void hash(u8 const* data, u8 const* end);
         void end(u8* hash);
 
         bool m_initialized;
@@ -76,7 +76,7 @@ namespace ncore
 
         s32  size() const { return sizeof(nhash::skein512); }
         void reset(u64 seed = 0);
-        void hash(u8 const* data, u32 size);
+        void hash(u8 const* data, u8 const* end);
         void end(u8* hash);
 
         bool m_initialized;
@@ -89,7 +89,7 @@ namespace ncore
 
         s32  size() const { return sizeof(nhash::skein1024); }
         void reset(u64 seed = 0);
-        void hash(u8 const* data, u32 size);
+        void hash(u8 const* data, u8 const* end);
         void end(u8* hash);
 
         bool m_initialized;
@@ -102,7 +102,7 @@ namespace ncore
 
         s32  size() const { return sizeof(nhash::murmur32); }
         void reset(u64 seed = 0);
-        void hash(u8 const* data, u32 size);
+        void hash(u8 const* data, u8 const* end);
         void end(u8* hash);
 
         u32 m_seed;
@@ -115,7 +115,7 @@ namespace ncore
 
         s32  size() const { return sizeof(nhash::murmur64); }
         void reset(u64 seed = 0);
-        void hash(u8 const* data, u32 size);
+        void hash(u8 const* data, u8 const* end);
         void end(u8* hash);
 
         u64 m_seed;
@@ -128,7 +128,7 @@ namespace ncore
 
         s32  size() const { return sizeof(nhash::xxhash64); }
         void reset(u64 seed = 0);
-        void hash(u8 const* data, u32 size);
+        void hash(u8 const* data, u8 const* end);
         void end(u8* hash);
 
         u64 m_seed;

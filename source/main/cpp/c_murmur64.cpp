@@ -84,7 +84,7 @@ namespace ncore
     }
 
     void murmur64_t::reset(u64 seed) { m_hash = m_seed; }
-    void murmur64_t::hash(const u8* _buffer, u32 size) { m_hash = gGetMurmurHash64(_buffer, size, m_hash); }
+    void murmur64_t::hash(const u8* begin, const u8* end) { m_hash = gGetMurmurHash64(begin, (u32)(end - begin), m_hash); }
 
     void murmur64_t::end(u8* _hash)
     {

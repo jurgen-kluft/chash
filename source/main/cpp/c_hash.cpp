@@ -90,12 +90,12 @@ namespace ncore
         }
     }
 
-    void hash_update(hashtype_t ctxt, const u8* data, s32 size)
+    void hash_update(hashtype_t ctxt, const u8* begin, const u8* end)
     {
         hash_header_t* hash = (hash_header_t*)ctxt;
         switch (hash->type)
         {
-            case EHash::MD5: ((md5_t*)ctxt)->hash(data, size); break;
+            case EHash::MD5: ((md5_t*)ctxt)->hash(begin, end); break;
         }
     }
 

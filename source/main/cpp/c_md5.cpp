@@ -25,7 +25,7 @@ namespace ncore
         ///@name Updating
         u32 length() const { return 16; }
         void reset(u64 seed = 0);
-        void update(const u8* data, u32 size);
+        void update(const u8* begin, const u8* end);
         void digest(u8* out_hash);
 
         DCORE_CLASS_PLACEMENT_NEW_DELETE
@@ -130,7 +130,7 @@ namespace ncore
      * @param inData	Buffer to update hash with
      * @param inLength	Length of buffer in bytes
      */
-    void md5_ctx_t::update(const u8* buffer, u32 size)
+    void md5_ctx_t::update(const u8* begin, const u8* end)
     {
         ASSERTS(mState == OPEN, "Can't compute hash value before Open() has been called!");
 
@@ -139,18 +139,18 @@ namespace ncore
         u32 space_left = 64 - buffer_offset; // Space available in mBuffer.mInput (at least 1)
 
         // Update length
-        u32 const len = (u32)size;
+        u32 const len = (u32)(end - begin);
         mLength += len;
 
         // If there's enough space in the buffer, just copy and exit
         if (len < space_left)
         {
-            nmem::memcpy((u8 *)mBuffer.mInput + buffer_offset, buffer, len);
+            nmem::memcpy((u8 *)mBuffer.mInput + buffer_offset, begin, len);
             return;
         }
 
         // Fill up current buffer until it's full
-        u8 const *data = (u8 const *)buffer;
+        u8 const *data = (u8 const *)begin;
         u32 length = len;
         nmem::memcpy((u8 *)mBuffer.mInput + buffer_offset, data, space_left);
         sByteSwap(mBuffer.mInput, 16);
@@ -330,10 +330,10 @@ namespace ncore
         ctx->reset(seed);
     }
 
-    void md5_t::hash(const u8* data, u32 size)
+    void md5_t::hash(const u8* begin, const u8* end)
     {
         md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
-        ctx->update(data, size);
+        ctx->update(begin, end);
     }
 
     void md5_t::end(u8* out_hash)

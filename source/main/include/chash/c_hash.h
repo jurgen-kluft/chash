@@ -32,7 +32,7 @@ namespace ncore
     void       destroy_hash(alloc_t* allocator, hashtype_t ctxt);
     s32        hash_size(hashtype_t ctxt);
     void       hash_begin(hashtype_t ctxt);
-    void       hash_update(hashtype_t ctxt, const u8* data, s32 size);
+    void       hash_update(hashtype_t ctxt, const u8* begin, const u8* end);
     void       hash_end(hashtype_t ctxt, u8* hash, s32 size);
 
 } // namespace ncore
