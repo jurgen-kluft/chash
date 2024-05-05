@@ -9,31 +9,34 @@ namespace ncore
 {
     class alloc_t;
 
-    struct EHash
+    struct hash_type_t
     {
         enum
         {
-            MD5       = (1 << 12) | 16,
-            SHA1      = (2 << 12) | 20,
-            Skein256  = (3 << 12) | 32,
-            Skein512  = (4 << 12) | 64,
-            Skein1024 = (5 << 12) | 128,
-            Murmur32  = (6 << 12) | 4,
-            Murmur64  = (7 << 12) | 8,
-            XXHash64  = (8 << 12) | 8,
-            SizeMask  = 0x0FFF,
+            IndexMask  = 0xFE00,
+            IndexShift = 9,
+            SizeMask   = 0x01FF,
+            SizeShift  = 0,
+            MD5        = (1 << IndexShift) | (16 << SizeShift),
+            SHA1       = (2 << IndexShift) | (20 << SizeShift),
+            Skein256   = (3 << IndexShift) | (32 << SizeShift),
+            Skein512   = (4 << IndexShift) | (64 << SizeShift),
+            Skein1024  = (5 << IndexShift) | (128 << SizeShift),
+            Murmur32   = (6 << IndexShift) | (4 << SizeShift),
+            Murmur64   = (7 << IndexShift) | (8 << SizeShift),
+            XXHash64   = (8 << IndexShift) | (8 << SizeShift),
         };
         u16 value;
     };
 
-    typedef void* hashtype_t;
+    typedef void* hash_t;
 
-    hashtype_t create_hash(alloc_t* allocator, EHash type);
-    void       destroy_hash(alloc_t* allocator, hashtype_t ctxt);
-    s32        hash_size(hashtype_t ctxt);
-    void       hash_begin(hashtype_t ctxt);
-    void       hash_update(hashtype_t ctxt, const u8* begin, const u8* end);
-    void       hash_end(hashtype_t ctxt, u8* hash, s32 size);
+    hash_t create_hash(alloc_t* allocator, hash_type_t type);
+    void   destroy_hash(alloc_t* allocator, hash_t h);
+    s32    hash_size(hash_t ctxt);
+    void   hash_begin(hash_t ctxt);
+    void   hash_update(hash_t ctxt, const u8* begin, const u8* end);
+    void   hash_end(hash_t ctxt, u8* hash, s32 size);
 
 } // namespace ncore
 
