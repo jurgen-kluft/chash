@@ -13,9 +13,9 @@ namespace ncore
     {
         enum
         {
-            IndexMask  = 0xFE00,
-            IndexShift = 9,
-            SizeMask   = 0x01FF,
+            IndexMask  = 0xFFF,
+            IndexShift = 20,
+            SizeMask   = 0xFFFFF,
             SizeShift  = 0,
             MD5        = (1 << IndexShift) | (16 << SizeShift),
             SHA1       = (2 << IndexShift) | (20 << SizeShift),
@@ -26,7 +26,7 @@ namespace ncore
             Murmur64   = (7 << IndexShift) | (8 << SizeShift),
             XXHash64   = (8 << IndexShift) | (8 << SizeShift),
         };
-        u16 value;
+        u32 value;
     };
 
     typedef void* hash_t;
