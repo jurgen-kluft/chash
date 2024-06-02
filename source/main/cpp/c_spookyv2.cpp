@@ -11,6 +11,7 @@ namespace ncore
 {
     //
     // SpookyHash: a 128-bit noncryptographic hash function
+    // Site: https://burtleburtle.net/bob/hash/spooky.html
     // By Bob Jenkins, public domain
     //   Oct 31 2010: alpha, framework + spooky_hash_t::Mix appears right
     //   Oct 31 2011: alpha again, Mix only good to 2^^69 but rest appears right
