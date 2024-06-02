@@ -26,6 +26,7 @@ namespace ncore
         typedef digest_t<4>   murmur32;
         typedef digest_t<8>   murmur64;
         typedef digest_t<8>   xxhash64;
+        typedef digest_t<16>  spookyhashv2;
     }; // namespace nhash
 
     struct hash_header_t
@@ -42,7 +43,7 @@ namespace ncore
         void hash(u8 const* data, u8 const* end);
         void end(u8* hash);
 
-        u64           m_ctxt[12];
+        u64 m_ctxt[12];
     };
 
     struct sha1_t
@@ -133,6 +134,23 @@ namespace ncore
 
         u64 m_seed;
         u64 m_ctxt[11];
+    };
+
+    struct spookyhashv2_t
+    {
+        hash_header_t hdr;
+
+        s32  size() const { return sizeof(nhash::spookyhashv2); }
+        void reset(u64 seed = 0, u64 seed2 = 0);
+        void hash(u8 const* data, u8 const* end);
+        void end(u8* hash);
+
+        static void hash128(const void* message, s64 length, u64* hash1, u64* hash2);
+        static u64  hash64(const void* message, s64 length, u64 seed);
+        static u32  hash32(const void* message, s64 length, u32 seed);
+
+        u64         m_seed;
+        u64         m_ctxt[32];
     };
 
 } // namespace ncore
