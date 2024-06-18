@@ -1,10 +1,5 @@
 #include "ccore/c_target.h"
-#include "cbase/c_va_list.h"
-#include "cbase/c_integer.h"
 #include "cbase/c_memory.h"
-#include "cbase/c_endian.h"
-
-#include "chash/c_hash.h"
 #include "chash/private/c_internal_hash.h"
 
 namespace ncore
@@ -528,7 +523,7 @@ namespace ncore
         remainder = (length - ((const u8*)end - (const u8*)message));
         nmem::memcpy(buf, end, remainder);
         nmem::memset(((u8*)buf) + remainder, 0, sc_blockSize - remainder);
-        ((u8*)buf)[sc_blockSize - 1] = remainder;
+        ((u8*)buf)[sc_blockSize - 1] = (u8)remainder;
 
         // do some final mixing
         End(buf, h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11);

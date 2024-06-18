@@ -1,8 +1,5 @@
 #include "ccore/c_target.h"
 #include "cbase/c_allocator.h"
-#include "cbase/c_endian.h"
-#include "cbase/c_buffer.h"
-#include "chash/c_hash.h"
 #include "chash/private/c_internal_hash.h"
 
 namespace ncore

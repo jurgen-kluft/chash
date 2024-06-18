@@ -1,10 +1,6 @@
 #include "ccore/c_target.h"
-#include "cbase/c_va_list.h"
-#include "cbase/c_integer.h"
-#include "cbase/c_memory.h"
 #include "cbase/c_endian.h"
 
-#include "chash/c_hash.h"
 #include "chash/private/c_internal_hash.h"
 
 namespace ncore
