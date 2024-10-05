@@ -36,14 +36,12 @@ func getPlatformLibs() []*denv.Lib {
 	if denv.IsWindows() {
 		winLibs := []*denv.Lib{
 			{Configs: denv.ConfigTypeAll, Type: denv.SystemLibrary, Files: []string{"kernel32.lib", "user32.lib", "gdi32.lib", "comdlg32.lib", "advapi32.lib"}},
-			// {Configs: denv.ConfigTypeAll, Type: denv.UserLibrary, Files: []string{"user.lib"}, Dir: "lib/windows"},
 		}
 		return winLibs
 	}
 	if denv.IsMacOS() {
 		macLibs := []*denv.Lib{
 			{Configs: denv.ConfigTypeAll, Type: denv.Framework, Files: []string{"Cocoa", "Metal", "OpenGL", "IOKit", "Carbon", "CoreVideo", "QuartzCore"}},
-			// {Configs: denv.ConfigTypeAll, Type: denv.UserLibrary, Files: []string{"user"}, Dir: "lib/macos"},
 		}
 		return macLibs
 	}
