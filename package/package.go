@@ -24,7 +24,6 @@ func GetPackage() *denv.Package {
 	// 'chash' unittest project
 	maintest := denv.SetupDefaultCppTestProject("chash_test", "github.com\\jurgen-kluft\\chash")
 	maintest.Dependencies = append(maintest.Dependencies, cunittestpkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, cbasepkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, mainlib)
 
 	mainpkg.AddMainLib(mainlib)
