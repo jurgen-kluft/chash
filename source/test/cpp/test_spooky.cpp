@@ -2,7 +2,6 @@
 #include "chash/c_hash.h"
 
 #include "cunittest/cunittest.h"
-#include "chash/test_allocator.h"
 
 #include "chash/private/c_internal_hash.h"
 
