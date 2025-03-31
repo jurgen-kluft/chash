@@ -150,7 +150,7 @@ namespace ncore
         static u32  hash32(const void* message, s64 length, u32 seed);
 
         u64         m_seed;
-        u64         m_ctxt[32];
+        u64         m_ctxt[38];
     };
 
 } // namespace ncore

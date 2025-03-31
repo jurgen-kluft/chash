@@ -75,48 +75,54 @@ UNITTEST_SUITE_BEGIN(spooky_v2_hash)
         UNITTEST_TEST(test_pieces)
         {
             const s32 n = 1024;
-            u8 buf[n];
+            u8        buf[n];
             for (int i = 0; i < n; ++i)
             {
                 buf[i] = i;
             }
-            for (int i = 0; i < n; ++i)
+
+            u64  hash[2];
+            u64* a = &hash[0];
+            u64* b = &hash[1];
+
+            u64  hash2[2];
+            u64* c = &hash2[0];
+            u64* d = &hash2[1];
+
+            for (int i = 1; i < n; ++i)
             {
-                u64 hash[2];
-                u64& a = hash[0];
-                u64& b = hash[1];
-                u64 c, d, seed1 = 1, seed2 = 2;
+                u64 seed1 = 1, seed2 = 2;
 
                 spookyhashv2_t spooky;
                 spooky.reset(seed1, seed2);
 
                 // all as one call
-                a = seed1;
-                b = seed2;
-                spookyhashv2_t::hash128(buf, i, &a, &b);
+                *a = seed1;
+                *b = seed2;
+                spookyhashv2_t::hash128(buf, i, a, b);
 
                 // all as one piece
-                c = 0xdeadbeefdeadbeef;
-                d = 0xbaceba11baceba11;
+                *c = 0xdeadbeefdeadbeef;
+                *d = 0xbaceba11baceba11;
                 spooky.reset(seed1, seed2);
-                spooky.hash(buf, &buf[i]);
-                spooky.end((u8*)hash);
+                spooky.hash(&buf[0], &buf[i]);
+                spooky.end((u8*)hash2);
 
-                CHECK_EQUAL(a, c);
-                CHECK_EQUAL(b, d);
+                CHECK_EQUAL(*a, *c);
+                CHECK_EQUAL(*b, *d);
 
                 // all possible two consecutive pieces
-                for (int j = 0; j < i; ++j)
+                for (int j = 1; j < (i-1); ++j)
                 {
-                    c = seed1;
-                    d = seed2;
-                    spooky.reset(c, d);
+                    *c = seed1;
+                    *d = seed2;
+                    spooky.reset(*c, *d);
                     spooky.hash(&buf[0], &buf[j]);
-                    spooky.hash(&buf[j], &buf[i - j]);
-                    spooky.end((u8*)hash);
+                    spooky.hash(&buf[j], &buf[i]);
+                    spooky.end((u8*)hash2);
 
-                    CHECK_EQUAL(a, c);
-                    CHECK_EQUAL(b, d);
+                    CHECK_EQUAL(*a, *c);
+                    CHECK_EQUAL(*b, *d);
                 }
             }
         }
