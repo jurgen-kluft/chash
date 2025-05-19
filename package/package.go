@@ -18,12 +18,12 @@ func GetPackage() *denv.Package {
 	mainpkg.AddPackage(cbasepkg)
 
 	// 'chash' library
-	mainlib := denv.SetupDefaultCppLibProjectWithLibs("chash", "github.com\\jurgen-kluft\\chash", getPlatformLibs())
-	mainlib.Dependencies = append(mainlib.Dependencies, cbasepkg.GetMainLib())
+	mainlib := denv.SetupCppLibProjectWithLibs("chash", "github.com\\jurgen-kluft\\chash", getPlatformLibs())
+	mainlib.AddDependencies(cbasepkg.GetMainLib()...)
 
 	// 'chash' unittest project
 	maintest := denv.SetupDefaultCppTestProject("chash_test", "github.com\\jurgen-kluft\\chash")
-	maintest.Dependencies = append(maintest.Dependencies, cunittestpkg.GetMainLib())
+	maintest.AddDependencies(cunittestpkg.GetMainLib()...)
 	maintest.Dependencies = append(maintest.Dependencies, mainlib)
 
 	mainpkg.AddMainLib(mainlib)

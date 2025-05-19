@@ -28,7 +28,7 @@ namespace ncore
 	 * @group		xhash
 	 * Calculate running CRC of <inInitVal> over <inBuffer> with length <inLength>
 	 */
-	u32	xcrc::crc32(cbuffer_t const& buffer, u32 inInitVal)
+	u32	crc_t::crc32(cbuffer_t const& buffer, u32 inInitVal)
 	{
 		ASSERT(buffer.m_begin);
 		u8 const* p_in = (u8 const*)buffer.m_begin;
@@ -80,7 +80,7 @@ namespace ncore
 	 * @group		xhash
 	 * Calculate running Adler32 of <inInitVal> over <inBuffer> with length <inLength>
 	 */
-	u32 xcrc::adler32(cbuffer_t const& buffer, u32 inInitVal)
+	u32 crc_t::adler32(cbuffer_t const& buffer, u32 inInitVal)
 	{
 		u32 a1 = inInitVal & 0xFFFF;							///< Adler sum parts
 		u32 a2 = inInitVal >> 16;
@@ -110,7 +110,7 @@ namespace ncore
 	 * @group		xhash
 	 * Calculate running Adler16 of <inInitVal> over <inBuffer> with length <inLength>
 	 */
-	u16	xcrc::adler16(cbuffer_t const& buffer, u16 inInitVal)
+	u16	crc_t::adler16(cbuffer_t const& buffer, u16 inInitVal)
 	{
 		u32 a1 = inInitVal & 0xFF;								// Adler sum parts
 		u32 a2 = inInitVal >> 8;
