@@ -6,43 +6,39 @@ import (
 	cunittest "github.com/jurgen-kluft/cunittest/package"
 )
 
-// GetPackage returns the package object of 'chash'
+const (
+	repo_path = "github.com\\jurgen-kluft"
+	repo_name = "chash"
+)
+
 func GetPackage() *denv.Package {
-	// Dependencies
+	name := repo_name
+
+	// dependencies
 	cunittestpkg := cunittest.GetPackage()
 	cbasepkg := cbase.GetPackage()
 
-	// The main (chash) package
-	mainpkg := denv.NewPackage("chash")
+	// main package
+	mainpkg := denv.NewPackage(repo_path, repo_name)
 	mainpkg.AddPackage(cunittestpkg)
 	mainpkg.AddPackage(cbasepkg)
 
-	// 'chash' library
-	mainlib := denv.SetupCppLibProjectWithLibs("chash", "github.com\\jurgen-kluft\\chash", getPlatformLibs())
+	// main library
+	mainlib := denv.SetupCppLibProject(mainpkg, name)
 	mainlib.AddDependencies(cbasepkg.GetMainLib()...)
 
-	// 'chash' unittest project
-	maintest := denv.SetupDefaultCppTestProject("chash_test", "github.com\\jurgen-kluft\\chash")
+	// test library
+	testlib := denv.SetupCppTestLibProject(mainpkg, name)
+	testlib.AddDependencies(cbasepkg.GetTestLib()...)
+	testlib.AddDependencies(cunittestpkg.GetTestLib()...)
+
+	// unittest project
+	maintest := denv.SetupCppTestProject(mainpkg, name)
 	maintest.AddDependencies(cunittestpkg.GetMainLib()...)
-	maintest.Dependencies = append(maintest.Dependencies, mainlib)
+	maintest.AddDependency(testlib)
 
 	mainpkg.AddMainLib(mainlib)
+	mainpkg.AddTestLib(testlib)
 	mainpkg.AddUnittest(maintest)
 	return mainpkg
-}
-
-func getPlatformLibs() []*denv.Lib {
-	if denv.IsWindows() {
-		winLibs := []*denv.Lib{
-			{Configs: denv.ConfigTypeAll, Type: denv.SystemLibrary, Files: []string{"kernel32.lib", "user32.lib", "gdi32.lib", "comdlg32.lib", "advapi32.lib"}},
-		}
-		return winLibs
-	}
-	if denv.IsMacOS() {
-		macLibs := []*denv.Lib{
-			{Configs: denv.ConfigTypeAll, Type: denv.Framework, Files: []string{"Cocoa", "Metal", "OpenGL", "IOKit", "Carbon", "CoreVideo", "QuartzCore"}},
-		}
-		return macLibs
-	}
-	return []*denv.Lib{}
 }
