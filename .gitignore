@@ -2,11 +2,8 @@
 *
 !*/
 
-vendor/
 target/
-t2-output/
-source/main/builddir/
-source/test/builddir/
+.idea/
 tags
 
 #except the following files
