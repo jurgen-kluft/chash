@@ -6,6 +6,8 @@
 
 namespace ncore
 {
+    using namespace nhash_private;
+
     static inline void ctxt_clear(hash_instance_t ctxt, u32 size, u16 type)
     {
         u8* data = (u8*)ctxt;
@@ -16,35 +18,21 @@ namespace ncore
         hdr->type          = type;
     }
 
-    // clang-format off
-    static u32 s_hash_type_size[] = {
-        sizeof(md5_t),
-        sizeof(sha1_t),
-        sizeof(skein256_t),
-        sizeof(skein512_t),
-        sizeof(skein1024_t),
-        sizeof(murmur32_t),
-        sizeof(murmur64_t),
-        sizeof(xxhash64_t),
-        sizeof(spookyhashv2_t)
-    };
-    // clang-format on
-
-    hash_instance_t create_hash_ctxt(alloc_t* allocator, ehashtype type)
+    hash_instance_t create_hash(alloc_t* allocator, ehashtype::value_t type)
     {
-        u32 const size = s_hash_type_size[(type.value & __nprivate__::IndexMask) >> __nprivate__::IndexShift];
+        u32 const size = (type & ehashtype::CtxSizeMask) >> ehashtype::CtxSizeShift;
         hash_instance_t    ctxt = allocator->allocate(size);
-        ctxt_clear(ctxt, size, type.value);
+        ctxt_clear(ctxt, size, type);
         return ctxt;
     }
 
-    void destroy_hash_ctxt(alloc_t* allocator, hash_instance_t ctxt) { allocator->deallocate(ctxt); }
+    void destroy_hash(alloc_t* allocator, hash_instance_t ctxt) { allocator->deallocate(ctxt); }
 
-    s32 hash_size(ehashtype type) { return (s32)((type.value & __nprivate__::SizeMask) >> __nprivate__::SizeShift); }
+    s32 hash_size(ehashtype::value_t type) { return (s32)((type & ehashtype::SizeMask) >> ehashtype::SizeShift); }
     s32 hash_size(hash_instance_t ctxt)
     {
         hash_header_t* h = (hash_header_t*)ctxt;
-        return (h->type & __nprivate__::SizeMask) >> __nprivate__::SizeShift;
+        return (h->type & ehashtype::SizeMask) >> ehashtype::SizeShift;
     }
 
     void hash_begin(hash_instance_t ctxt)

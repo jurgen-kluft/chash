@@ -5,41 +5,46 @@
 #    pragma once
 #endif
 
+#include "chash/private/c_internal_hash.h"
+
 namespace ncore
 {
     class alloc_t;
 
-    namespace __nprivate__
+    namespace ehashtype
     {
         enum
         {
-            IndexMask    = 0xFFF,
-            IndexShift   = 20,
-            SizeMask     = 0xFFFFF,
-            SizeShift    = 0,
+            IndexMask    = 0x0000007F,
+            IndexShift   = 0,
+            SizeMask     = 0x0000FF80,
+            SizeShift    = 7,
+            CtxSizeMask  = 0xFFFF0000,
+            CtxSizeShift = 16,
         };
-    }
 
-    struct ehashtype
-    {
+        typedef u32 value_t;
         enum
         {
-            MD5          = (1 << __nprivate__::IndexShift) | (16 << __nprivate__::SizeShift),
-            SHA1         = (2 << __nprivate__::IndexShift) | (20 << __nprivate__::SizeShift),
-            Skein256     = (3 << __nprivate__::IndexShift) | (32 << __nprivate__::SizeShift),
-            Skein512     = (4 << __nprivate__::IndexShift) | (64 << __nprivate__::SizeShift),
-            Skein1024    = (5 << __nprivate__::IndexShift) | (128 << __nprivate__::SizeShift),
-            Murmur32     = (6 << __nprivate__::IndexShift) | (4 << __nprivate__::SizeShift),
-            Murmur64     = (7 << __nprivate__::IndexShift) | (8 << __nprivate__::SizeShift),
-            XXHash64     = (8 << __nprivate__::IndexShift) | (8 << __nprivate__::SizeShift),
-            SpookyHashV2 = (9 << __nprivate__::IndexShift) | (16 << __nprivate__::SizeShift),
+            MD5          = (1 << IndexShift) | (16 << SizeShift) | (sizeof(nhash_private::md5_t) << CtxSizeShift),
+            SHA1         = (2 << IndexShift) | (20 << SizeShift) | (sizeof(nhash_private::sha1_t) << CtxSizeShift),
+            Skein256     = (3 << IndexShift) | (32 << SizeShift) | (sizeof(nhash_private::skein256_t) << CtxSizeShift),
+            Skein512     = (4 << IndexShift) | (64 << SizeShift) | (sizeof(nhash_private::skein512_t) << CtxSizeShift),
+            Skein1024    = (5 << IndexShift) | (128 << SizeShift) | (sizeof(nhash_private::skein1024_t) << CtxSizeShift),
+            Murmur32     = (6 << IndexShift) | (4 << SizeShift) | (sizeof(nhash_private::murmur32_t) << CtxSizeShift),
+            Murmur64     = (7 << IndexShift) | (8 << SizeShift) | (sizeof(nhash_private::murmur64_t) << CtxSizeShift),
+            XXHash64     = (8 << IndexShift) | (8 << SizeShift) | (sizeof(nhash_private::xxhash64_t) << CtxSizeShift),
+            SpookyHashV2 = (9 << IndexShift) | (16 << SizeShift) | (sizeof(nhash_private::spookyhashv2_t) << CtxSizeShift),
         };
-        u32 value;
-    };
+
+        static inline s32 size(value_t type) { return (s32)((type & SizeMask) >> SizeShift); }
+
+        value_t value;
+    }; // namespace ehashtype
 
     typedef void* hash_instance_t;
 
-    hash_instance_t create_hash(alloc_t* allocator, ehashtype type);
+    hash_instance_t create_hash(alloc_t* allocator, ehashtype::value_t type);
     void            destroy_hash(alloc_t* allocator, hash_instance_t h);
     s32             hash_size(hash_instance_t ctxt);
     void            hash_begin(hash_instance_t ctxt);
