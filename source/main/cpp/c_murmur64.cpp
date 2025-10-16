@@ -79,15 +79,17 @@ namespace ncore
         return h;
     }
 
-    void murmur64_t::reset(u64 seed) { m_hash = m_seed; }
-    void murmur64_t::hash(const u8* begin, const u8* end) { m_hash = gGetMurmurHash64(begin, (u32)(end - begin), m_hash); }
-
-    void murmur64_t::end(u8* _hash)
+    namespace nhash_private
     {
-        u64       p   = nendian_ne::swap(m_hash);
-        u8 const* src = (u8 const*)&p;
-        for (int i = 0; i < 8; i++)
-            _hash[i] = *src++;
-    }
+        void murmur64_t::reset(u64 seed) { m_hash = m_seed; }
+        void murmur64_t::hash(const u8* begin, const u8* end) { m_hash = gGetMurmurHash64(begin, (u32)(end - begin), m_hash); }
 
+        void murmur64_t::end(u8* _hash)
+        {
+            u64       p   = nendian_ne::swap(m_hash);
+            u8 const* src = (u8 const*)&p;
+            for (int i = 0; i < 8; i++)
+                _hash[i] = *src++;
+        }
+    } // namespace nhash_private
 } // namespace ncore

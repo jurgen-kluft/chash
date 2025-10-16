@@ -691,26 +691,30 @@ namespace ncore
         *hash2 = h1;
     }
 
-    void spookyhashv2_t::reset(u64 seed1, u64 seed2)
+    namespace nhash_private
     {
-        spooky_hash_t* hash = (spooky_hash_t*)this->m_ctxt;
-        hash->Init(seed1, seed2);
-    }
+        void spookyhashv2_t::reset(u64 seed1, u64 seed2)
+        {
+            spooky_hash_t* hash = (spooky_hash_t*)this->m_ctxt;
+            hash->Init(seed1, seed2);
+        }
 
-    void spookyhashv2_t::hash(u8 const* data, u8 const* end)
-    {
-        spooky_hash_t* hash = (spooky_hash_t*)this->m_ctxt;
-        hash->Update(data, end - data);
-    }
+        void spookyhashv2_t::hash(u8 const* data, u8 const* end)
+        {
+            spooky_hash_t* hash = (spooky_hash_t*)this->m_ctxt;
+            hash->Update(data, end - data);
+        }
 
-    void spookyhashv2_t::end(u8* hash)
-    {
-        spooky_hash_t* h = (spooky_hash_t*)this->m_ctxt;
-        h->Final((u64*)hash, (u64*)hash + 1);
-    }
+        void spookyhashv2_t::end(u8* hash)
+        {
+            spooky_hash_t* h = (spooky_hash_t*)this->m_ctxt;
+            h->Final((u64*)hash, (u64*)hash + 1);
+        }
 
-    void spookyhashv2_t::hash128(const void* message, s64 length, u64* hash1, u64* hash2) { return spooky_hash_t::Hash128(message, length, hash1, hash2); }
-    u64  spookyhashv2_t::hash64(const void* message, s64 length, u64 seed) { return spooky_hash_t::Hash64(message, length, seed); }
-    u32  spookyhashv2_t::hash32(const void* message, s64 length, u32 seed) { return spooky_hash_t::Hash32(message, length, seed); }
+        void spookyhashv2_t::hash128(const void* message, s64 length, u64* hash1, u64* hash2) { return spooky_hash_t::Hash128(message, length, hash1, hash2); }
+        u64  spookyhashv2_t::hash64(const void* message, s64 length, u64 seed) { return spooky_hash_t::Hash64(message, length, seed); }
+        u32  spookyhashv2_t::hash32(const void* message, s64 length, u32 seed) { return spooky_hash_t::Hash32(message, length, seed); }
+
+    } // namespace nhash_private
 
 } // namespace ncore

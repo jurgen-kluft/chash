@@ -31,7 +31,7 @@ UNITTEST_SUITE_BEGIN(crc)
             CHECK_NOT_EQUAL(crc_t::adler16(cbuffer_t(buffer, buffer + len), 110), crc_t::adler16(cbuffer_t(buffer, buffer + len), 5));
             CHECK_NOT_EQUAL(crc_t::adler16(cbuffer_t(buffer, buffer + len), 110), crc_t::adler16(cbuffer_t(buff2, buff2 + len), 110));
             CHECK_NOT_EQUAL(crc_t::adler16(cbuffer_t(buffer, buffer + len), 110), crc_t::adler16(cbuffer_t(buffer, buffer + 50), 110));
-            CHECK_EQUAL(crc_t::adler16(cbuffer_t(buffer, buffer), 358), ((358 & 0xFF) | ((358 >> 8) << 8)));
+            CHECK_EQUAL(((358 & 0xFF) | ((358 >> 8) << 8)), crc_t::adler16(cbuffer_t(buffer, buffer), 358));
         }
         UNITTEST_TEST(CRC_Adler32)
         {
@@ -42,7 +42,7 @@ UNITTEST_SUITE_BEGIN(crc)
             CHECK_NOT_EQUAL(crc_t::adler32(cbuffer_t(buffer, buffer + len), 110), crc_t::adler32(cbuffer_t(buffer, buffer + len), 5));
             CHECK_NOT_EQUAL(crc_t::adler32(cbuffer_t(buffer, buffer + len), 123456), crc_t::adler32(cbuffer_t(buff2, buff2 + len), 123456));
             CHECK_NOT_EQUAL(crc_t::adler32(cbuffer_t(buffer, buffer + len), 110), crc_t::adler32(cbuffer_t(buffer, buffer + 50), 110));
-            CHECK_EQUAL(crc_t::adler32(cbuffer_t(buffer, buffer), 112358), ((112358 & 0xFFFF) | ((112358 >> 16) << 16)));
+            CHECK_EQUAL((u32)((112358 & 0xFFFF) | ((112358 >> 16) << 16)), crc_t::adler32(cbuffer_t(buffer, buffer), 112358));
         }
     }
 }

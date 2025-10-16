@@ -16,7 +16,7 @@ UNITTEST_SUITE_BEGIN(spooky_v2_hash)
         UNITTEST_FIXTURE_SETUP() {}
         UNITTEST_FIXTURE_TEARDOWN() {}
 
-        UNITTEST_ALLOCATOR;
+//        UNITTEST_ALLOCATOR;
 
         static const u64 expected[BUFSIZE] = {0x6bf50919, 0x70de1d26, 0xa2b37298, 0x35bc5fbf, 0x8223b279, 0x5bcb315e, 0x53fe88a1, 0xf9f1a233, 0xee193982, 0x54f86f29, 0xc8772d36, 0x9ed60886, 0x5f23d1da, 0x1ed9f474, 0xf2ef0c89, 0x83ec01f9,
                                               0xf274736c, 0x7e9ac0df, 0xc7aed250, 0xb1015811, 0xe23470f5, 0x48ac20c4, 0xe2ab3cd5, 0x608f8363, 0xd0639e68, 0xc4e8e7ab, 0x863c7c5b, 0x4ea63579, 0x99ae8622, 0x170c658b, 0x149ba493, 0x027bca7c,
@@ -66,7 +66,7 @@ UNITTEST_SUITE_BEGIN(spooky_v2_hash)
             for (int i = 0; i < BUFSIZE; ++i)
             {
                 buf[i] = i + 128;
-                saw[i] = spookyhashv2_t::hash32(buf, i, 0);
+                saw[i] = nhash_private::spookyhashv2_t::hash32(buf, i, 0);
                 CHECK_EQUAL(expected[i], saw[i]);
             }
         }
@@ -93,13 +93,13 @@ UNITTEST_SUITE_BEGIN(spooky_v2_hash)
             {
                 u64 seed1 = 1, seed2 = 2;
 
-                spookyhashv2_t spooky;
+                nhash_private::spookyhashv2_t spooky;
                 spooky.reset(seed1, seed2);
 
                 // all as one call
                 *a = seed1;
                 *b = seed2;
-                spookyhashv2_t::hash128(buf, i, a, b);
+                nhash_private::spookyhashv2_t::hash128(buf, i, a, b);
 
                 // all as one piece
                 *c = 0xdeadbeefdeadbeef;

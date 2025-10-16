@@ -22,7 +22,7 @@ namespace ncore
         md5_ctx_t();
 
         ///@name Updating
-        u32 length() const { return 16; }
+        u32  length() const { return 16; }
         void reset(u64 seed = 0);
         void update(const u8* begin, const u8* end);
         void digest(u8* out_hash);
@@ -38,7 +38,7 @@ namespace ncore
         struct ctx_t
         {
             u32 mInput[16]; ///< 64 byte input buffer
-            u8 mSlack[8];   ///< Slack space because internal memcopy copies gready (i.e. up to 7 bytes past mInput)
+            u8  mSlack[8];  ///< Slack space because internal memcopy copies gready (i.e. up to 7 bytes past mInput)
         };
         ctx_t mBuffer;
     };
@@ -97,7 +97,7 @@ namespace ncore
         * @param		ioBuffer	Pointer to data to swap
         * @param		inLength	Number of u32's to swap
         */
-    static void sByteSwap(u32 *ioBuffer, s32 inLength)
+    static void sByteSwap(u32* ioBuffer, s32 inLength)
     {
 #if !defined(D_LITTLE_ENDIAN)
         for (s32 i = 0; i < inLength; i++)
@@ -115,7 +115,8 @@ namespace ncore
         * @see		Update GetHash
         */
     md5_ctx_t::md5_ctx_t()
-        : mState(md5_ctx_t::CLOSED), mLength(0)
+        : mState(md5_ctx_t::CLOSED)
+        , mLength(0)
     {
     }
 
@@ -134,8 +135,8 @@ namespace ncore
         ASSERTS(mState == OPEN, "Can't compute hash value before Open() has been called!");
 
         // Calculate current offset in buffer and bytes left
-        u32 buffer_offset = (mLength & 63);  // Current offset in buffer
-        u32 space_left = 64 - buffer_offset; // Space available in mBuffer.mInput (at least 1)
+        u32 buffer_offset = (mLength & 63);     // Current offset in buffer
+        u32 space_left    = 64 - buffer_offset; // Space available in mBuffer.mInput (at least 1)
 
         // Update length
         u32 const len = (u32)(end - begin);
@@ -144,14 +145,14 @@ namespace ncore
         // If there's enough space in the buffer, just copy and exit
         if (len < space_left)
         {
-            nmem::memcpy((u8 *)mBuffer.mInput + buffer_offset, begin, len);
+            nmem::memcpy((u8*)mBuffer.mInput + buffer_offset, begin, len);
             return;
         }
 
         // Fill up current buffer until it's full
-        u8 const *data = (u8 const *)begin;
-        u32 length = len;
-        nmem::memcpy((u8 *)mBuffer.mInput + buffer_offset, data, space_left);
+        u8 const* data   = (u8 const*)begin;
+        u32       length = len;
+        nmem::memcpy((u8*)mBuffer.mInput + buffer_offset, data, space_left);
         sByteSwap(mBuffer.mInput, 16);
         transform();
         data += space_left;
@@ -160,7 +161,7 @@ namespace ncore
         // Process data in 64-byte chunks
         while (length >= 64)
         {
-            nmem::memcpy((u64 *)mBuffer.mInput, (u64 *)data, 64);
+            nmem::memcpy((u64*)mBuffer.mInput, (u64*)data, 64);
             sByteSwap(mBuffer.mInput, 16);
             transform();
             data += 64;
@@ -180,7 +181,7 @@ namespace ncore
         if (mState == OPEN)
         {
             u32 count = mLength & 63; // Number of bytes in mBuffer.mInput
-            u8 *p = (u8 *)mBuffer.mInput + count;
+            u8* p     = (u8*)mBuffer.mInput + count;
 
             // Set the first char of padding to 0x80.  There is always room.
             *p++ = 0x80;
@@ -194,7 +195,7 @@ namespace ncore
                 nmem::memclr(p, count + 8);
                 sByteSwap(mBuffer.mInput, 16);
                 transform();
-                p = (u8 *)mBuffer.mInput;
+                p     = (u8*)mBuffer.mInput;
                 count = 56;
             }
             nmem::memclr(p, count);
@@ -211,14 +212,14 @@ namespace ncore
         }
 
         // export digest
-        u8 const *src = (u8 const *)&mMD5[0];
+        u8 const* src = (u8 const*)&mMD5[0];
         for (s32 i = 0; i < 16; ++i)
             digest[i] = src[i];
     }
 
     void md5_ctx_t::reset(u64 seed)
     {
-        mState = OPEN;
+        mState  = OPEN;
         mLength = 0;
         mMD5[0] = 0x67452301;
         mMD5[1] = 0xefcdab89;
@@ -323,22 +324,24 @@ namespace ncore
         mMD5[3] += d;
     }
 
-    void md5_t::reset(u64 seed)
+    namespace nhash_private
     {
-        md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
-        ctx->reset(seed);
-    }
+        void md5_t::reset(u64 seed)
+        {
+            md5_ctx_t* ctx = (md5_ctx_t*)&this->m_ctxt;
+            ctx->reset(seed);
+        }
 
-    void md5_t::hash(const u8* begin, const u8* end)
-    {
-        md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
-        ctx->update(begin, end);
-    }
+        void md5_t::hash(const u8* begin, const u8* end)
+        {
+            md5_ctx_t* ctx = (md5_ctx_t*)&this->m_ctxt;
+            ctx->update(begin, end);
+        }
 
-    void md5_t::end(u8* out_hash)
-    {
-        md5_ctx_t *ctx = (md5_ctx_t *)&this->m_ctxt;
-        ctx->digest(out_hash);
-    }
-
+        void md5_t::end(u8* out_hash)
+        {
+            md5_ctx_t* ctx = (md5_ctx_t*)&this->m_ctxt;
+            ctx->digest(out_hash);
+        }
+    } // namespace nhash_private
 } // namespace ncore

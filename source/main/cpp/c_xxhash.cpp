@@ -238,23 +238,25 @@ namespace ncore
         }
     };
 
-    void xxhash64_t::reset(u64 seed)
+    namespace nhash_private
     {
-        xxhash64_ctxt_t* ctx = (xxhash64_ctxt_t*)&this->m_ctxt;
-        m_seed               = seed;
-        ctx->reset(m_seed);
-    }
+        void xxhash64_t::reset(u64 seed)
+        {
+            xxhash64_ctxt_t* ctx = (xxhash64_ctxt_t*)&this->m_ctxt;
+            m_seed               = seed;
+            ctx->reset(m_seed);
+        }
 
-    void xxhash64_t::hash(const u8* begin, const u8* end)
-    {
-        xxhash64_ctxt_t* ctx = (xxhash64_ctxt_t*)&this->m_ctxt;
-        ctx->update(begin, (u32)(end - begin));
-    }
+        void xxhash64_t::hash(const u8* begin, const u8* end)
+        {
+            xxhash64_ctxt_t* ctx = (xxhash64_ctxt_t*)&this->m_ctxt;
+            ctx->update(begin, (u32)(end - begin));
+        }
 
-    void xxhash64_t::end(u8* out_hash)
-    {
-        xxhash64_ctxt_t* ctx = (xxhash64_ctxt_t*)&this->m_ctxt;
-        ctx->digest(out_hash);
-    }
-
+        void xxhash64_t::end(u8* out_hash)
+        {
+            xxhash64_ctxt_t* ctx = (xxhash64_ctxt_t*)&this->m_ctxt;
+            ctx->digest(out_hash);
+        }
+    } // namespace nhash_private
 } // namespace ncore

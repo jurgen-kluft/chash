@@ -46,8 +46,8 @@ namespace ncore
         const u64 SKEIN_256_IV_256[] = {MK_64(0xFC9DA860, 0xD048B449), MK_64(0x2FCA6647, 0x9FA7D833), MK_64(0xB33BC389, 0x6656840F), MK_64(0x6A54E920, 0xFDE8DA69)};
 
         /* blkSize =  512 bits. hashSize =  128 bits */
-        const u64 SKEIN_512_IV_128[] = {MK_64(0xA8BC7BF3, 0x6FBF9F52), MK_64(0x1E9872CE, 0xBD1AF0AA), MK_64(0x309B1790, 0xB32190D3), MK_64(0xBCFBB854, 0x3F94805C),
-                                        MK_64(0x0DA61BCD, 0x6E31B11B), MK_64(0x1A18EBEA, 0xD46A32E3), MK_64(0xA2CC5B18, 0xCE84AA82), MK_64(0x6982AB28, 0x9D46982D)};
+        // const u64 SKEIN_512_IV_128[] = {MK_64(0xA8BC7BF3, 0x6FBF9F52), MK_64(0x1E9872CE, 0xBD1AF0AA), MK_64(0x309B1790, 0xB32190D3), MK_64(0xBCFBB854, 0x3F94805C),
+        //                                 MK_64(0x0DA61BCD, 0x6E31B11B), MK_64(0x1A18EBEA, 0xD46A32E3), MK_64(0xA2CC5B18, 0xCE84AA82), MK_64(0x6982AB28, 0x9D46982D)};
 
         /* blkSize =  512 bits. hashSize =  160 bits */
         const u64 SKEIN_512_IV_160[] = {MK_64(0x28B81A2A, 0xE013BD91), MK_64(0xC2F11668, 0xB5BDF78F), MK_64(0x1760D8F3, 0xF6A56F12), MK_64(0x4FB74758, 0x8239904F),
@@ -70,21 +70,18 @@ namespace ncore
                                         MK_64(0x5DB62599, 0xDF6CA7B0), MK_64(0xEABE394C, 0xA9D5C3F4), MK_64(0x991112C7, 0x1A75B523), MK_64(0xAE18A40B, 0x660FCC33)};
 
         /* blkSize = 1024 bits. hashSize =  384 bits */
-        const u64 SKEIN1024_IV_384[] = {MK_64(0x5102B6B8, 0xC1894A35), MK_64(0xFEEBC9E3, 0xFE8AF11A), MK_64(0x0C807F06, 0xE32BED71), MK_64(0x60C13A52, 0xB41A91F6),
-                                        MK_64(0x9716D35D, 0xD4917C38), MK_64(0xE780DF12, 0x6FD31D3A), MK_64(0x797846B6, 0xC898303A), MK_64(0xB172C2A8, 0xB3572A3B),
-                                        MK_64(0xC9BC8203, 0xA6104A6C), MK_64(0x65909338, 0xD75624F4), MK_64(0x94BCC568, 0x4B3F81A0), MK_64(0x3EBBF51E, 0x10ECFD46),
+        const u64 SKEIN1024_IV_384[] = {MK_64(0x5102B6B8, 0xC1894A35), MK_64(0xFEEBC9E3, 0xFE8AF11A), MK_64(0x0C807F06, 0xE32BED71), MK_64(0x60C13A52, 0xB41A91F6), MK_64(0x9716D35D, 0xD4917C38), MK_64(0xE780DF12, 0x6FD31D3A),
+                                        MK_64(0x797846B6, 0xC898303A), MK_64(0xB172C2A8, 0xB3572A3B), MK_64(0xC9BC8203, 0xA6104A6C), MK_64(0x65909338, 0xD75624F4), MK_64(0x94BCC568, 0x4B3F81A0), MK_64(0x3EBBF51E, 0x10ECFD46),
                                         MK_64(0x2DF50F0B, 0xEEB08542), MK_64(0x3B5A6530, 0x0DBC6516), MK_64(0x484B9CD2, 0x167BBCE1), MK_64(0x2D136947, 0xD4CBAFEA)};
 
         /* blkSize = 1024 bits. hashSize =  512 bits */
-        const u64 SKEIN1024_IV_512[] = {MK_64(0xCAEC0E5D, 0x7C1B1B18), MK_64(0xA01B0E04, 0x5F03E802), MK_64(0x33840451, 0xED912885), MK_64(0x374AFB04, 0xEAEC2E1C),
-                                        MK_64(0xDF25A0E2, 0x813581F7), MK_64(0xE4004093, 0x8B12F9D2), MK_64(0xA662D539, 0xC2ED39B6), MK_64(0xFA8B85CF, 0x45D8C75A),
-                                        MK_64(0x8316ED8E, 0x29EDE796), MK_64(0x053289C0, 0x2E9F91B8), MK_64(0xC3F8EF1D, 0x6D518B73), MK_64(0xBDCEC3C4, 0xD5EF332E),
+        const u64 SKEIN1024_IV_512[] = {MK_64(0xCAEC0E5D, 0x7C1B1B18), MK_64(0xA01B0E04, 0x5F03E802), MK_64(0x33840451, 0xED912885), MK_64(0x374AFB04, 0xEAEC2E1C), MK_64(0xDF25A0E2, 0x813581F7), MK_64(0xE4004093, 0x8B12F9D2),
+                                        MK_64(0xA662D539, 0xC2ED39B6), MK_64(0xFA8B85CF, 0x45D8C75A), MK_64(0x8316ED8E, 0x29EDE796), MK_64(0x053289C0, 0x2E9F91B8), MK_64(0xC3F8EF1D, 0x6D518B73), MK_64(0xBDCEC3C4, 0xD5EF332E),
                                         MK_64(0x549A7E52, 0x22974487), MK_64(0x67070872, 0x5B749816), MK_64(0xB9CD28FB, 0xF0581BD1), MK_64(0x0E2940B8, 0x15804974)};
 
         /* blkSize = 1024 bits. hashSize = 1024 bits */
-        const u64 SKEIN1024_IV_1024[] = {MK_64(0xD593DA07, 0x41E72355), MK_64(0x15B5E511, 0xAC73E00C), MK_64(0x5180E5AE, 0xBAF2C4F0), MK_64(0x03BD41D3, 0xFCBCAFAF),
-                                         MK_64(0x1CAEC6FD, 0x1983A898), MK_64(0x6E510B8B, 0xCDD0589F), MK_64(0x77E2BDFD, 0xC6394ADA), MK_64(0xC11E1DB5, 0x24DCB0A3),
-                                         MK_64(0xD6D14AF9, 0xC6329AB5), MK_64(0x6A9B0BFC, 0x6EB67E0D), MK_64(0x9243C60D, 0xCCFF1332), MK_64(0x1A1F1DDE, 0x743F02D4),
+        const u64 SKEIN1024_IV_1024[] = {MK_64(0xD593DA07, 0x41E72355), MK_64(0x15B5E511, 0xAC73E00C), MK_64(0x5180E5AE, 0xBAF2C4F0), MK_64(0x03BD41D3, 0xFCBCAFAF), MK_64(0x1CAEC6FD, 0x1983A898), MK_64(0x6E510B8B, 0xCDD0589F),
+                                         MK_64(0x77E2BDFD, 0xC6394ADA), MK_64(0xC11E1DB5, 0x24DCB0A3), MK_64(0xD6D14AF9, 0xC6329AB5), MK_64(0x6A9B0BFC, 0x6EB67E0D), MK_64(0x9243C60D, 0xCCFF1332), MK_64(0x1A1F1DDE, 0x743F02D4),
                                          MK_64(0x0996753C, 0x10ED0BB8), MK_64(0x6572DD22, 0xF2B4969A), MK_64(0x61FD3062, 0xD00A579A), MK_64(0x1DE0536E, 0x8682E539)};
 
         enum
@@ -101,13 +98,13 @@ namespace ncore
 #define ts (kw + KW_TWK_BASE)
 
 #ifdef SKEIN_DEBUG
-#define DebugSaveTweak(ctx)  \
-    {                        \
-        ctx->h.T[0] = ts[0]; \
-        ctx->h.T[1] = ts[1]; \
-    }
+#    define DebugSaveTweak(ctx)  \
+        {                        \
+            ctx->h.T[0] = ts[0]; \
+            ctx->h.T[1] = ts[1]; \
+        }
 #else
-#define DebugSaveTweak(ctx)
+#    define DebugSaveTweak(ctx)
 #endif
 
 #define SKEIN_MODIFIER_WORDS (2) /* number of modifier (tweak) words */
@@ -186,7 +183,7 @@ namespace ncore
         **/
 
 /* tweak word T[1]: bit field starting positions */
-#define SKEIN_T1_BIT(BIT) ((BIT)-64) /* offset 64 because it's the second word  */
+#define SKEIN_T1_BIT(BIT) ((BIT) - 64) /* offset 64 because it's the second word  */
 
 #define SKEIN_T1_POS_TREE_LVL SKEIN_T1_BIT(112) /* bits 112..118: level in hash tree       */
 #define SKEIN_T1_POS_BIT_PAD SKEIN_T1_BIT(119)  /* bit  119     : partial final input byte */
@@ -230,8 +227,8 @@ namespace ncore
 
 #define SKEIN_VERSION (1)
 
-#ifndef SKEIN_ID_STRING_LE              /* allow compile-time personalization */
-#define SKEIN_ID_STRING_LE (0x33414853) /* "SHA3" (little-endian)*/
+#ifndef SKEIN_ID_STRING_LE                  /* allow compile-time personalization */
+#    define SKEIN_ID_STRING_LE (0x33414853) /* "SHA3" (little-endian)*/
 #endif
 
 #define SKEIN_SCHEMA_VER SKEIN_MK_64(SKEIN_VERSION, SKEIN_ID_STRING_LE)
@@ -248,8 +245,7 @@ namespace ncore
 #define SKEIN_CFG_TREE_NODE_SIZE_MSK (((u64)0xFF) << SKEIN_CFG_TREE_NODE_SIZE_POS)
 #define SKEIN_CFG_TREE_MAX_LEVEL_MSK (((u64)0xFF) << SKEIN_CFG_TREE_MAX_LEVEL_POS)
 
-#define SKEIN_CFG_TREE_INFO(leaf, node, maxLvl) \
-    ((((u64)(leaf)) << SKEIN_CFG_TREE_LEAF_SIZE_POS) | (((u64)(node)) << SKEIN_CFG_TREE_NODE_SIZE_POS) | (((u64)(maxLvl)) << SKEIN_CFG_TREE_MAX_LEVEL_POS))
+#define SKEIN_CFG_TREE_INFO(leaf, node, maxLvl) ((((u64)(leaf)) << SKEIN_CFG_TREE_LEAF_SIZE_POS) | (((u64)(node)) << SKEIN_CFG_TREE_NODE_SIZE_POS) | (((u64)(maxLvl)) << SKEIN_CFG_TREE_MAX_LEVEL_POS))
 
 #define SKEIN_CFG_TREE_INFO_SEQUENTIAL SKEIN_CFG_TREE_INFO(0, 0, 0) /* use as treeInfo in InitExt() call for sequential processing */
 
@@ -297,56 +293,56 @@ namespace ncore
 ** "Internal" Skein definitions for debugging and error checking
 ******************************************************************/
 #ifdef SKEIN_DEBUG /* examine/display intermediate values? */
-#include "skein_debug.h"
+#    include "skein_debug.h"
 #else /* default is no callouts */
-#define Skein_Show_Block(bits, ctx, X, blkPtr, wPtr, ksEvenPtr, ksOddPtr)
-#define Skein_Show_Round(bits, ctx, r, X)
-#define Skein_Show_R_Ptr(bits, ctx, r, X_ptr)
-#define Skein_Show_Final(bits, ctx, cnt, outPtr)
-#define Skein_Show_Key(bits, ctx, key, keyBytes)
+#    define Skein_Show_Block(bits, ctx, X, blkPtr, wPtr, ksEvenPtr, ksOddPtr)
+#    define Skein_Show_Round(bits, ctx, r, X)
+#    define Skein_Show_R_Ptr(bits, ctx, r, X_ptr)
+#    define Skein_Show_Final(bits, ctx, cnt, outPtr)
+#    define Skein_Show_Key(bits, ctx, key, keyBytes)
 #endif
 
-#ifndef SKEIN_ERR_CHECK          /* run-time checks (e.g., bad params, uninitialized context)? */
-#define Skein_Assert(x, retCode) /* default: ignore all Asserts, for performance */
-#define Skein_assert(x)
+#ifndef SKEIN_ERR_CHECK              /* run-time checks (e.g., bad params, uninitialized context)? */
+#    define Skein_Assert(x, retCode) /* default: ignore all Asserts, for performance */
+#    define Skein_assert(x)
 #elif defined(SKEIN_ASSERT)
-#include <assert.h>
-#define Skein_Assert(x, retCode) assert(x)
-#define Skein_assert(x) assert(x)
+#    include <assert.h>
+#    define Skein_Assert(x, retCode) assert(x)
+#    define Skein_assert(x) assert(x)
 #else
-#include <assert.h>
-#define Skein_Assert(x, retCode) \
-    {                            \
-        if (!(x))                \
-            return retCode;      \
-    }                             /*  caller  error */
-#define Skein_assert(x) assert(x) /* internal error */
+#    include <assert.h>
+#    define Skein_Assert(x, retCode) \
+        {                            \
+            if (!(x))                \
+                return retCode;      \
+        } /*  caller  error */
+#    define Skein_assert(x) assert(x) /* internal error */
 #endif
 
 #ifndef RotL_64
-#define RotL_64(x, N) (((x) << (N)) | ((x) >> (64 - (N))))
+#    define RotL_64(x, N) (((x) << (N)) | ((x) >> (64 - (N))))
 #endif
 
 #if defined(D_BIG_ENDIAN)
         /* here for big-endian CPUs */
-#define SKEIN_NEED_SWAP (1)
+#    define SKEIN_NEED_SWAP (1)
 #elif defined(D_LITTLE_ENDIAN)
         /* here for x86 and x86-64 CPUs (and other detected little-endian CPUs) */
-#define SKEIN_NEED_SWAP (0)
-#define Skein_Put64_LSB_First(dst08, src64, bCnt) memcpy(dst08, src64, bCnt)
-#define Skein_Get64_LSB_First(dst64, src08, wCnt) memcpy(dst64, src08, 8 * (wCnt))
+#    define SKEIN_NEED_SWAP (0)
+#    define Skein_Put64_LSB_First(dst08, src64, bCnt) memcpy(dst08, src64, bCnt)
+#    define Skein_Get64_LSB_First(dst64, src08, wCnt) memcpy(dst64, src08, 8 * (wCnt))
 #else
-#error "Skein needs endianness setting!"
+#    error "Skein needs endianness setting!"
 #endif
 
 #ifndef Skein_Swap64 /* swap for big-endian, nop for little-endian */
-#if SKEIN_NEED_SWAP
-#define Skein_Swap64(w64)                                                                                                                                   \
-    (((((u64)(w64)) & 0xFF) << 56) | (((((u64)(w64)) >> 8) & 0xFF) << 48) | (((((u64)(w64)) >> 16) & 0xFF) << 40) | (((((u64)(w64)) >> 24) & 0xFF) << 32) | \
-     (((((u64)(w64)) >> 32) & 0xFF) << 24) | (((((u64)(w64)) >> 40) & 0xFF) << 16) | (((((u64)(w64)) >> 48) & 0xFF) << 8) | (((((u64)(w64)) >> 56) & 0xFF)))
-#else
-#define Skein_Swap64(w64) (w64)
-#endif
+#    if SKEIN_NEED_SWAP
+#        define Skein_Swap64(w64)                                                                                                                                                                                                                   \
+            (((((u64)(w64)) & 0xFF) << 56) | (((((u64)(w64)) >> 8) & 0xFF) << 48) | (((((u64)(w64)) >> 16) & 0xFF) << 40) | (((((u64)(w64)) >> 24) & 0xFF) << 32) | (((((u64)(w64)) >> 32) & 0xFF) << 24) | (((((u64)(w64)) >> 40) & 0xFF) << 16) | \
+             (((((u64)(w64)) >> 48) & 0xFF) << 8) | (((((u64)(w64)) >> 56) & 0xFF)))
+#    else
+#        define Skein_Swap64(w64) (w64)
+#    endif
 #endif /* ifndef Skein_Swap64 */
 
 #ifndef Skein_Put64_LSB_First
@@ -365,8 +361,7 @@ namespace ncore
             u32 n;
 
             for (n = 0; n < 8 * wCnt; n += 8)
-                dst[n / 8] = (((u64)src[n])) + (((u64)src[n + 1]) << 8) + (((u64)src[n + 2]) << 16) + (((u64)src[n + 3]) << 24) + (((u64)src[n + 4]) << 32) +
-                             (((u64)src[n + 5]) << 40) + (((u64)src[n + 6]) << 48) + (((u64)src[n + 7]) << 56);
+                dst[n / 8] = (((u64)src[n])) + (((u64)src[n + 1]) << 8) + (((u64)src[n + 2]) << 16) + (((u64)src[n + 3]) << 24) + (((u64)src[n + 4]) << 32) + (((u64)src[n + 5]) << 40) + (((u64)src[n + 6]) << 48) + (((u64)src[n + 7]) << 56);
         }
 #endif /* ifndef Skein_Get64_LSB_First */
 
@@ -495,13 +490,13 @@ namespace ncore
         };
 
 #ifndef SKEIN_ROUNDS
-#define SKEIN_256_ROUNDS_TOTAL (72) /* number of rounds for the different block sizes */
-#define SKEIN_512_ROUNDS_TOTAL (72)
-#define SKEIN1024_ROUNDS_TOTAL (80)
+#    define SKEIN_256_ROUNDS_TOTAL (72) /* number of rounds for the different block sizes */
+#    define SKEIN_512_ROUNDS_TOTAL (72)
+#    define SKEIN1024_ROUNDS_TOTAL (80)
 #else /* allow command-line define in range 8*(5..14)   */
-#define SKEIN_256_ROUNDS_TOTAL (8 * ((((SKEIN_ROUNDS / 100) + 5) % 10) + 5))
-#define SKEIN_512_ROUNDS_TOTAL (8 * ((((SKEIN_ROUNDS / 10) + 5) % 10) + 5))
-#define SKEIN1024_ROUNDS_TOTAL (8 * ((((SKEIN_ROUNDS) + 5) % 10) + 5))
+#    define SKEIN_256_ROUNDS_TOTAL (8 * ((((SKEIN_ROUNDS / 100) + 5) % 10) + 5))
+#    define SKEIN_512_ROUNDS_TOTAL (8 * ((((SKEIN_ROUNDS / 10) + 5) % 10) + 5))
+#    define SKEIN1024_ROUNDS_TOTAL (8 * ((((SKEIN_ROUNDS) + 5) % 10) + 5))
 #endif
 
         /*****************************  Skein_256 ******************************/
@@ -515,15 +510,15 @@ namespace ncore
 #define RCNT (SKEIN_256_ROUNDS_TOTAL / 8)
 
 #ifdef SKEIN_LOOP /* configure how much to unroll the loop */
-#define SKEIN_UNROLL_256 (((SKEIN_LOOP) / 100) % 10)
+#    define SKEIN_UNROLL_256 (((SKEIN_LOOP) / 100) % 10)
 #else
-#define SKEIN_UNROLL_256 (0)
+#    define SKEIN_UNROLL_256 (0)
 #endif
 
 #if SKEIN_UNROLL_256
-#if (RCNT % SKEIN_UNROLL_256)
-#error "Invalid SKEIN_UNROLL_256"               /* sanity check on unroll count */
-#endif
+#    if (RCNT % SKEIN_UNROLL_256)
+#        error "Invalid SKEIN_UNROLL_256"               /* sanity check on unroll count */
+#    endif
             u32 r;
             u64 kw[WCNT + 4 + RCNT * 2]; /* key schedule words : chaining vars + tweak + "rotation"*/
 #else
@@ -579,25 +574,25 @@ namespace ncore
     X##p3 ^= X##p2;
 
 #if SKEIN_UNROLL_256 == 0
-#define R256(p0, p1, p2, p3, ROT, rNum) /* fully unrolled */ Round256(p0, p1, p2, p3, ROT, rNum) Skein_Show_R_Ptr(BLK_BITS, &ctx->h, rNum, Xptr);
+#    define R256(p0, p1, p2, p3, ROT, rNum) /* fully unrolled */ Round256(p0, p1, p2, p3, ROT, rNum) Skein_Show_R_Ptr(BLK_BITS, &ctx->h, rNum, Xptr);
 
-#define I256(R)                                                  \
-    X0 += ks[((R) + 1) % 5]; /* inject the key schedule value */ \
-    X1 += ks[((R) + 2) % 5] + ts[((R) + 1) % 3];                 \
-    X2 += ks[((R) + 3) % 5] + ts[((R) + 2) % 3];                 \
-    X3 += ks[((R) + 4) % 5] + (R) + 1;                           \
-    Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INJECT, Xptr);
+#    define I256(R)                                                  \
+        X0 += ks[((R) + 1) % 5]; /* inject the key schedule value */ \
+        X1 += ks[((R) + 2) % 5] + ts[((R) + 1) % 3];                 \
+        X2 += ks[((R) + 3) % 5] + ts[((R) + 2) % 3];                 \
+        X3 += ks[((R) + 4) % 5] + (R) + 1;                           \
+        Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INJECT, Xptr);
 #else /* looping version */
-#define R256(p0, p1, p2, p3, ROT, rNum) Round256(p0, p1, p2, p3, ROT, rNum) Skein_Show_R_Ptr(BLK_BITS, &ctx->h, 4 * (r - 1) + rNum, Xptr);
+#    define R256(p0, p1, p2, p3, ROT, rNum) Round256(p0, p1, p2, p3, ROT, rNum) Skein_Show_R_Ptr(BLK_BITS, &ctx->h, 4 * (r - 1) + rNum, Xptr);
 
-#define I256(R)                                                \
-    X0 += ks[r + (R) + 0]; /* inject the key schedule value */ \
-    X1 += ks[r + (R) + 1] + ts[r + (R) + 0];                   \
-    X2 += ks[r + (R) + 2] + ts[r + (R) + 1];                   \
-    X3 += ks[r + (R) + 3] + r + (R);                           \
-    ks[r + (R) + 4] = ks[r + (R)-1]; /* rotate key schedule */ \
-    ts[r + (R) + 2] = ts[r + (R)-1];                           \
-    Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INJECT, Xptr);
+#    define I256(R)                                                  \
+        X0 += ks[r + (R) + 0]; /* inject the key schedule value */   \
+        X1 += ks[r + (R) + 1] + ts[r + (R) + 0];                     \
+        X2 += ks[r + (R) + 2] + ts[r + (R) + 1];                     \
+        X3 += ks[r + (R) + 3] + r + (R);                             \
+        ks[r + (R) + 4] = ks[r + (R) - 1]; /* rotate key schedule */ \
+        ts[r + (R) + 2] = ts[r + (R) - 1];                           \
+        Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INJECT, Xptr);
 
                 for (r = 1; r < 2 * RCNT; r += 2 * SKEIN_UNROLL_256) /* loop thru it */
 #endif
@@ -661,7 +656,7 @@ namespace ncore
                     R256_8_rounds(14);
 #endif
 #if (SKEIN_UNROLL_256 > 14)
-#error "need more unrolling in Skein_256_Process_Block"
+#    error "need more unrolling in Skein_256_Process_Block"
 #endif
                 }
                 /* do the final "feedforward" xor, update context chaining vars */
@@ -686,27 +681,27 @@ namespace ncore
             {
                 WCNT = SKEIN_512_STATE_WORDS
             };
-#undef RCNT
-#define RCNT (SKEIN_512_ROUNDS_TOTAL / 8)
+#    undef RCNT
+#    define RCNT (SKEIN_512_ROUNDS_TOTAL / 8)
 
-#ifdef SKEIN_LOOP /* configure how much to unroll the loop */
-#define SKEIN_UNROLL_512 (((SKEIN_LOOP) / 10) % 10)
-#else
-#define SKEIN_UNROLL_512 (0)
-#endif
+#    ifdef SKEIN_LOOP /* configure how much to unroll the loop */
+#        define SKEIN_UNROLL_512 (((SKEIN_LOOP) / 10) % 10)
+#    else
+#        define SKEIN_UNROLL_512 (0)
+#    endif
 
-#if SKEIN_UNROLL_512
-#if (RCNT % SKEIN_UNROLL_512)
-#error "Invalid SKEIN_UNROLL_512"               /* sanity check on unroll count */
-#endif
+#    if SKEIN_UNROLL_512
+#        if (RCNT % SKEIN_UNROLL_512)
+#            error "Invalid SKEIN_UNROLL_512"               /* sanity check on unroll count */
+#        endif
             u32 r;
             u64 kw[WCNT + 4 + RCNT * 2]; /* key schedule words : chaining vars + tweak + "rotation"*/
-#else
+#    else
             u64 kw[WCNT + 4]; /* key schedule words : chaining vars + tweak */
-#endif
+#    endif
             u64 X0, X1, X2, X3, X4, X5, X6, X7; /* local copy of vars, for speed */
             u64 w[WCNT];                        /* local copy of input block */
-#ifdef SKEIN_DEBUG
+#    ifdef SKEIN_DEBUG
             const u64* Xptr[8]; /* use for debugging (help compiler put Xn in registers) */
             Xptr[0] = &X0;
             Xptr[1] = &X1;
@@ -716,7 +711,7 @@ namespace ncore
             Xptr[5] = &X5;
             Xptr[6] = &X6;
             Xptr[7] = &X7;
-#endif
+#    endif
 
             Skein_assert(blkCnt != 0); /* never call with blkCnt == 0! */
             ts[0] = ctx->h.T[0];
@@ -756,113 +751,113 @@ namespace ncore
 
                 Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INITIAL, Xptr);
                 /* run the rounds */
-#define Round512(p0, p1, p2, p3, p4, p5, p6, p7, ROT, rNum) \
-    X##p0 += X##p1;                                         \
-    X##p1 = RotL_64(X##p1, ROT##_0);                        \
-    X##p1 ^= X##p0;                                         \
-    X##p2 += X##p3;                                         \
-    X##p3 = RotL_64(X##p3, ROT##_1);                        \
-    X##p3 ^= X##p2;                                         \
-    X##p4 += X##p5;                                         \
-    X##p5 = RotL_64(X##p5, ROT##_2);                        \
-    X##p5 ^= X##p4;                                         \
-    X##p6 += X##p7;                                         \
-    X##p7 = RotL_64(X##p7, ROT##_3);                        \
-    X##p7 ^= X##p6;
+#    define Round512(p0, p1, p2, p3, p4, p5, p6, p7, ROT, rNum) \
+        X##p0 += X##p1;                                         \
+        X##p1 = RotL_64(X##p1, ROT##_0);                        \
+        X##p1 ^= X##p0;                                         \
+        X##p2 += X##p3;                                         \
+        X##p3 = RotL_64(X##p3, ROT##_1);                        \
+        X##p3 ^= X##p2;                                         \
+        X##p4 += X##p5;                                         \
+        X##p5 = RotL_64(X##p5, ROT##_2);                        \
+        X##p5 ^= X##p4;                                         \
+        X##p6 += X##p7;                                         \
+        X##p7 = RotL_64(X##p7, ROT##_3);                        \
+        X##p7 ^= X##p6;
 
-#if SKEIN_UNROLL_512 == 0
-#define R512(p0, p1, p2, p3, p4, p5, p6, p7, ROT, rNum) /* unrolled */ Round512(p0, p1, p2, p3, p4, p5, p6, p7, ROT, rNum) Skein_Show_R_Ptr(BLK_BITS, &ctx->h, rNum, Xptr);
+#    if SKEIN_UNROLL_512 == 0
+#        define R512(p0, p1, p2, p3, p4, p5, p6, p7, ROT, rNum) /* unrolled */ Round512(p0, p1, p2, p3, p4, p5, p6, p7, ROT, rNum) Skein_Show_R_Ptr(BLK_BITS, &ctx->h, rNum, Xptr);
 
-#define I512(R)                                                  \
-    X0 += ks[((R) + 1) % 9]; /* inject the key schedule value */ \
-    X1 += ks[((R) + 2) % 9];                                     \
-    X2 += ks[((R) + 3) % 9];                                     \
-    X3 += ks[((R) + 4) % 9];                                     \
-    X4 += ks[((R) + 5) % 9];                                     \
-    X5 += ks[((R) + 6) % 9] + ts[((R) + 1) % 3];                 \
-    X6 += ks[((R) + 7) % 9] + ts[((R) + 2) % 3];                 \
-    X7 += ks[((R) + 8) % 9] + (R) + 1;                           \
-    Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INJECT, Xptr);
-#else /* looping version */
-#define R512(p0, p1, p2, p3, p4, p5, p6, p7, ROT, rNum) Round512(p0, p1, p2, p3, p4, p5, p6, p7, ROT, rNum) Skein_Show_R_Ptr(BLK_BITS, &ctx->h, 4 * (r - 1) + rNum, Xptr);
+#        define I512(R)                                                  \
+            X0 += ks[((R) + 1) % 9]; /* inject the key schedule value */ \
+            X1 += ks[((R) + 2) % 9];                                     \
+            X2 += ks[((R) + 3) % 9];                                     \
+            X3 += ks[((R) + 4) % 9];                                     \
+            X4 += ks[((R) + 5) % 9];                                     \
+            X5 += ks[((R) + 6) % 9] + ts[((R) + 1) % 3];                 \
+            X6 += ks[((R) + 7) % 9] + ts[((R) + 2) % 3];                 \
+            X7 += ks[((R) + 8) % 9] + (R) + 1;                           \
+            Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INJECT, Xptr);
+#    else /* looping version */
+#        define R512(p0, p1, p2, p3, p4, p5, p6, p7, ROT, rNum) Round512(p0, p1, p2, p3, p4, p5, p6, p7, ROT, rNum) Skein_Show_R_Ptr(BLK_BITS, &ctx->h, 4 * (r - 1) + rNum, Xptr);
 
-#define I512(R)                                                \
-    X0 += ks[r + (R) + 0]; /* inject the key schedule value */ \
-    X1 += ks[r + (R) + 1];                                     \
-    X2 += ks[r + (R) + 2];                                     \
-    X3 += ks[r + (R) + 3];                                     \
-    X4 += ks[r + (R) + 4];                                     \
-    X5 += ks[r + (R) + 5] + ts[r + (R) + 0];                   \
-    X6 += ks[r + (R) + 6] + ts[r + (R) + 1];                   \
-    X7 += ks[r + (R) + 7] + r + (R);                           \
-    ks[r + (R) + 8] = ks[r + (R)-1]; /* rotate key schedule */ \
-    ts[r + (R) + 2] = ts[r + (R)-1];                           \
-    Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INJECT, Xptr);
+#        define I512(R)                                                  \
+            X0 += ks[r + (R) + 0]; /* inject the key schedule value */   \
+            X1 += ks[r + (R) + 1];                                       \
+            X2 += ks[r + (R) + 2];                                       \
+            X3 += ks[r + (R) + 3];                                       \
+            X4 += ks[r + (R) + 4];                                       \
+            X5 += ks[r + (R) + 5] + ts[r + (R) + 0];                     \
+            X6 += ks[r + (R) + 6] + ts[r + (R) + 1];                     \
+            X7 += ks[r + (R) + 7] + r + (R);                             \
+            ks[r + (R) + 8] = ks[r + (R) - 1]; /* rotate key schedule */ \
+            ts[r + (R) + 2] = ts[r + (R) - 1];                           \
+            Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INJECT, Xptr);
 
                 for (r = 1; r < 2 * RCNT; r += 2 * SKEIN_UNROLL_512) /* loop thru it */
-#endif /* end of looped code definitions */
+#    endif /* end of looped code definitions */
                 {
-#define R512_8_rounds(R) /* do 8 full rounds */         \
-    R512(0, 1, 2, 3, 4, 5, 6, 7, R_512_0, 8 * (R) + 1); \
-    R512(2, 1, 4, 7, 6, 5, 0, 3, R_512_1, 8 * (R) + 2); \
-    R512(4, 1, 6, 3, 0, 5, 2, 7, R_512_2, 8 * (R) + 3); \
-    R512(6, 1, 0, 7, 2, 5, 4, 3, R_512_3, 8 * (R) + 4); \
-    I512(2 * (R));                                      \
-    R512(0, 1, 2, 3, 4, 5, 6, 7, R_512_4, 8 * (R) + 5); \
-    R512(2, 1, 4, 7, 6, 5, 0, 3, R_512_5, 8 * (R) + 6); \
-    R512(4, 1, 6, 3, 0, 5, 2, 7, R_512_6, 8 * (R) + 7); \
-    R512(6, 1, 0, 7, 2, 5, 4, 3, R_512_7, 8 * (R) + 8); \
-    I512(2 * (R) + 1); /* and key injection */
+#    define R512_8_rounds(R) /* do 8 full rounds */         \
+        R512(0, 1, 2, 3, 4, 5, 6, 7, R_512_0, 8 * (R) + 1); \
+        R512(2, 1, 4, 7, 6, 5, 0, 3, R_512_1, 8 * (R) + 2); \
+        R512(4, 1, 6, 3, 0, 5, 2, 7, R_512_2, 8 * (R) + 3); \
+        R512(6, 1, 0, 7, 2, 5, 4, 3, R_512_3, 8 * (R) + 4); \
+        I512(2 * (R));                                      \
+        R512(0, 1, 2, 3, 4, 5, 6, 7, R_512_4, 8 * (R) + 5); \
+        R512(2, 1, 4, 7, 6, 5, 0, 3, R_512_5, 8 * (R) + 6); \
+        R512(4, 1, 6, 3, 0, 5, 2, 7, R_512_6, 8 * (R) + 7); \
+        R512(6, 1, 0, 7, 2, 5, 4, 3, R_512_7, 8 * (R) + 8); \
+        I512(2 * (R) + 1); /* and key injection */
 
                     R512_8_rounds(0);
 
-#define R512_Unroll_R(NN) ((SKEIN_UNROLL_512 == 0 && SKEIN_512_ROUNDS_TOTAL / 8 > (NN)) || (SKEIN_UNROLL_512 > (NN)))
+#    define R512_Unroll_R(NN) ((SKEIN_UNROLL_512 == 0 && SKEIN_512_ROUNDS_TOTAL / 8 > (NN)) || (SKEIN_UNROLL_512 > (NN)))
 
-#if R512_Unroll_R(1)
+#    if R512_Unroll_R(1)
                     R512_8_rounds(1);
-#endif
-#if R512_Unroll_R(2)
+#    endif
+#    if R512_Unroll_R(2)
                     R512_8_rounds(2);
-#endif
-#if R512_Unroll_R(3)
+#    endif
+#    if R512_Unroll_R(3)
                     R512_8_rounds(3);
-#endif
-#if R512_Unroll_R(4)
+#    endif
+#    if R512_Unroll_R(4)
                     R512_8_rounds(4);
-#endif
-#if R512_Unroll_R(5)
+#    endif
+#    if R512_Unroll_R(5)
                     R512_8_rounds(5);
-#endif
-#if R512_Unroll_R(6)
+#    endif
+#    if R512_Unroll_R(6)
                     R512_8_rounds(6);
-#endif
-#if R512_Unroll_R(7)
+#    endif
+#    if R512_Unroll_R(7)
                     R512_8_rounds(7);
-#endif
-#if R512_Unroll_R(8)
+#    endif
+#    if R512_Unroll_R(8)
                     R512_8_rounds(8);
-#endif
-#if R512_Unroll_R(9)
+#    endif
+#    if R512_Unroll_R(9)
                     R512_8_rounds(9);
-#endif
-#if R512_Unroll_R(10)
+#    endif
+#    if R512_Unroll_R(10)
                     R512_8_rounds(10);
-#endif
-#if R512_Unroll_R(11)
+#    endif
+#    if R512_Unroll_R(11)
                     R512_8_rounds(11);
-#endif
-#if R512_Unroll_R(12)
+#    endif
+#    if R512_Unroll_R(12)
                     R512_8_rounds(12);
-#endif
-#if R512_Unroll_R(13)
+#    endif
+#    if R512_Unroll_R(13)
                     R512_8_rounds(13);
-#endif
-#if R512_Unroll_R(14)
+#    endif
+#    if R512_Unroll_R(14)
                     R512_8_rounds(14);
-#endif
-#if (SKEIN_UNROLL_512 > 14)
-#error "need more unrolling in Skein_512_Process_Block"
-#endif
+#    endif
+#    if (SKEIN_UNROLL_512 > 14)
+#        error "need more unrolling in Skein_512_Process_Block"
+#    endif
                 }
 
                 /* do the final "feedforward" xor, update context chaining vars */
@@ -892,29 +887,29 @@ namespace ncore
             {
                 WCNT = SKEIN1024_STATE_WORDS
             };
-#undef RCNT
-#define RCNT (SKEIN1024_ROUNDS_TOTAL / 8)
+#    undef RCNT
+#    define RCNT (SKEIN1024_ROUNDS_TOTAL / 8)
 
-#ifdef SKEIN_LOOP /* configure how much to unroll the loop */
-#define SKEIN_UNROLL_1024 ((SKEIN_LOOP) % 10)
-#else
-#define SKEIN_UNROLL_1024 (0)
-#endif
+#    ifdef SKEIN_LOOP /* configure how much to unroll the loop */
+#        define SKEIN_UNROLL_1024 ((SKEIN_LOOP) % 10)
+#    else
+#        define SKEIN_UNROLL_1024 (0)
+#    endif
 
-#if (SKEIN_UNROLL_1024 != 0)
-#if (RCNT % SKEIN_UNROLL_1024)
-#error "Invalid SKEIN_UNROLL_1024"              /* sanity check on unroll count */
-#endif
+#    if (SKEIN_UNROLL_1024 != 0)
+#        if (RCNT % SKEIN_UNROLL_1024)
+#            error "Invalid SKEIN_UNROLL_1024"              /* sanity check on unroll count */
+#        endif
             u32 r;
             u64 kw[WCNT + 4 + RCNT * 2]; /* key schedule words : chaining vars + tweak + "rotation"*/
-#else
-            u64 kw[WCNT + 4];                                        /* key schedule words : chaining vars + tweak */
-#endif
+#    else
+            u64 kw[WCNT + 4]; /* key schedule words : chaining vars + tweak */
+#    endif
 
             u64 X00, X01, X02, X03, X04, X05, X06, X07, /* local copy of vars, for speed */
                 X08, X09, X10, X11, X12, X13, X14, X15;
             u64 w[WCNT]; /* local copy of input block */
-#ifdef SKEIN_DEBUG
+#    ifdef SKEIN_DEBUG
             const u64* Xptr[16]; /* use for debugging (help compiler put Xn in registers) */
             Xptr[0]  = &X00;
             Xptr[1]  = &X01;
@@ -932,7 +927,7 @@ namespace ncore
             Xptr[13] = &X13;
             Xptr[14] = &X14;
             Xptr[15] = &X15;
-#endif
+#    endif
 
             Skein_assert(blkCnt != 0); /* never call with blkCnt == 0! */
             ts[0] = ctx->h.T[0];
@@ -986,143 +981,141 @@ namespace ncore
 
                 Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INITIAL, Xptr);
 
-#define Round1024(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, pA, pB, pC, pD, pE, pF, ROT, rNum) \
-    X##p0 += X##p1;                                                                          \
-    X##p1 = RotL_64(X##p1, ROT##_0);                                                         \
-    X##p1 ^= X##p0;                                                                          \
-    X##p2 += X##p3;                                                                          \
-    X##p3 = RotL_64(X##p3, ROT##_1);                                                         \
-    X##p3 ^= X##p2;                                                                          \
-    X##p4 += X##p5;                                                                          \
-    X##p5 = RotL_64(X##p5, ROT##_2);                                                         \
-    X##p5 ^= X##p4;                                                                          \
-    X##p6 += X##p7;                                                                          \
-    X##p7 = RotL_64(X##p7, ROT##_3);                                                         \
-    X##p7 ^= X##p6;                                                                          \
-    X##p8 += X##p9;                                                                          \
-    X##p9 = RotL_64(X##p9, ROT##_4);                                                         \
-    X##p9 ^= X##p8;                                                                          \
-    X##pA += X##pB;                                                                          \
-    X##pB = RotL_64(X##pB, ROT##_5);                                                         \
-    X##pB ^= X##pA;                                                                          \
-    X##pC += X##pD;                                                                          \
-    X##pD = RotL_64(X##pD, ROT##_6);                                                         \
-    X##pD ^= X##pC;                                                                          \
-    X##pE += X##pF;                                                                          \
-    X##pF = RotL_64(X##pF, ROT##_7);                                                         \
-    X##pF ^= X##pE;
+#    define Round1024(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, pA, pB, pC, pD, pE, pF, ROT, rNum) \
+        X##p0 += X##p1;                                                                          \
+        X##p1 = RotL_64(X##p1, ROT##_0);                                                         \
+        X##p1 ^= X##p0;                                                                          \
+        X##p2 += X##p3;                                                                          \
+        X##p3 = RotL_64(X##p3, ROT##_1);                                                         \
+        X##p3 ^= X##p2;                                                                          \
+        X##p4 += X##p5;                                                                          \
+        X##p5 = RotL_64(X##p5, ROT##_2);                                                         \
+        X##p5 ^= X##p4;                                                                          \
+        X##p6 += X##p7;                                                                          \
+        X##p7 = RotL_64(X##p7, ROT##_3);                                                         \
+        X##p7 ^= X##p6;                                                                          \
+        X##p8 += X##p9;                                                                          \
+        X##p9 = RotL_64(X##p9, ROT##_4);                                                         \
+        X##p9 ^= X##p8;                                                                          \
+        X##pA += X##pB;                                                                          \
+        X##pB = RotL_64(X##pB, ROT##_5);                                                         \
+        X##pB ^= X##pA;                                                                          \
+        X##pC += X##pD;                                                                          \
+        X##pD = RotL_64(X##pD, ROT##_6);                                                         \
+        X##pD ^= X##pC;                                                                          \
+        X##pE += X##pF;                                                                          \
+        X##pF = RotL_64(X##pF, ROT##_7);                                                         \
+        X##pF ^= X##pE;
 
-#if SKEIN_UNROLL_1024 == 0
-#define R1024(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, pA, pB, pC, pD, pE, pF, ROT, rn) \
-    Round1024(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, pA, pB, pC, pD, pE, pF, ROT, rn) Skein_Show_R_Ptr(BLK_BITS, &ctx->h, rn, Xptr);
+#    if SKEIN_UNROLL_1024 == 0
+#        define R1024(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, pA, pB, pC, pD, pE, pF, ROT, rn) Round1024(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, pA, pB, pC, pD, pE, pF, ROT, rn) Skein_Show_R_Ptr(BLK_BITS, &ctx->h, rn, Xptr);
 
-#define I1024(R)                                                   \
-    X00 += ks[((R) + 1) % 17]; /* inject the key schedule value */ \
-    X01 += ks[((R) + 2) % 17];                                     \
-    X02 += ks[((R) + 3) % 17];                                     \
-    X03 += ks[((R) + 4) % 17];                                     \
-    X04 += ks[((R) + 5) % 17];                                     \
-    X05 += ks[((R) + 6) % 17];                                     \
-    X06 += ks[((R) + 7) % 17];                                     \
-    X07 += ks[((R) + 8) % 17];                                     \
-    X08 += ks[((R) + 9) % 17];                                     \
-    X09 += ks[((R) + 10) % 17];                                    \
-    X10 += ks[((R) + 11) % 17];                                    \
-    X11 += ks[((R) + 12) % 17];                                    \
-    X12 += ks[((R) + 13) % 17];                                    \
-    X13 += ks[((R) + 14) % 17] + ts[((R) + 1) % 3];                \
-    X14 += ks[((R) + 15) % 17] + ts[((R) + 2) % 3];                \
-    X15 += ks[((R) + 16) % 17] + (R) + 1;                          \
-    Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INJECT, Xptr);
-#else /* looping version */
-#define R1024(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, pA, pB, pC, pD, pE, pF, ROT, rn) \
-    Round1024(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, pA, pB, pC, pD, pE, pF, ROT, rn) Skein_Show_R_Ptr(BLK_BITS, &ctx->h, 4 * (r - 1) + rn, Xptr);
+#        define I1024(R)                                                   \
+            X00 += ks[((R) + 1) % 17]; /* inject the key schedule value */ \
+            X01 += ks[((R) + 2) % 17];                                     \
+            X02 += ks[((R) + 3) % 17];                                     \
+            X03 += ks[((R) + 4) % 17];                                     \
+            X04 += ks[((R) + 5) % 17];                                     \
+            X05 += ks[((R) + 6) % 17];                                     \
+            X06 += ks[((R) + 7) % 17];                                     \
+            X07 += ks[((R) + 8) % 17];                                     \
+            X08 += ks[((R) + 9) % 17];                                     \
+            X09 += ks[((R) + 10) % 17];                                    \
+            X10 += ks[((R) + 11) % 17];                                    \
+            X11 += ks[((R) + 12) % 17];                                    \
+            X12 += ks[((R) + 13) % 17];                                    \
+            X13 += ks[((R) + 14) % 17] + ts[((R) + 1) % 3];                \
+            X14 += ks[((R) + 15) % 17] + ts[((R) + 2) % 3];                \
+            X15 += ks[((R) + 16) % 17] + (R) + 1;                          \
+            Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INJECT, Xptr);
+#    else /* looping version */
+#        define R1024(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, pA, pB, pC, pD, pE, pF, ROT, rn) Round1024(p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, pA, pB, pC, pD, pE, pF, ROT, rn) Skein_Show_R_Ptr(BLK_BITS, &ctx->h, 4 * (r - 1) + rn, Xptr);
 
-#define I1024(R)                                                \
-    X00 += ks[r + (R) + 0]; /* inject the key schedule value */ \
-    X01 += ks[r + (R) + 1];                                     \
-    X02 += ks[r + (R) + 2];                                     \
-    X03 += ks[r + (R) + 3];                                     \
-    X04 += ks[r + (R) + 4];                                     \
-    X05 += ks[r + (R) + 5];                                     \
-    X06 += ks[r + (R) + 6];                                     \
-    X07 += ks[r + (R) + 7];                                     \
-    X08 += ks[r + (R) + 8];                                     \
-    X09 += ks[r + (R) + 9];                                     \
-    X10 += ks[r + (R) + 10];                                    \
-    X11 += ks[r + (R) + 11];                                    \
-    X12 += ks[r + (R) + 12];                                    \
-    X13 += ks[r + (R) + 13] + ts[r + (R) + 0];                  \
-    X14 += ks[r + (R) + 14] + ts[r + (R) + 1];                  \
-    X15 += ks[r + (R) + 15] + r + (R);                          \
-    ks[r + (R) + 16] = ks[r + (R)-1]; /* rotate key schedule */ \
-    ts[r + (R) + 2]  = ts[r + (R)-1];                           \
-    Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INJECT, Xptr);
+#        define I1024(R)                                                  \
+            X00 += ks[r + (R) + 0]; /* inject the key schedule value */   \
+            X01 += ks[r + (R) + 1];                                       \
+            X02 += ks[r + (R) + 2];                                       \
+            X03 += ks[r + (R) + 3];                                       \
+            X04 += ks[r + (R) + 4];                                       \
+            X05 += ks[r + (R) + 5];                                       \
+            X06 += ks[r + (R) + 6];                                       \
+            X07 += ks[r + (R) + 7];                                       \
+            X08 += ks[r + (R) + 8];                                       \
+            X09 += ks[r + (R) + 9];                                       \
+            X10 += ks[r + (R) + 10];                                      \
+            X11 += ks[r + (R) + 11];                                      \
+            X12 += ks[r + (R) + 12];                                      \
+            X13 += ks[r + (R) + 13] + ts[r + (R) + 0];                    \
+            X14 += ks[r + (R) + 14] + ts[r + (R) + 1];                    \
+            X15 += ks[r + (R) + 15] + r + (R);                            \
+            ks[r + (R) + 16] = ks[r + (R) - 1]; /* rotate key schedule */ \
+            ts[r + (R) + 2]  = ts[r + (R) - 1];                           \
+            Skein_Show_R_Ptr(BLK_BITS, &ctx->h, SKEIN_RND_KEY_INJECT, Xptr);
 
                 for (r = 1; r <= 2 * RCNT; r += 2 * SKEIN_UNROLL_1024) /* loop thru it */
-#endif
+#    endif
                 {
-#define R1024_8_rounds(R) /* do 8 full rounds */                                                 \
-    R1024(00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, R1024_0, 8 * (R) + 1); \
-    R1024(00, 09, 02, 13, 06, 11, 04, 15, 10, 07, 12, 03, 14, 05, 08, 01, R1024_1, 8 * (R) + 2); \
-    R1024(00, 07, 02, 05, 04, 03, 06, 01, 12, 15, 14, 13, 08, 11, 10, 09, R1024_2, 8 * (R) + 3); \
-    R1024(00, 15, 02, 11, 06, 13, 04, 09, 14, 01, 08, 05, 10, 03, 12, 07, R1024_3, 8 * (R) + 4); \
-    I1024(2 * (R));                                                                              \
-    R1024(00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, R1024_4, 8 * (R) + 5); \
-    R1024(00, 09, 02, 13, 06, 11, 04, 15, 10, 07, 12, 03, 14, 05, 08, 01, R1024_5, 8 * (R) + 6); \
-    R1024(00, 07, 02, 05, 04, 03, 06, 01, 12, 15, 14, 13, 08, 11, 10, 09, R1024_6, 8 * (R) + 7); \
-    R1024(00, 15, 02, 11, 06, 13, 04, 09, 14, 01, 08, 05, 10, 03, 12, 07, R1024_7, 8 * (R) + 8); \
-    I1024(2 * (R) + 1);
+#    define R1024_8_rounds(R) /* do 8 full rounds */                                                 \
+        R1024(00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, R1024_0, 8 * (R) + 1); \
+        R1024(00, 09, 02, 13, 06, 11, 04, 15, 10, 07, 12, 03, 14, 05, 08, 01, R1024_1, 8 * (R) + 2); \
+        R1024(00, 07, 02, 05, 04, 03, 06, 01, 12, 15, 14, 13, 08, 11, 10, 09, R1024_2, 8 * (R) + 3); \
+        R1024(00, 15, 02, 11, 06, 13, 04, 09, 14, 01, 08, 05, 10, 03, 12, 07, R1024_3, 8 * (R) + 4); \
+        I1024(2 * (R));                                                                              \
+        R1024(00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, R1024_4, 8 * (R) + 5); \
+        R1024(00, 09, 02, 13, 06, 11, 04, 15, 10, 07, 12, 03, 14, 05, 08, 01, R1024_5, 8 * (R) + 6); \
+        R1024(00, 07, 02, 05, 04, 03, 06, 01, 12, 15, 14, 13, 08, 11, 10, 09, R1024_6, 8 * (R) + 7); \
+        R1024(00, 15, 02, 11, 06, 13, 04, 09, 14, 01, 08, 05, 10, 03, 12, 07, R1024_7, 8 * (R) + 8); \
+        I1024(2 * (R) + 1);
 
                     R1024_8_rounds(0);
 
-#define R1024_Unroll_R(NN) ((SKEIN_UNROLL_1024 == 0 && SKEIN1024_ROUNDS_TOTAL / 8 > (NN)) || (SKEIN_UNROLL_1024 > (NN)))
+#    define R1024_Unroll_R(NN) ((SKEIN_UNROLL_1024 == 0 && SKEIN1024_ROUNDS_TOTAL / 8 > (NN)) || (SKEIN_UNROLL_1024 > (NN)))
 
-#if R1024_Unroll_R(1)
+#    if R1024_Unroll_R(1)
                     R1024_8_rounds(1);
-#endif
-#if R1024_Unroll_R(2)
+#    endif
+#    if R1024_Unroll_R(2)
                     R1024_8_rounds(2);
-#endif
-#if R1024_Unroll_R(3)
+#    endif
+#    if R1024_Unroll_R(3)
                     R1024_8_rounds(3);
-#endif
-#if R1024_Unroll_R(4)
+#    endif
+#    if R1024_Unroll_R(4)
                     R1024_8_rounds(4);
-#endif
-#if R1024_Unroll_R(5)
+#    endif
+#    if R1024_Unroll_R(5)
                     R1024_8_rounds(5);
-#endif
-#if R1024_Unroll_R(6)
+#    endif
+#    if R1024_Unroll_R(6)
                     R1024_8_rounds(6);
-#endif
-#if R1024_Unroll_R(7)
+#    endif
+#    if R1024_Unroll_R(7)
                     R1024_8_rounds(7);
-#endif
-#if R1024_Unroll_R(8)
+#    endif
+#    if R1024_Unroll_R(8)
                     R1024_8_rounds(8);
-#endif
-#if R1024_Unroll_R(9)
+#    endif
+#    if R1024_Unroll_R(9)
                     R1024_8_rounds(9);
-#endif
-#if R1024_Unroll_R(10)
+#    endif
+#    if R1024_Unroll_R(10)
                     R1024_8_rounds(10);
-#endif
-#if R1024_Unroll_R(11)
+#    endif
+#    if R1024_Unroll_R(11)
                     R1024_8_rounds(11);
-#endif
-#if R1024_Unroll_R(12)
+#    endif
+#    if R1024_Unroll_R(12)
                     R1024_8_rounds(12);
-#endif
-#if R1024_Unroll_R(13)
+#    endif
+#    if R1024_Unroll_R(13)
                     R1024_8_rounds(13);
-#endif
-#if R1024_Unroll_R(14)
+#    endif
+#    if R1024_Unroll_R(14)
                     R1024_8_rounds(14);
-#endif
-#if (SKEIN_UNROLL_1024 > 14)
-#error "need more unrolling in Skein_1024_Process_Block"
-#endif
+#    endif
+#    if (SKEIN_UNROLL_1024 > 14)
+#        error "need more unrolling in Skein_1024_Process_Block"
+#    endif
                 }
                 /* do the final "feedforward" xor, update context chaining vars */
 
@@ -1164,7 +1157,8 @@ namespace ncore
         /* init the context for a straight hashing operation  */
         s32 Skein_256_Init(Skein_256_Ctxt_t* ctx, u32 hashBitLen)
         {
-            union {
+            union
+            {
                 u8  b[SKEIN_256_STATE_BYTES];
                 u64 w[SKEIN_256_STATE_WORDS];
             } cfg; /* config block */
@@ -1291,7 +1285,8 @@ namespace ncore
         /* init the context for a straight hashing operation  */
         s32 Skein_512_Init(Skein_512_Ctxt_t* ctx, u32 hashBitLen)
         {
-            union {
+            union
+            {
                 u8  b[SKEIN_512_STATE_BYTES];
                 u64 w[SKEIN_512_STATE_WORDS];
             } cfg; /* config block */
@@ -1420,7 +1415,8 @@ namespace ncore
         /* init the context for a straight hashing operation  */
         s32 Skein1024_Init(Skein1024_Ctxt_t* ctx, u32 hashBitLen)
         {
-            union {
+            union
+            {
                 u8  b[SKEIN1024_STATE_BYTES];
                 u64 w[SKEIN1024_STATE_WORDS];
             } cfg; /* config block */
@@ -1547,78 +1543,80 @@ namespace ncore
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
-
-    void skein256_t::reset(u64 seed)
+    namespace nhash_private
     {
-        skein::Skein_256_Ctxt_t* ctx = (skein::Skein_256_Ctxt_t*)&m_ctxt;
-        m_initialized                = true;
-        skein::Skein_256_Init(ctx, 256);
-    }
 
-    void skein256_t::hash(const u8* begin, const u8* end)
-    {
-        skein::Skein_256_Ctxt_t* ctx = (skein::Skein_256_Ctxt_t*)&m_ctxt;
-        if (m_initialized)
-            skein::Skein_256_Update(ctx, begin, (u32)(end - begin));
-    }
-
-    void skein256_t::end(u8* hash)
-    {
-        skein::Skein_256_Ctxt_t* ctx = (skein::Skein_256_Ctxt_t*)&m_ctxt;
-        if (m_initialized)
+        void skein256_t::reset(u64 seed)
         {
-            m_initialized = false;
-            skein::Skein_256_Final(ctx, hash);
+            skein::Skein_256_Ctxt_t* ctx = (skein::Skein_256_Ctxt_t*)&m_ctxt;
+            m_initialized                = true;
+            skein::Skein_256_Init(ctx, 256);
         }
-    }
 
-    void skein512_t::reset(u64 seed)
-    {
-        skein::Skein_512_Ctxt_t* ctx = (skein::Skein_512_Ctxt_t*)&m_ctxt;
-        m_initialized                = true;
-        skein::Skein_512_Init(ctx, 512);
-    }
-
-    void skein512_t::hash(const u8* begin, const u8* end)
-    {
-        skein::Skein_512_Ctxt_t* ctx = (skein::Skein_512_Ctxt_t*)&m_ctxt;
-        if (m_initialized)
-            skein::Skein_512_Update(ctx, begin, (u32)(end - begin));
-    }
-
-    void skein512_t::end(u8* hash)
-    {
-        skein::Skein_512_Ctxt_t* ctx = (skein::Skein_512_Ctxt_t*)&m_ctxt;
-        if (m_initialized)
+        void skein256_t::hash(const u8* begin, const u8* end)
         {
-            m_initialized = false;
-            skein::Skein_512_Final(ctx, hash);
+            skein::Skein_256_Ctxt_t* ctx = (skein::Skein_256_Ctxt_t*)&m_ctxt;
+            if (m_initialized)
+                skein::Skein_256_Update(ctx, begin, (u32)(end - begin));
         }
-    }
 
-
-    void skein1024_t::reset(u64 seed)
-    {
-        skein::Skein1024_Ctxt_t* ctx = (skein::Skein1024_Ctxt_t*)&m_ctxt;
-        m_initialized                = true;
-        skein::Skein1024_Init(ctx, 256);
-    }
-
-    void skein1024_t::hash(const u8* begin, const u8* end)
-    {
-        skein::Skein1024_Ctxt_t* ctx = (skein::Skein1024_Ctxt_t*)&m_ctxt;
-        if (m_initialized)
-            skein::Skein1024_Update(ctx, begin, (u32)(end - begin));
-    }
-
-    void skein1024_t::end(u8* hash)
-    {
-        skein::Skein1024_Ctxt_t* ctx = (skein::Skein1024_Ctxt_t*)&m_ctxt;
-        if (m_initialized)
+        void skein256_t::end(u8* hash)
         {
-            m_initialized = false;
-            skein::Skein1024_Final(ctx, hash);
+            skein::Skein_256_Ctxt_t* ctx = (skein::Skein_256_Ctxt_t*)&m_ctxt;
+            if (m_initialized)
+            {
+                m_initialized = false;
+                skein::Skein_256_Final(ctx, hash);
+            }
         }
-    }
 
+        void skein512_t::reset(u64 seed)
+        {
+            skein::Skein_512_Ctxt_t* ctx = (skein::Skein_512_Ctxt_t*)&m_ctxt;
+            m_initialized                = true;
+            skein::Skein_512_Init(ctx, 512);
+        }
+
+        void skein512_t::hash(const u8* begin, const u8* end)
+        {
+            skein::Skein_512_Ctxt_t* ctx = (skein::Skein_512_Ctxt_t*)&m_ctxt;
+            if (m_initialized)
+                skein::Skein_512_Update(ctx, begin, (u32)(end - begin));
+        }
+
+        void skein512_t::end(u8* hash)
+        {
+            skein::Skein_512_Ctxt_t* ctx = (skein::Skein_512_Ctxt_t*)&m_ctxt;
+            if (m_initialized)
+            {
+                m_initialized = false;
+                skein::Skein_512_Final(ctx, hash);
+            }
+        }
+
+        void skein1024_t::reset(u64 seed)
+        {
+            skein::Skein1024_Ctxt_t* ctx = (skein::Skein1024_Ctxt_t*)&m_ctxt;
+            m_initialized                = true;
+            skein::Skein1024_Init(ctx, 256);
+        }
+
+        void skein1024_t::hash(const u8* begin, const u8* end)
+        {
+            skein::Skein1024_Ctxt_t* ctx = (skein::Skein1024_Ctxt_t*)&m_ctxt;
+            if (m_initialized)
+                skein::Skein1024_Update(ctx, begin, (u32)(end - begin));
+        }
+
+        void skein1024_t::end(u8* hash)
+        {
+            skein::Skein1024_Ctxt_t* ctx = (skein::Skein1024_Ctxt_t*)&m_ctxt;
+            if (m_initialized)
+            {
+                m_initialized = false;
+                skein::Skein1024_Final(ctx, hash);
+            }
+        }
+
+    } // namespace nhash_private
 } // namespace ncore

@@ -38,7 +38,7 @@ namespace ncore
 		if (CRC32::mIsEmpty)
 		{
 			// Fill crc table for first 2^8 bit combinations
-			for (s32 n=0; n<CRC32::TABLE_SIZE; n++)
+			for (s32 n=0; n<(s32)CRC32::TABLE_SIZE; n++)
 			{
 				u32 c = n;
 				for (s32 k=0; k<8; k++)

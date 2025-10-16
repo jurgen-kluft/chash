@@ -16,7 +16,7 @@ UNITTEST_SUITE_BEGIN(murmur64_t)
 
 		static u64 murmur64_hash(cbuffer_t const& b)
 		{
-			murmur64_t murmur64;
+			nhash_private::murmur64_t murmur64;
 
 			nhash::murmur64 h1;
 			murmur64.reset();

@@ -38,8 +38,6 @@ namespace ncore
         };
 
         static inline s32 size(value_t type) { return (s32)((type & SizeMask) >> SizeShift); }
-
-        value_t value;
     }; // namespace ehashtype
 
     typedef void* hash_instance_t;

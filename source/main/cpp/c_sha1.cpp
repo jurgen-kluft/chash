@@ -51,7 +51,7 @@ namespace ncore
 #define SHA_ROR(X, n) SHA_ROT(X, 32 - (n), n)
 
 #ifdef D_LITTLE_ENDIAN
-#    define xntohl(x) ((((u32)(x)&0xff000000) >> 24) | (((u32)(x)&0x00ff0000) >> 8) | (((u32)(x)&0x0000ff00) << 8) | (((u32)(x)&0x000000ff) << 24))
+#    define xntohl(x) ((((u32)(x) & 0xff000000) >> 24) | (((u32)(x) & 0x00ff0000) >> 8) | (((u32)(x) & 0x0000ff00) << 8) | (((u32)(x) & 0x000000ff) << 24))
 
 #    define xhtonl(x) xntohl(x)
 #else
@@ -67,7 +67,7 @@ namespace ncore
     } while (0)
 
 // This "rolls" over the 512-bit array
-#define W(x) (array[(x)&15])
+#define W(x) (array[(x) & 15])
 #define setW(x, val) (W(x) = (val))
 
 /**
@@ -258,43 +258,45 @@ namespace ncore
         xsha1_ctx_update(ctx, (u8 const*)padlen, 8);
     }
 
-    void sha1_t::reset(u64 seed)
+    namespace nhash_private
     {
-        xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
-        xsha1_ctx_init(ctx);
-    }
-
-    void sha1_t::hash(const u8* begin, const u8* end)
-    {
-        xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
-        xsha1_ctx_update(ctx, begin, (u32)(end - begin));
-    }
-
-    void sha1_t::end(u8* _hash)
-    {
-        xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
-        if (ctx->computed == 0)
+        void sha1_t::reset(u64 seed)
         {
-            xsha1_ctx_close(ctx);
-            ctx->computed = 1;
+            xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
+            xsha1_ctx_init(ctx);
         }
 
-        for (s32 i = 0; i < 5; ++i)
+        void sha1_t::hash(const u8* begin, const u8* end)
         {
-            u32 const* h = &ctx->H[i];
+            xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
+            xsha1_ctx_update(ctx, begin, (u32)(end - begin));
+        }
+
+        void sha1_t::end(u8* _hash)
+        {
+            xsha1_ctx* ctx = (xsha1_ctx*)&this->m_ctxt;
+            if (ctx->computed == 0)
+            {
+                xsha1_ctx_close(ctx);
+                ctx->computed = 1;
+            }
+
+            for (s32 i = 0; i < 5; ++i)
+            {
+                u32 const* h = &ctx->H[i];
 #if defined(NCORE_BIG_ENDIAN)
-            _hash[4 * i + 0] = h[0];
-            _hash[4 * i + 1] = h[1];
-            _hash[4 * i + 2] = h[2];
-            _hash[4 * i + 3] = h[3];
+                _hash[4 * i + 0] = h[0];
+                _hash[4 * i + 1] = h[1];
+                _hash[4 * i + 2] = h[2];
+                _hash[4 * i + 3] = h[3];
 #else
-            _hash[4 * i + 0] = h[3];
-            _hash[4 * i + 1] = h[2];
-            _hash[4 * i + 2] = h[1];
-            _hash[4 * i + 3] = h[0];
+                _hash[4 * i + 0] = h[3];
+                _hash[4 * i + 1] = h[2];
+                _hash[4 * i + 2] = h[1];
+                _hash[4 * i + 3] = h[0];
 #endif
+            }
         }
-    }
-
+    } // namespace nhash_private
 
 } // namespace ncore
