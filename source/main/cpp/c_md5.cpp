@@ -1,6 +1,5 @@
-#include "ccore/c_target.h"
+#include "ccore/c_endian.h"
 #include "cbase/c_allocator.h"
-#include "cbase/c_endian.h"
 #include "cbase/c_memory.h"
 #include "chash/private/c_internal_hash.h"
 
@@ -99,10 +98,8 @@ namespace ncore
         */
     static void sByteSwap(u32* ioBuffer, s32 inLength)
     {
-#if !defined(D_LITTLE_ENDIAN)
         for (s32 i = 0; i < inLength; i++)
-            ioBuffer[i] = nendian_swap::swap(ioBuffer[i]);
-#endif
+            ioBuffer[i] = nendian::swap(ioBuffer[i]);
     }
 
     /**

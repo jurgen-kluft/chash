@@ -1,5 +1,5 @@
 #include "ccore/c_target.h"
-#include "cbase/c_endian.h"
+#include "ccore/c_endian.h"
 
 #include "chash/private/c_internal_hash.h"
 
