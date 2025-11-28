@@ -67,7 +67,7 @@ namespace ncore
 
         void murmur32_t::end(u8* _hash)
         {
-            u32       p   = nendian_ne::swap(m_hash);
+            u32       p   = nendian_ne::read_u32((u8 const*)&m_hash);
             u8 const* src = (u8 const*)&p;
             _hash[0]      = src[0];
             _hash[1]      = src[1];

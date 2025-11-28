@@ -99,7 +99,7 @@ namespace ncore
     static void sByteSwap(u32* ioBuffer, s32 inLength)
     {
         for (s32 i = 0; i < inLength; i++)
-            ioBuffer[i] = nendian::swap(ioBuffer[i]);
+            ioBuffer[i] = nendian::read_u32((u8 const*)&ioBuffer[i]);
     }
 
     /**
