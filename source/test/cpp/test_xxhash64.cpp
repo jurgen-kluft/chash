@@ -13,12 +13,12 @@ UNITTEST_SUITE_BEGIN(xxhash64_t)
 		UNITTEST_FIXTURE_SETUP() {}
 		UNITTEST_FIXTURE_TEARDOWN() {}
 
-
 		UNITTEST_TEST(hash1)
 		{
 			u32 len=10;
 			u8 indata[]={1,2,3,4,5,6,7,8,9,13};
 			nhash_private::xxhash64_t hash;
+            hash.reset();
             hash.hash(indata, indata+len);
             u64 digest;
             hash.end((u8*)&digest);
