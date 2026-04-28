@@ -20,6 +20,7 @@ namespace ncore
 
         typedef digest_t<16>  md5;
         typedef digest_t<20>  sha1;
+        typedef digest_t<32>  sha256;
         typedef digest_t<32>  skein256;
         typedef digest_t<64>  skein512;
         typedef digest_t<128> skein1024;
@@ -54,6 +55,17 @@ namespace ncore
             u64 m_ctxt[12];
 
             s32  size() const { return sizeof(nhash::sha1); }
+            void reset(u64 seed = 0);
+            void hash(u8 const* data, u8 const* end);
+            void end(u8* hash);
+        };
+        
+        struct sha256_t
+        {
+            hash_header_t hdr;
+            u64 m_ctxt[12];
+
+            s32  size() const { return sizeof(nhash::sha256); }
             void reset(u64 seed = 0);
             void hash(u8 const* data, u8 const* end);
             void end(u8* hash);
