@@ -27,6 +27,7 @@ namespace ncore
         typedef digest_t<4>   murmur32;
         typedef digest_t<8>   murmur64;
         typedef digest_t<8>   xxhash64;
+        typedef digest_t<8>   wyhash64;
         typedef digest_t<16>  spookyhashv2;
     }; // namespace nhash
 
@@ -138,6 +139,18 @@ namespace ncore
             u64 m_ctxt[11];
 
             s32  size() const { return sizeof(nhash::xxhash64); }
+            void reset(u64 seed = 0);
+            void hash(u8 const* data, u8 const* end);
+            void end(u8* hash);
+        };
+
+        struct wyhash64_t
+        {
+            hash_header_t hdr;
+            u64 m_ctxt[10];
+            u64 m_seed;
+
+            s32  size() const { return sizeof(nhash::wyhash64); }
             void reset(u64 seed = 0);
             void hash(u8 const* data, u8 const* end);
             void end(u8* hash);
