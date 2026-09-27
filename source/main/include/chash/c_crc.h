@@ -1,10 +1,3 @@
-/**
- * @file c_crc.h
- *
- * Core Checksum functions
- */
-
-// x_crc.h - Core Checksum functions
 #ifndef __CHASH_CHECKSUM_H__
 #define __CHASH_CHECKSUM_H__
 #include "ccore/c_target.h"
@@ -12,7 +5,7 @@
 #pragma once
 #endif
 
-#include "cbase/c_buffer.h"
+#include "ccore/c_buffer.h"
 
 namespace ncore
 {

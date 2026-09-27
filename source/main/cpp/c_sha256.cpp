@@ -13,16 +13,16 @@ namespace ncore
             u8  buffer[64];
         };
 
-        void sha256_init(context_t* p, u64 seed);
-        void sha256_update(context_t* p, const u8* data, uint_t size);
-        void sha256_final(context_t* p, u8* digest);
-        void sha256_hash(u8* buf, const u8* data, uint_t size);
+        static void sha256_init(context_t* p, u64 seed);
+        static void sha256_update(context_t* p, const u8* data, uint_t size);
+        static void sha256_final(context_t* p, u8* digest);
+        static void sha256_hash(u8* buf, const u8* data, uint_t size);
 
 /* define it for speed optimization */
 #define _SHA256_UNROLL
 #define _SHA256_UNROLL2
 
-        void sha256_init(context_t* p, u64 seed)
+        static void sha256_init(context_t* p, u64 seed)
         {
             p->state[0] = 0x6a09e667;
             p->state[1] = 0xbb67ae85;
@@ -39,6 +39,8 @@ namespace ncore
                 sha256_update(p, (const u8*)&seed, sizeof(seed));
             }
         }
+
+#define ROTR32(x, shift) (((u32)(x) >> ((shift) & 31)) | ((u32)(x) << ((32 - ((shift) & 31)) & 31)))
 
 #define S0(x) (ROTR32(x, 2) ^ ROTR32(x, 13) ^ ROTR32(x, 22))
 #define S1(x) (ROTR32(x, 6) ^ ROTR32(x, 11) ^ ROTR32(x, 25))
@@ -173,15 +175,15 @@ namespace ncore
             sha256_transform(p->state, data32);
         }
 
-        void sha256_hash(u8* buf, const u8* data, uint_t size)
+        static void sha256_hash(u8* buf, const u8* data, uint_t size)
         {
             context_t hash;
-            sha256_init(&hash);
+            sha256_init(&hash, 0);
             sha256_update(&hash, data, size);
             sha256_final(&hash, buf);
         }
 
-        void sha256_update(context_t* p, const u8* data, uint_t size)
+        static void sha256_update(context_t* p, const u8* data, uint_t size)
         {
             u32 curBufferPos = (u32)p->count & 0x3F;
             while (size > 0)
@@ -197,7 +199,7 @@ namespace ncore
             }
         }
 
-        void sha256_final(context_t* p, u8* digest)
+        static void sha256_final(context_t* p, u8* digest)
         {
             u64 lenInBits    = (p->count << 3);
             u32 curBufferPos = (u32)p->count & 0x3F;
@@ -224,15 +226,15 @@ namespace ncore
                 *digest++ = (u8)(p->state[i] >> 8);
                 *digest++ = (u8)(p->state[i]);
             }
-            sha256_init(p);
+            sha256_init(p, 0);
         }
 
     } // namespace nsha256
 
     namespace nhash_private
     {
-        void context_t::reset(u64 seed) { nsha256::sha256_init((context_t*)&this->m_ctxt, seed); }
-        void context_t::hash(const u8* begin, const u8* end) { nsha256::sha256_update((context_t*)&this->m_ctxt, begin, (u32)(end - begin)); }
-        void context_t::end(u8* _hash) { nsha256::sha256_final((context_t*)&this->m_ctxt, _hash); }
+        void sha256_t::reset(u64 seed) { nsha256::sha256_init((nsha256::context_t*)&this->m_ctxt, seed); }
+        void sha256_t::hash(const u8* begin, const u8* end) { nsha256::sha256_update((nsha256::context_t*)&this->m_ctxt, begin, (u32)(end - begin)); }
+        void sha256_t::end(u8* _hash) { nsha256::sha256_final((nsha256::context_t*)&this->m_ctxt, _hash); }
     } // namespace nhash_private
 } // namespace ncore

@@ -1,5 +1,5 @@
 #include "ccore/c_target.h"
-#include "cbase/c_memory.h"
+#include "ccore/c_memory.h"
 #include "chash/private/c_internal_hash.h"
 
 namespace ncore

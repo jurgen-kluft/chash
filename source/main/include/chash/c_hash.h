@@ -27,7 +27,6 @@ namespace ncore
         enum
         {
             MD5          = (1 << IndexShift) | (16 << SizeShift) | (sizeof(nhash_private::md5_t) << CtxSizeShift),
-            SHA1         = (2 << IndexShift) | (20 << SizeShift) | (sizeof(nhash_private::sha1_t) << CtxSizeShift),
             Skein256     = (3 << IndexShift) | (32 << SizeShift) | (sizeof(nhash_private::skein256_t) << CtxSizeShift),
             Skein512     = (4 << IndexShift) | (64 << SizeShift) | (sizeof(nhash_private::skein512_t) << CtxSizeShift),
             Skein1024    = (5 << IndexShift) | (128 << SizeShift) | (sizeof(nhash_private::skein1024_t) << CtxSizeShift),
@@ -35,6 +34,8 @@ namespace ncore
             Murmur64     = (7 << IndexShift) | (8 << SizeShift) | (sizeof(nhash_private::murmur64_t) << CtxSizeShift),
             XXHash64     = (8 << IndexShift) | (8 << SizeShift) | (sizeof(nhash_private::xxhash64_t) << CtxSizeShift),
             SpookyHashV2 = (9 << IndexShift) | (16 << SizeShift) | (sizeof(nhash_private::spookyhashv2_t) << CtxSizeShift),
+            SHA1         = (10 << IndexShift) | (20 << SizeShift) | (sizeof(nhash_private::sha1_t) << CtxSizeShift),
+            SHA256       = (11 << IndexShift) | (32 << SizeShift) | (sizeof(nhash_private::sha256_t) << CtxSizeShift),
         };
 
         static inline s32 size(value_t type) { return (s32)((type & SizeMask) >> SizeShift); }
