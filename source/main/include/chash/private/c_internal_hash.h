@@ -31,7 +31,7 @@ namespace ncore
         typedef digest_t<16>  spookyhashv2;
     }; // namespace nhash
 
-    namespace nhash_private
+    namespace nhash
     {
         struct hash_header_t
         {
@@ -42,7 +42,7 @@ namespace ncore
         struct md5_t
         {
             hash_header_t hdr;
-            u64 m_ctxt[12];
+            u64           m_ctxt[12];
 
             s32  size() const { return sizeof(nhash::md5); }
             void reset(u64 seed = 0x67452301efcdab89);
@@ -53,18 +53,18 @@ namespace ncore
         struct sha1_t
         {
             hash_header_t hdr;
-            u64 m_ctxt[12];
+            u64           m_ctxt[12];
 
             s32  size() const { return sizeof(nhash::sha1); }
             void reset(u64 seed = 0);
             void hash(u8 const* data, u8 const* end);
             void end(u8* hash);
         };
-        
+
         struct sha256_t
         {
             hash_header_t hdr;
-            u64 m_ctxt[12];
+            u64           m_ctxt[13];
 
             s32  size() const { return sizeof(nhash::sha256); }
             void reset(u64 seed = 0);
@@ -75,8 +75,8 @@ namespace ncore
         struct skein256_t
         {
             hash_header_t hdr;
-            u64 m_initialized;
-            u64 m_ctxt[11];
+            u64           m_initialized;
+            u64           m_ctxt[11];
 
             s32  size() const { return sizeof(nhash::skein256); }
             void reset(u64 seed = 0);
@@ -87,8 +87,8 @@ namespace ncore
         struct skein512_t
         {
             hash_header_t hdr;
-            u64 m_initialized;
-            u64 m_ctxt[19];
+            u64           m_initialized;
+            u64           m_ctxt[19];
 
             s32  size() const { return sizeof(nhash::skein512); }
             void reset(u64 seed = 0);
@@ -99,8 +99,8 @@ namespace ncore
         struct skein1024_t
         {
             hash_header_t hdr;
-            bool m_initialized;
-            u64  m_ctxt[35];
+            u64           m_initialized;
+            u64           m_ctxt[35];
 
             s32  size() const { return sizeof(nhash::skein1024); }
             void reset(u64 seed = 0);
@@ -111,8 +111,11 @@ namespace ncore
         struct murmur32_t
         {
             hash_header_t hdr;
-            u32 m_seed;
-            u32 m_hash;
+            u32           m_seed;
+            u32           m_hash;
+            u64           m_length;
+            u8            m_tail[4];
+            s32           m_tail_size;
 
             s32  size() const { return sizeof(nhash::murmur32); }
             void reset(u64 seed = 0);
@@ -123,8 +126,13 @@ namespace ncore
         struct murmur64_t
         {
             hash_header_t hdr;
-            u64 m_seed;
-            u64 m_hash;
+            u32           m_seed;
+            u64           m_hash;
+            u64           m_hash1;
+            u64           m_hash2;
+            u64           m_length;
+            u8            m_tail[16];
+            s32           m_tail_size;
 
             s32  size() const { return sizeof(nhash::murmur64); }
             void reset(u64 seed = 0);
@@ -135,8 +143,8 @@ namespace ncore
         struct xxhash64_t
         {
             hash_header_t hdr;
-            u64 m_seed;
-            u64 m_ctxt[11];
+            u64           m_seed;
+            u64           m_ctxt[11];
 
             s32  size() const { return sizeof(nhash::xxhash64); }
             void reset(u64 seed = 0);
@@ -147,8 +155,8 @@ namespace ncore
         struct wyhash64_t
         {
             hash_header_t hdr;
-            u64 m_ctxt[10];
-            u64 m_seed;
+            u64           m_ctxt[10];
+            u64           m_seed;
 
             s32  size() const { return sizeof(nhash::wyhash64); }
             void reset(u64 seed = 0);
@@ -159,8 +167,8 @@ namespace ncore
         struct spookyhashv2_t
         {
             hash_header_t hdr;
-            u64 m_seed;
-            u64 m_ctxt[38];
+            u64           m_seed;
+            u64           m_ctxt[38];
 
             s32  size() const { return sizeof(nhash::spookyhashv2); }
             void reset(u64 seed = 0, u64 seed2 = 0);
@@ -171,7 +179,7 @@ namespace ncore
             static u64  hash64(const void* message, s64 length, u64 seed);
             static u32  hash32(const void* message, s64 length, u32 seed);
         };
-    } // namespace nhash_private
+    } // namespace nhash
 } // namespace ncore
 
 #endif

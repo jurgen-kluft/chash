@@ -1,7 +1,7 @@
 package chash
 
 import (
-	cbase "github.com/jurgen-kluft/cbase/package"
+	ccore "github.com/jurgen-kluft/ccore/package"
 	cunittest "github.com/jurgen-kluft/cunittest/package"
 	denv "github.com/jurgen-kluft/go-ide/denv"
 )
@@ -16,20 +16,20 @@ func GetPackage() *denv.Package {
 
 	// dependencies
 	cunittestpkg := cunittest.GetPackage()
-	cbasepkg := cbase.GetPackage()
+	ccorepkg := ccore.GetPackage()
 
 	// main package
 	mainpkg := denv.NewPackage(repo_path, repo_name)
 	mainpkg.AddPackage(cunittestpkg)
-	mainpkg.AddPackage(cbasepkg)
+	mainpkg.AddPackage(ccorepkg)
 
 	// main library
 	mainlib := denv.SetupCppLibProject(mainpkg, name)
-	mainlib.AddDependencies(cbasepkg.GetMainLib())
+	mainlib.AddDependencies(ccorepkg.GetMainLib())
 
 	// test library
 	testlib := denv.SetupCppTestLibProject(mainpkg, name)
-	testlib.AddDependencies(cbasepkg.GetTestLib())
+	testlib.AddDependencies(ccorepkg.GetTestLib())
 	testlib.AddDependencies(cunittestpkg.GetTestLib())
 
 	// unittest project

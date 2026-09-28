@@ -231,10 +231,10 @@ namespace ncore
 
     } // namespace nsha256
 
-    namespace nhash_private
+    namespace nhash
     {
         void sha256_t::reset(u64 seed) { nsha256::sha256_init((nsha256::context_t*)&this->m_ctxt, seed); }
         void sha256_t::hash(const u8* begin, const u8* end) { nsha256::sha256_update((nsha256::context_t*)&this->m_ctxt, begin, (u32)(end - begin)); }
         void sha256_t::end(u8* _hash) { nsha256::sha256_final((nsha256::context_t*)&this->m_ctxt, _hash); }
-    } // namespace nhash_private
+    } // namespace nhash
 } // namespace ncore

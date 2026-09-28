@@ -691,7 +691,7 @@ namespace ncore
         *hash2 = h1;
     }
 
-    namespace nhash_private
+    namespace nhash
     {
         void spookyhashv2_t::reset(u64 seed1, u64 seed2)
         {
@@ -715,6 +715,6 @@ namespace ncore
         u64  spookyhashv2_t::hash64(const void* message, s64 length, u64 seed) { return spooky_hash_t::Hash64(message, length, seed); }
         u32  spookyhashv2_t::hash32(const void* message, s64 length, u32 seed) { return spooky_hash_t::Hash32(message, length, seed); }
 
-    } // namespace nhash_private
+    } // namespace nhash
 
 } // namespace ncore

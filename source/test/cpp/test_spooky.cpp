@@ -66,7 +66,7 @@ UNITTEST_SUITE_BEGIN(spooky_v2_hash)
             for (int i = 0; i < BUFSIZE; ++i)
             {
                 buf[i] = i + 128;
-                saw[i] = nhash_private::spookyhashv2_t::hash32(buf, i, 0);
+                saw[i] = nhash::spookyhashv2_t::hash32(buf, i, 0);
                 CHECK_EQUAL(expected[i], saw[i]);
             }
         }
@@ -93,13 +93,13 @@ UNITTEST_SUITE_BEGIN(spooky_v2_hash)
             {
                 u64 seed1 = 1, seed2 = 2;
 
-                nhash_private::spookyhashv2_t spooky;
+                nhash::spookyhashv2_t spooky;
                 spooky.reset(seed1, seed2);
 
                 // all as one call
                 *a = seed1;
                 *b = seed2;
-                nhash_private::spookyhashv2_t::hash128(buf, i, a, b);
+                nhash::spookyhashv2_t::hash128(buf, i, a, b);
 
                 // all as one piece
                 *c = 0xdeadbeefdeadbeef;

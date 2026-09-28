@@ -238,7 +238,7 @@ namespace ncore
         }
     };
 
-    namespace nhash_private
+    namespace nhash
     {
         void xxhash64_t::reset(u64 seed)
         {
@@ -258,5 +258,5 @@ namespace ncore
             xxhash64_ctxt_t* ctx = (xxhash64_ctxt_t*)&this->m_ctxt;
             ctx->digest(out_hash);
         }
-    } // namespace nhash_private
+    } // namespace nhash
 } // namespace ncore

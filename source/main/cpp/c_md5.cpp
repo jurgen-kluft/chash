@@ -1,6 +1,5 @@
 #include "ccore/c_endian.h"
-#include "cbase/c_allocator.h"
-#include "cbase/c_memory.h"
+#include "ccore/c_memory.h"
 #include "chash/private/c_internal_hash.h"
 
 namespace ncore
@@ -177,7 +176,7 @@ namespace ncore
         // If this is the first time we call GetHash(), finish the last transform
         if (mState == OPEN)
         {
-            u32 count = mLength & 63; // Number of bytes in mBuffer.mInput
+            s32 count = (s32)(mLength & 63); // Number of bytes in mBuffer.mInput
             u8* p     = (u8*)mBuffer.mInput + count;
 
             // Set the first char of padding to 0x80.  There is always room.
@@ -321,7 +320,7 @@ namespace ncore
         mMD5[3] += d;
     }
 
-    namespace nhash_private
+    namespace nhash
     {
         void md5_t::reset(u64 seed)
         {
@@ -340,5 +339,5 @@ namespace ncore
             md5_ctx_t* ctx = (md5_ctx_t*)&this->m_ctxt;
             ctx->digest(out_hash);
         }
-    } // namespace nhash_private
+    } // namespace nhash
 } // namespace ncore

@@ -1,5 +1,5 @@
 #include "ccore/c_target.h"
-#include "cbase/c_buffer.h"
+#include "ccore/c_buffer.h"
 #include "chash/c_hash.h"
 
 #include "cunittest/cunittest.h"
@@ -17,7 +17,7 @@ UNITTEST_SUITE_BEGIN(xxhash64_t)
 		{
 			u32 len=10;
 			u8 indata[]={1,2,3,4,5,6,7,8,9,13};
-			nhash_private::xxhash64_t hash;
+			nhash::xxhash64_t hash;
             hash.reset();
             hash.hash(indata, indata+len);
             u64 digest;

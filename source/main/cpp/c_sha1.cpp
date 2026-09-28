@@ -258,7 +258,7 @@ namespace ncore
         xsha1_ctx_update(ctx, (u8 const*)padlen, 8);
     }
 
-    namespace nhash_private
+    namespace nhash
     {
         void sha1_t::reset(u64 seed)
         {
@@ -283,20 +283,13 @@ namespace ncore
 
             for (s32 i = 0; i < 5; ++i)
             {
-                u32 const* h = &ctx->H[i];
-#if defined(NCORE_BIG_ENDIAN)
-                _hash[4 * i + 0] = h[0];
-                _hash[4 * i + 1] = h[1];
-                _hash[4 * i + 2] = h[2];
-                _hash[4 * i + 3] = h[3];
-#else
-                _hash[4 * i + 0] = h[3];
-                _hash[4 * i + 1] = h[2];
-                _hash[4 * i + 2] = h[1];
-                _hash[4 * i + 3] = h[0];
-#endif
+                u32 const h = ctx->H[i];
+                _hash[4 * i + 0] = (u8)(h >> 24);
+                _hash[4 * i + 1] = (u8)(h >> 16);
+                _hash[4 * i + 2] = (u8)(h >> 8);
+                _hash[4 * i + 3] = (u8)h;
             }
         }
-    } // namespace nhash_private
+    } // namespace nhash
 
 } // namespace ncore

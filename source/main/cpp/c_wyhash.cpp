@@ -232,7 +232,7 @@ namespace ncore
         }
     } // namespace nhash
 
-    namespace nhash_private
+    namespace nhash
     {
         void wyhash64_t::reset(u64 seed)
         {
@@ -252,5 +252,5 @@ namespace ncore
             nhash::stream_t* ctx = (nhash::stream_t*)&this->m_ctxt;
             nhash::stream_finalize(ctx, out_hash);
         }
-    } // namespace nhash_private
+    } // namespace nhash
 } // namespace ncore
